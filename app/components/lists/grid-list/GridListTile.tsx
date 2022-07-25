@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
-import { SvgUri } from 'react-native-svg';
+import { SvgUri, SvgXml } from 'react-native-svg';
 import styled, { useTheme } from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
@@ -25,24 +25,31 @@ export const GridListTile = ({ item, onLongPress }: Props): JSX.Element => {
 
   const image = images[0];
 
-  const isSVG = image?.slice(-5).includes('.svg');
+  const isSVG =
+    image?.slice(-5).includes('.svg') || image?.includes('image/svg');
 
   return (
     <PressablePreview
       onPress={onPreviewPress}
       onLongPress={() => onLongPress(item)}>
-      {isSVG ? (
-        <SVGContainer>
-          <SvgUri uri={image} />
-        </SVGContainer>
+      {image ? (
+        isSVG ? (
+          <SVGContainer>
+            <SvgUri uri={image} />
+          </SVGContainer>
+        ) : (
+          <PreviewImage
+            source={{
+              uri: image,
+            }}
+            accessibilityRole="image"
+            resizeMode="cover"
+          />
+        )
       ) : (
-        <PreviewImage
-          source={{
-            uri: image,
-          }}
-          accessibilityRole="image"
-          resizeMode="cover"
-        />
+        <NoImage>
+          <Text>No image available 😔</Text>
+        </NoImage>
       )}
       <ContentContainer>
         <Text
@@ -86,6 +93,7 @@ const ContentContainer = styled.View`
   border-bottom-width: 1px;
   border-left-width: 1px;
   border-right-width: 1px;
+  border-top-width: 1px;
   border-color: ${({ theme }) => theme.colours.grey100};
 `;
 
@@ -95,4 +103,15 @@ const PreviewImage = styled.Image`
   align-self: center;
   border-top-left-radius: ${({ theme }) => theme.borderRadius};
   border-top-right-radius: ${({ theme }) => theme.borderRadius};
+`;
+
+const NoImage = styled.View`
+  width: ${GRID_ITEM_WIDTH}px;
+  flex: 1.5;
+  align-self: center;
+  border-top-left-radius: ${({ theme }) => theme.borderRadius};
+  border-top-right-radius: ${({ theme }) => theme.borderRadius};
+  background-color: ${({ theme }) => theme.colours.grey100};
+  align-items: center;
+  justify-content: center;
 `;

@@ -82,7 +82,7 @@ const TextContainer = styled.Text<TextProps>`
 
     return props.theme.colours.grey400;
   }};
-  letter-spacing: ${props => props.letterSpacing ?? 0}px;
+  letter-spacing: ${props => props.letterSpacing ?? 0.1}px;
   text-transform: ${({ uppercase, capitalize }) => {
     if (uppercase) {
       return 'uppercase';

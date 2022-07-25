@@ -1,5 +1,6 @@
 import {
   BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetTextInput,
 } from '@gorhom/bottom-sheet';
@@ -38,7 +39,7 @@ export const ManualLinkSheet = React.forwardRef<BottomSheetModal, Props>(
 
     /* Renders the darkened backdrop behind the sheet */
     const renderBackdrop = useCallback(
-      props => (
+      (props: BottomSheetBackdropProps) => (
         <BottomSheetBackdrop
           {...props}
           disappearsOnIndex={-1}

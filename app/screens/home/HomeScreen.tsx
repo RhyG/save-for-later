@@ -1,13 +1,15 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { getLinkPreview } from 'link-preview-js';
 import React, { useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { TextInput as RNTextInput, StyleSheet } from 'react-native';
+import ShareMenu from 'react-native-share-menu';
 import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
 import styled, { useTheme } from 'styled-components/native';
 
 import { EditLinkSheet } from '@app/components/EditLinkSheet';
 import { GridList, RowList } from '@app/components/lists';
-import { Bookmark, ILink } from '@app/models';
+import { ILink } from '@app/models';
 import { HomeStackParamList } from '@app/navigation/types';
 import { useLocalLinks } from '@app/store/localLinks';
 import { useUser5ettings } from '@app/store/userSettings';
@@ -18,6 +20,7 @@ import {
   ListDisplayToggleButton,
 } from './components/ListDisplayToggleButton';
 import { ManualLinkSheet } from './components/ManualLinkSheet';
+import { NewLinkSheet } from './components/NewLinkSheet';
 import { SearchInput } from './components/SearchInput';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'> & {};
@@ -27,9 +30,9 @@ export const HomeScreen = ({ navigation }: Props) => {
   const localLinks = useLocalLinks(state => state.localLinks);
   const loadingLocalLinks = useLocalLinks(state => state.loadingLocalLinks);
 
-  const [linkBeingEdited, setLinkBeingEdited] = useState<
-    Bookmark | undefined
-  >();
+  const [linkBeingEdited, setLinkBeingEdited] = useState<ILink | undefined>();
+  const [loadingNewLinkDetails, setLoadingNewLinkDetails] = useState(false);
+  const [newLinkDetails, setNewLinkDetails] = useState();
 
   const defaultHomeToList = useUser5ettings(
     state => state.settings.defaultHomeToList,
@@ -43,6 +46,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   const searchInputRef = useRef<RNTextInput>();
   const manualLinkSheetRef = useRef<BottomSheetModal>(null);
   const editLinkSheetRef = useRef<BottomSheetModal>(null);
+  const newLinkSheetRef = useRef<BottomSheetModal>(null);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,6 +62,41 @@ export const HomeScreen = ({ navigation }: Props) => {
     setLinkBeingEdited(item);
     editLinkSheetRef?.current?.present();
   };
+
+  const handleShare = React.useCallback(async (item: any) => {
+    if (!item) {
+      return;
+    }
+
+    const { data } = item;
+
+    const sharedData = data[0]?.data ?? null;
+
+    if (!sharedData) {
+      console.error('Error with share', data);
+      return;
+    }
+
+    setLoadingNewLinkDetails(true);
+
+    const newPreviewDetails = await getLinkPreview(sharedData);
+
+    setNewLinkDetails(newPreviewDetails);
+
+    newLinkSheetRef?.current?.present();
+  }, []);
+
+  React.useEffect(() => {
+    ShareMenu.getInitialShare(handleShare);
+  }, [handleShare]);
+
+  React.useEffect(() => {
+    const listener = ShareMenu.addNewShareListener(handleShare);
+
+    return () => {
+      listener.remove();
+    };
+  }, [handleShare]);
 
   return (
     <>
@@ -90,7 +129,17 @@ export const HomeScreen = ({ navigation }: Props) => {
         )}
       </ScreenContainer>
       <ManualLinkSheet ref={manualLinkSheetRef} />
-      <EditLinkSheet ref={editLinkSheetRef} linkBeingEdited={linkBeingEdited} />
+      {linkBeingEdited ? (
+        <EditLinkSheet
+          ref={editLinkSheetRef}
+          linkBeingEdited={linkBeingEdited}
+        />
+      ) : null}
+      <NewLinkSheet
+        ref={newLinkSheetRef}
+        linkDetails={newLinkDetails}
+        loadingLinkDetails={loadingNewLinkDetails}
+      />
     </>
   );
 };

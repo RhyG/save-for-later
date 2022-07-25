@@ -3,12 +3,14 @@ import { TextInput as RNTextInput, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 
 export type TextInputProps = {
+  error?: boolean;
   errorText?: string;
   containerStyle?: ViewStyle;
 } & React.ComponentProps<typeof RNTextInput>;
 
 export const TextInput = forwardRef(
-  ({ testID, containerStyle }: TextInputProps, ref: Ref<RNTextInput>) => {
+  (props: TextInputProps, ref: Ref<RNTextInput>) => {
+    const { testID, containerStyle, placeholder, error } = props;
     const { colours } = useTheme();
 
     const [inputFocused, toggleInputFocused] = useReducer(
@@ -17,12 +19,16 @@ export const TextInput = forwardRef(
     );
 
     return (
-      <InputContainer isFocused={inputFocused} style={containerStyle}>
+      <InputContainer
+        isFocused={inputFocused}
+        style={containerStyle}
+        error={error}>
         <Input
           testID={testID}
           onFocus={toggleInputFocused}
           onBlur={toggleInputFocused}
-          placeholder="Search"
+          placeholder={placeholder ?? ''}
+          // @ts-ignore refs are hard to type :(
           ref={ref}
           placeholderTextColor={colours.grey100}
         />
@@ -35,10 +41,15 @@ const Input = styled.TextInput`
   padding: 10px;
 `;
 
-const InputContainer = styled.View<{ isFocused: boolean }>`
+const InputContainer = styled.View<{ isFocused: boolean; error?: boolean }>`
   border-radius: 10px;
-  border-color: ${({ theme, isFocused }) =>
-    isFocused ? theme.colours.purple100 : theme.colours.grey200};
-  flex: 1;
+  border-color: ${({ theme, isFocused, error }) => {
+    if (error) {
+      return theme.colours.red;
+    }
+
+    return isFocused ? theme.colours.purple100 : theme.colours.grey200;
+  }};
+  /* flex: 1; */
   border-width: 2px;
 `;
