@@ -16,6 +16,8 @@
 
 #import <react/config/ReactNativeConfig.h>
 
+#import <RNShareMenu/ShareMenuManager.h>
+
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
@@ -129,5 +131,12 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 }
 
 #endif
+
+  - (BOOL)application:(UIApplication *)app
+          openURL:(NSURL *)url
+          options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+  {
+    return [ShareMenuManager application:app openURL:url options:options];
+  }
 
 @end

@@ -70,5 +70,17 @@
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.rhyg.SaveForLater</string>
+				<!-- This url scheme doesn't contain :// at the end - E.G. "mycustomscheme"-->
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

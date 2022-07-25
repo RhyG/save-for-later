@@ -12,8 +12,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		20145D1DB98A4A7D75F39293 /* libPods-Save For Later.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3480641E72E1BD15F43B8BAB /* libPods-Save For Later.a */; };
 		7699B88040F8A987B510C191 /* libPods-SaveForLater-SaveForLaterTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SaveForLater-SaveForLaterTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		98856A4F288E09B5000FD09E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98856A4D288E09B5000FD09E /* MainInterface.storyboard */; };
+		98856A53288E09B5000FD09E /* Save For Later.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98856A49288E09B5000FD09E /* Save For Later.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		98856A5E288E1447000FD09E /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98856A5D288E1447000FD09E /* ShareViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,7 +28,28 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = SaveForLater;
 		};
+		98856A51288E09B5000FD09E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98856A48288E09B5000FD09E;
+			remoteInfo = "Save For Later";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		98856A54288E09B5000FD09E /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				98856A53288E09B5000FD09E /* Save For Later.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* SaveForLaterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SaveForLaterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,12 +62,21 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SaveForLater/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SaveForLater/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-SaveForLater-SaveForLaterTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveForLater-SaveForLaterTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3480641E72E1BD15F43B8BAB /* libPods-Save For Later.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Save For Later.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-SaveForLater.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater.debug.xcconfig"; path = "Target Support Files/Pods-SaveForLater/Pods-SaveForLater.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-SaveForLater.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater.release.xcconfig"; path = "Target Support Files/Pods-SaveForLater/Pods-SaveForLater.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-SaveForLater-SaveForLaterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater-SaveForLaterTests.debug.xcconfig"; path = "Target Support Files/Pods-SaveForLater-SaveForLaterTests/Pods-SaveForLater-SaveForLaterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-SaveForLater.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveForLater.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A7BF38C1B4B5A0723F8C59B /* Pods-Save For Later.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save For Later.debug.xcconfig"; path = "Target Support Files/Pods-Save For Later/Pods-Save For Later.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SaveForLater/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SaveForLater-SaveForLaterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater-SaveForLaterTests.release.xcconfig"; path = "Target Support Files/Pods-SaveForLater-SaveForLaterTests/Pods-SaveForLater-SaveForLaterTests.release.xcconfig"; sourceTree = "<group>"; };
+		98856A49288E09B5000FD09E /* Save For Later.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Save For Later.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98856A4E288E09B5000FD09E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		98856A50288E09B5000FD09E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98856A5B288E0AC5000FD09E /* SaveForLater.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SaveForLater.entitlements; path = SaveForLater/SaveForLater.entitlements; sourceTree = "<group>"; };
+		98856A5C288E0C81000FD09E /* Save For Later.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Save For Later.entitlements"; sourceTree = "<group>"; };
+		98856A5D288E1447000FD09E /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareViewController.swift; path = "../../node_modules/react-native-share-menu/ios/ShareViewController.swift"; sourceTree = "<group>"; };
+		CBFDC3B794B75FDB3924DC10 /* Pods-Save For Later.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save For Later.release.xcconfig"; path = "Target Support Files/Pods-Save For Later/Pods-Save For Later.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -60,6 +94,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-SaveForLater.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98856A46288E09B5000FD09E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20145D1DB98A4A7D75F39293 /* libPods-Save For Later.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +128,7 @@
 		13B07FAE1A68108700A75B9A /* SaveForLater */ = {
 			isa = PBXGroup;
 			children = (
+				98856A5B288E0AC5000FD09E /* SaveForLater.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -102,6 +145,7 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-SaveForLater.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-SaveForLater-SaveForLaterTests.a */,
+				3480641E72E1BD15F43B8BAB /* libPods-Save For Later.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -119,6 +163,7 @@
 				13B07FAE1A68108700A75B9A /* SaveForLater */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SaveForLaterTests */,
+				98856A4A288E09B5000FD09E /* Save For Later */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -133,8 +178,20 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* SaveForLater.app */,
 				00E356EE1AD99517003FC87E /* SaveForLaterTests.xctest */,
+				98856A49288E09B5000FD09E /* Save For Later.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		98856A4A288E09B5000FD09E /* Save For Later */ = {
+			isa = PBXGroup;
+			children = (
+				98856A5D288E1447000FD09E /* ShareViewController.swift */,
+				98856A5C288E0C81000FD09E /* Save For Later.entitlements */,
+				98856A4D288E09B5000FD09E /* MainInterface.storyboard */,
+				98856A50288E09B5000FD09E /* Info.plist */,
+			);
+			path = "Save For Later";
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -144,6 +201,8 @@
 				5709B34CF0A7D63546082F79 /* Pods-SaveForLater.release.xcconfig */,
 				5B7EB9410499542E8C5724F5 /* Pods-SaveForLater-SaveForLaterTests.debug.xcconfig */,
 				89C6BE57DB24E9ADA2F236DE /* Pods-SaveForLater-SaveForLaterTests.release.xcconfig */,
+				6A7BF38C1B4B5A0723F8C59B /* Pods-Save For Later.debug.xcconfig */,
+				CBFDC3B794B75FDB3924DC10 /* Pods-Save For Later.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -184,15 +243,36 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				98856A54288E09B5000FD09E /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				98856A52288E09B5000FD09E /* PBXTargetDependency */,
 			);
 			name = SaveForLater;
 			productName = SaveForLater;
 			productReference = 13B07F961A680F5B00A75B9A /* SaveForLater.app */;
 			productType = "com.apple.product-type.application";
+		};
+		98856A48288E09B5000FD09E /* Save For Later */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98856A57288E09B5000FD09E /* Build configuration list for PBXNativeTarget "Save For Later" */;
+			buildPhases = (
+				4235D454E31F6A2C79F49A03 /* [CP] Check Pods Manifest.lock */,
+				98856A45288E09B5000FD09E /* Sources */,
+				98856A46288E09B5000FD09E /* Frameworks */,
+				98856A47288E09B5000FD09E /* Resources */,
+				77A1BC47F36A2A767E8131D0 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Save For Later";
+			productName = "Save For Later";
+			productReference = 98856A49288E09B5000FD09E /* Save For Later.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -200,6 +280,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -208,6 +289,10 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					98856A48288E09B5000FD09E = {
+						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -226,6 +311,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* SaveForLater */,
 				00E356ED1AD99517003FC87E /* SaveForLaterTests */,
+				98856A48288E09B5000FD09E /* Save For Later */,
 			);
 		};
 /* End PBXProject section */
@@ -244,6 +330,14 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98856A47288E09B5000FD09E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98856A4F288E09B5000FD09E /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +375,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SaveForLater/Pods-SaveForLater-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4235D454E31F6A2C79F49A03 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Save For Later-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		77A1BC47F36A2A767E8131D0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save For Later/Pods-Save For Later-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save For Later/Pods-Save For Later-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save For Later/Pods-Save For Later-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -417,6 +550,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		98856A45288E09B5000FD09E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98856A5E288E1447000FD09E /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -425,7 +566,23 @@
 			target = 13B07F861A680F5B00A75B9A /* SaveForLater */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		98856A52288E09B5000FD09E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98856A48288E09B5000FD09E /* Save For Later */;
+			targetProxy = 98856A51288E09B5000FD09E /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		98856A4D288E09B5000FD09E /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				98856A4E288E09B5000FD09E /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
@@ -483,9 +640,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-SaveForLater.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SaveForLater/SaveForLater.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GRN6CGW9U8;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = SaveForLater/Info.plist;
@@ -510,9 +670,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-SaveForLater.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SaveForLater/SaveForLater.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GRN6CGW9U8;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = SaveForLater/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -668,6 +831,93 @@
 			};
 			name = Release;
 		};
+		98856A55288E09B5000FD09E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A7BF38C1B4B5A0723F8C59B /* Pods-Save For Later.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Save For Later/Save For Later.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = GRN6CGW9U8;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Save For Later/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Save For Later";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.SaveForLater.Save-For-Later";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		98856A56288E09B5000FD09E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CBFDC3B794B75FDB3924DC10 /* Pods-Save For Later.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Save For Later/Save For Later.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = GRN6CGW9U8;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Save For Later/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Save For Later";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.SaveForLater.Save-For-Later";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -694,6 +944,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		98856A57288E09B5000FD09E /* Build configuration list for PBXNativeTarget "Save For Later" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98856A55288E09B5000FD09E /* Debug */,
+				98856A56288E09B5000FD09E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
