@@ -5,6 +5,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SvgUri, SvgXml } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Feather';
 import styled, { useTheme } from 'styled-components/native';
 
@@ -49,6 +50,11 @@ export const EditLinkSheet = React.forwardRef<BottomSheetModal, Props>(
       ref?.current?.dismiss();
     };
 
+    const image = linkBeingEdited.images[0];
+
+    const isSVG =
+      image?.slice(-5).includes('.svg') || image.includes('image/svg');
+
     return (
       <BottomSheetModal
         index={0}
@@ -58,20 +64,51 @@ export const EditLinkSheet = React.forwardRef<BottomSheetModal, Props>(
         style={bottomSheetStyle}
         backdropComponent={renderBackdrop}>
         <SheetContainer>
-          <Text fontSize="lg" bold>
-            {linkBeingEdited?.title ?? 'Oops!'}
-          </Text>
-          <Text marginTop={2} fontSize="md" secondary>
-            {linkBeingEdited.description}
-          </Text>
-          <IconContainer>
-            <Icon
-              name="trash-2"
-              color={colours.red}
-              size={25}
-              onPress={deleteLink}
-            />
-          </IconContainer>
+          <LinkDetailsContainer>
+            <Text fontSize="lg" bold>
+              {linkBeingEdited?.title ?? 'Oops!'}
+            </Text>
+            <Text marginTop={1} fontSize="md" secondary numberOfLines={1}>
+              {linkBeingEdited.url}
+            </Text>
+            <Text marginTop={2} fontSize="md" secondary numberOfLines={4}>
+              {linkBeingEdited.description}
+            </Text>
+
+            <IconContainer>
+              <NumberOfOpensContainer>
+                <Icon name="eye" color={colours.grey400} size={25} />
+                <Text marginLeft={2} color={colours.grey300} fontSize="md">
+                  {linkBeingEdited?.numberOfOpens ?? 0}
+                </Text>
+              </NumberOfOpensContainer>
+              <Icon
+                name="trash-2"
+                color={colours.red}
+                size={25}
+                onPress={deleteLink}
+                style={{ marginLeft: 'auto' }}
+              />
+            </IconContainer>
+          </LinkDetailsContainer>
+          <ImageContainer>
+            {isSVG ? (
+              <SvgUri
+                uri="https://reactnavigation.org/img/spiro.svg"
+                width="100%"
+                height="100%"
+              />
+            ) : (
+              // <SvgXml xml={xml} width="100%" height="100%" />
+              <PreviewImage
+                source={{
+                  uri: linkBeingEdited.images[0],
+                }}
+                accessibilityRole="image"
+                resizeMode="cover"
+              />
+            )}
+          </ImageContainer>
         </SheetContainer>
       </BottomSheetModal>
     );
@@ -79,11 +116,37 @@ export const EditLinkSheet = React.forwardRef<BottomSheetModal, Props>(
 );
 
 const SheetContainer = styled.View`
-  padding: 20px;
-  padding-bottom: 30px;
+  padding: 10px 20px 30px 20px;
   flex: 1;
 `;
 
 const IconContainer = styled.View`
   margin-top: auto;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const NumberOfOpensContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const LinkDetailsContainer = styled.View`
+  flex: 2;
+`;
+
+const ImageContainer = styled.View`
+  flex: 1.5;
+  height: 40px;
+  margin-top: 10px;
+`;
+
+const PreviewImage = styled.Image`
+  flex: 1.5;
+  width: 100%;
+  /* height: 50px; */
+  align-self: center;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `;
