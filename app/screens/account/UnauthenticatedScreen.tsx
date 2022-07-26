@@ -5,7 +5,7 @@ import { BaseScreen } from '@app/components/BaseScreen';
 import { DismissKeyboardWrapper } from '@app/components/DismissKeyboardWrapper';
 import { Text } from '@app/components/Text';
 import { TextInput } from '@app/components/TextInput';
-import { MAXIMUM_UNAUTHENTICATED_BOOKMARKS } from '@app/lib/constants';
+import { MAXIMUM_UNAUTHENTICATED_BOOKMARKS } from '@app/config/constants';
 import { supabase } from '@app/lib/supabase';
 import { validateEmail as _validateEmail } from '@app/lib/validation';
 
