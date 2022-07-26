@@ -1,5 +1,10 @@
-import React, { Ref, forwardRef, useReducer } from 'react';
-import { TextInput as RNTextInput, ViewStyle } from 'react-native';
+import React, { forwardRef, useReducer } from 'react';
+import {
+  NativeSyntheticEvent,
+  TextInput as RNTextInput,
+  TextInputFocusEventData,
+  ViewStyle,
+} from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 
 export type TextInputProps = {
@@ -8,9 +13,9 @@ export type TextInputProps = {
   containerStyle?: ViewStyle;
 } & React.ComponentProps<typeof RNTextInput>;
 
-export const TextInput = forwardRef(
-  (props: TextInputProps, ref: Ref<RNTextInput>) => {
-    const { testID, containerStyle, placeholder, error } = props;
+export const TextInput = forwardRef<RNTextInput, TextInputProps>(
+  (props, ref) => {
+    const { testID, containerStyle, placeholder, error, ...inputProps } = props;
     const { colours } = useTheme();
 
     const [inputFocused, toggleInputFocused] = useReducer(
@@ -26,11 +31,15 @@ export const TextInput = forwardRef(
         <Input
           testID={testID}
           onFocus={toggleInputFocused}
-          onBlur={toggleInputFocused}
+          onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+            props?.onBlur?.(e);
+            toggleInputFocused();
+          }}
           placeholder={placeholder ?? ''}
           // @ts-ignore refs are hard to type :(
           ref={ref}
           placeholderTextColor={colours.grey100}
+          {...inputProps}
         />
       </InputContainer>
     );

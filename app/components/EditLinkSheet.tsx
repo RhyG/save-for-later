@@ -4,9 +4,10 @@ import {
   BottomSheetModal,
 } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo } from 'react';
+import { Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SvgUri, SvgXml } from 'react-native-svg';
+import { SvgUri } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Feather';
 import styled, { useTheme } from 'styled-components/native';
 
@@ -76,9 +77,12 @@ export const EditLinkSheet = React.forwardRef<BottomSheetModal, Props>(
             <Text fontSize="lg" bold numberOfLines={2}>
               {linkBeingEdited?.title ?? 'Oops!'}
             </Text>
-            <Text marginTop={1} fontSize="md" secondary numberOfLines={1}>
-              {linkBeingEdited.url}
-            </Text>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(linkBeingEdited.url)}>
+              <Text marginTop={1} fontSize="md" secondary numberOfLines={1}>
+                {linkBeingEdited.url}
+              </Text>
+            </TouchableOpacity>
             <Text marginTop={2} fontSize="md" secondary numberOfLines={4}>
               {linkBeingEdited.description}
             </Text>
