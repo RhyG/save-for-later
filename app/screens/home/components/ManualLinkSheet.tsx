@@ -12,7 +12,9 @@ import shortid from 'shortid';
 import styled, { useTheme } from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
+import { supabase } from '@app/lib/supabase';
 import { ILink } from '@app/models';
+import { useAuth } from '@app/store/auth';
 import { useLocalLinks } from '@app/store/localLinks';
 
 type Props = {};
@@ -23,6 +25,8 @@ export const ManualLinkSheet = React.forwardRef<BottomSheetModal, Props>(
   (_, ref) => {
     const { colours } = useTheme();
     const { bottom: bottomInset } = useSafeAreaInsets();
+
+    const session = useAuth(state => state.session);
 
     const addLink = useLocalLinks(state => state.addLink);
 
@@ -64,9 +68,31 @@ export const ManualLinkSheet = React.forwardRef<BottomSheetModal, Props>(
       [],
     );
 
-    const onAddLinkButtonPress = () => {
+    const onAddLinkButtonPress = async () => {
       if (previewDetails) {
         addLink({ ...previewDetails, id: shortid.generate() });
+
+        const { title, description, url, images } = previewDetails;
+
+        const toSave = {
+          title,
+          description,
+          url,
+          preview_image: images[0] ?? '',
+          number_of_opens: 0,
+          collections: [],
+          user_id: session?.user?.id,
+        };
+
+        try {
+          const { data, error } = await supabase
+            .from('bookmarks')
+            .insert([{ ...toSave }]);
+
+          console.log({ data, error });
+        } catch (error) {
+          console.log({ error });
+        }
       }
     };
 
