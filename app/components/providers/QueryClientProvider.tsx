@@ -5,7 +5,9 @@ import {
 import React from 'react';
 import { PropsWithChildren } from 'react';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 0 } },
+});
 
 export const QueryClientProvider = ({
   children,
