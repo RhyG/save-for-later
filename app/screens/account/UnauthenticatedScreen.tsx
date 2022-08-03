@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { TextInput as RNTextInput } from 'react-native';
+import { Alert, TextInput as RNTextInput } from 'react-native';
 
+import { AccountAPI } from '@app/api/account';
 import { BaseScreen } from '@app/components/BaseScreen';
 import { DismissKeyboardWrapper } from '@app/components/DismissKeyboardWrapper';
 import { Text } from '@app/components/Text';
 import { TextInput } from '@app/components/TextInput';
 import { MAXIMUM_UNAUTHENTICATED_BOOKMARKS } from '@app/config/constants';
-import { supabase } from '@app/lib/supabase';
 import { validateEmail as _validateEmail } from '@app/lib/validation';
 
 import { SubmitButton } from './components/SubmitButton';
@@ -22,21 +22,16 @@ export const UnauthenticatedScreen = () => {
   const emailInputRef = useRef<RNTextInput>();
 
   const submitEmail = async () => {
-    // 1. Use signIn({ email: '' }) to send a code
-    // 2. Use verifyOTP({ token, type: 'magiclink' })
+    try {
+      const user = await AccountAPI.signIn(emailInputValue);
 
-    const res = await supabase.auth.signIn({
-      email: emailInputValue,
-    });
-
-    console.log({ result: res });
-
-    if (res.error) {
-      console.error('Error calling sign in', res.error);
-      return;
+      if (user) {
+        console.log('HERE', user);
+        setFormState('code');
+      }
+    } catch (error) {
+      Alert.alert('Error signing in.');
     }
-
-    setFormState('code');
   };
 
   const validateEmail = () => {
@@ -45,29 +40,15 @@ export const UnauthenticatedScreen = () => {
   };
 
   const submitOTP = async () => {
-    console.log('Submitting OTP', OTP);
-    const { user, error, session } = await supabase.auth.verifyOTP({
-      email: emailInputValue.toLowerCase(),
-      token: OTP,
-      type: 'magiclink',
-    });
-
-    if (error) {
-      console.error('Error verifying OTP', error);
-    }
-
-    if (user) {
-      console.log('SUCCESS!');
-      console.log(session);
+    // TODO manually set the session in the store here rather than in an effect
+    try {
+      const res = await AccountAPI.submitOTP(emailInputValue, OTP);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error submitting OTP.');
     }
   };
-
-  React.useEffect(() => {
-    console.log('RUNNING');
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log({ event, session });
-    });
-  }, []);
 
   return (
     <BaseScreen>
