@@ -1,20 +1,20 @@
 import create from 'zustand';
 
-import { ILink } from '@app/models';
 import AsyncStorage from '@app/modules/AsyncStorage';
+import { IBookmark } from '@app/types';
 
 interface ILocalLinksState {
-  localLinks: ILink[];
-  setLocalLinks: (links: ILink[]) => void;
+  localLinks: IBookmark[];
+  setLocalLinks: (links: IBookmark[]) => void;
   loadingLocalLinks: boolean;
-  addLink: (link: ILink) => void;
+  addLink: (link: IBookmark) => void;
   removeLink: (id: string) => void;
 }
 
 export const useLocalLinks = create<ILocalLinksState>(set => ({
   localLinks: [],
   loadingLocalLinks: false,
-  setLocalLinks: async (links: ILink[]) => {
+  setLocalLinks: async (links: IBookmark[]) => {
     set(() => ({ loadingLocalLinks: true }));
 
     await AsyncStorage.setItem('links', { links });
@@ -24,7 +24,7 @@ export const useLocalLinks = create<ILocalLinksState>(set => ({
       loadingLocalLinks: false,
     }));
   },
-  addLink: async (link: ILink) => {
+  addLink: async (link: IBookmark) => {
     set(({ localLinks }) => {
       const newLinks = [link, ...localLinks];
 

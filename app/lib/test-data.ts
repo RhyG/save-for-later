@@ -1,6 +1,6 @@
-import { ILink } from '@app/models';
+import { IBookmark } from '@app/types';
 
-export const testData: Partial<ILink>[] = [
+export const testData: Partial<IBookmark>[] = [
   {
     url: 'https://reactnative.dev/',
     id: '8ob74g65tv93p45vp9346',

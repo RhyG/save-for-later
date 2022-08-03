@@ -6,17 +6,20 @@ import 'react-native-url-polyfill/auto';
 import { QueryClientProvider } from '@app/components/providers/QueryClientProvider';
 import { ThemeProvider } from '@app/components/providers/ThemeProvider';
 import { supabase } from '@app/lib/supabase';
-import { ILink } from '@app/models';
 import AsyncStorage from '@app/modules/AsyncStorage';
 import Navigator from '@app/navigation/index';
 import { useAuth } from '@app/store/auth';
 import { useLocalLinks } from '@app/store/localLinks';
+import { IBookmark } from '@app/types';
 
 // Fetch local links from storage on app mount
 (async () => {
-  const storedLinks = await AsyncStorage.getItem<{ links: ILink[] }>('links', {
-    links: [],
-  });
+  const storedLinks = await AsyncStorage.getItem<{ links: IBookmark[] }>(
+    'links',
+    {
+      links: [],
+    },
+  );
 
   useLocalLinks.getState().setLocalLinks(storedLinks.links);
 })();

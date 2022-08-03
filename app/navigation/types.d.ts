@@ -67,7 +67,7 @@ export type AccountcreenNavigationProp = CompositeNavigationProp<
 
 export type CollectionsStackParamList = {
   Collections: undefined;
-  Collection: { collectionId: string };
+  Collection: { id: string; name: string };
 };
 
 export type CollectionsStackScreenProps<
