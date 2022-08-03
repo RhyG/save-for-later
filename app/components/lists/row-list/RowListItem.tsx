@@ -3,16 +3,14 @@ import { Linking } from 'react-native';
 import styled from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
-import { ILink } from '@app/models';
+import { IBookmark } from '@app/types';
 
-type Props = { item: ILink; onItemLongPress: (item: ILink) => void };
+type Props = { item: IBookmark; onItemLongPress: (item: IBookmark) => void };
 
 export const RowListItem = ({ item, onItemLongPress }: Props) => {
-  const { title, description, url, images } = item;
+  const { title, description, url, preview_image } = item;
 
-  const image = images[0];
-
-  const isSVG = image?.slice(-5).includes('.svg');
+  const isSVG = preview_image?.slice(-5).includes('.svg');
 
   const openLink = () => {
     Linking.openURL(url);
@@ -24,7 +22,9 @@ export const RowListItem = ({ item, onItemLongPress }: Props) => {
         <Text marginBottom={1} bold numberOfLines={1}>
           {title}
         </Text>
-        <Text numberOfLines={3}>{description}</Text>
+        <Text numberOfLines={3} fontSize="xs">
+          {description}
+        </Text>
       </TextContainer>
       <ImageContainer>
         {isSVG ? (
@@ -32,7 +32,7 @@ export const RowListItem = ({ item, onItemLongPress }: Props) => {
         ) : (
           <PreviewImage
             source={{
-              uri: image,
+              uri: preview_image,
             }}
             accessibilityRole="image"
             resizeMode="cover"
@@ -44,8 +44,11 @@ export const RowListItem = ({ item, onItemLongPress }: Props) => {
 };
 
 const RowContainer = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colours.grey000};
-  margin-bottom: 10px;
+  /* background-color: ${({ theme }) => theme.colours.grey000}; */
+  border-width: 2px;
+  border-color: #ebf0f3;
+  background-color: #fff;
+  margin-bottom: 5px;
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 10px;
   flex-direction: row;

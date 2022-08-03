@@ -5,42 +5,42 @@ import styled, { useTheme } from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
 import { ILink } from '@app/models';
+import { IBookmark } from '@app/types';
 
 const { width } = Dimensions.get('window');
 export const GRID_ITEM_WIDTH = width / 2 - 15;
 
 type Props = {
-  item: ILink;
-  onLongPress: (item: ILink) => void;
+  item: IBookmark;
+  onLongPress: (item: IBookmark) => void;
 };
 
 export const GridListTile = ({ item, onLongPress }: Props): JSX.Element => {
   const { colours } = useTheme();
 
-  const { title, images, description, url } = item;
+  const { title, preview_image, description, url } = item;
 
   const onPreviewPress = () => {
     Linking.openURL(url);
   };
 
-  const image = images[0];
-
   const isSVG =
-    image?.slice(-5).includes('.svg') || image?.includes('image/svg');
+    preview_image?.slice(-5).includes('.svg') ||
+    preview_image?.includes('image/svg');
 
   return (
     <PressablePreview
       onPress={onPreviewPress}
       onLongPress={() => onLongPress(item)}>
-      {image ? (
+      {preview_image ? (
         isSVG ? (
           <SVGContainer>
-            <SvgUri uri={image} />
+            <SvgUri uri={preview_image} />
           </SVGContainer>
         ) : (
           <PreviewImage
             source={{
-              uri: image,
+              uri: preview_image,
             }}
             accessibilityRole="image"
             resizeMode="cover"

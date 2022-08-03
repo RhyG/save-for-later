@@ -1,20 +1,15 @@
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 
-import { ILink } from '@app/models';
+import { IBookmark } from '@app/types';
 
+import { ListProps } from '../MultiDisplayList';
 import { RowListItem } from './RowListItem';
 
-type Props = {
-  data: ILink[];
-  loadingLinks: boolean;
-  onItemLongPress: (item: ILink) => void;
-};
+const keyExtractor = (item: IBookmark) => item.id;
 
-const keyExtractor = (item: ILink) => item.id;
-
-export const RowList = ({ data, onItemLongPress }: Props) => {
-  const renderItem = useCallback<ListRenderItem<ILink>>(
+export const RowList = ({ data, onItemLongPress }: ListProps) => {
+  const renderItem = useCallback<ListRenderItem<IBookmark>>(
     ({ item }) => {
       return <RowListItem item={item} onItemLongPress={onItemLongPress} />;
     },

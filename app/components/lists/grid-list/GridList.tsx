@@ -1,39 +1,38 @@
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 
-import { ILink } from '@app/models';
+import { IBookmark } from '@app/types';
 
 import { ListEmptyComponent } from '../ListEmptyComponent';
 import { LoadingComponent } from '../LoadingComponent';
+import { ListProps } from '../MultiDisplayList';
 import { GRID_ITEM_WIDTH, GridListTile } from './GridListTile';
 
-type Props = {
-  data: ILink[];
-  loadingLinks: boolean;
-  onItemLongPress: (item: ILink) => void;
-};
-
-const getItemLayout = (_: ILink[] | null | undefined, index: number) => ({
+const getItemLayout = (_: IBookmark[] | null | undefined, index: number) => ({
   length: GRID_ITEM_WIDTH,
   offset: GRID_ITEM_WIDTH * index,
   index,
 });
 
-const keyExtractor = (item: ILink) => item.id;
+const keyExtractor = (item: IBookmark) => item.id;
 
-export const GridList = ({ data, loadingLinks, onItemLongPress }: Props) => {
-  const renderItem = useCallback<ListRenderItem<ILink>>(
+export const GridList = ({
+  data,
+  loadingBookmarks,
+  onItemLongPress,
+}: ListProps) => {
+  const renderItem = useCallback<ListRenderItem<IBookmark>>(
     ({ item }) => <GridListTile item={item} onLongPress={onItemLongPress} />,
     [onItemLongPress],
   );
 
   const EmptyComponent = useMemo(() => {
-    if (data.length === 0 && loadingLinks) {
+    if (data.length === 0 && loadingBookmarks) {
       return LoadingComponent;
     }
 
     return ListEmptyComponent;
-  }, [loadingLinks, data.length]);
+  }, [loadingBookmarks, data.length]);
 
   return (
     <FlatList

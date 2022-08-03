@@ -1,38 +1,47 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { getLinkPreview } from 'link-preview-js';
-import React, { useLayoutEffect, useReducer, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { TextInput as RNTextInput, StyleSheet } from 'react-native';
 import ShareMenu from 'react-native-share-menu';
 import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 import styled, { useTheme } from 'styled-components/native';
 
-import { EditLinkSheet } from '@app/components/EditLinkSheet';
-import { GridList, RowList } from '@app/components/lists';
-import { ILink } from '@app/models';
+import { BookmarksAPI } from '@app/api/bookmarks';
+import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
+import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
+import { EditLinkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { HomeStackParamList } from '@app/navigation/types';
 import { useLocalLinks } from '@app/store/localLinks';
 import { useUser5ettings } from '@app/store/userSettings';
+import { IBookmark } from '@app/types';
 
 import { AddLinkHeaderButton } from './components/AddLinkHeaderButton';
-import {
-  DisplayType,
-  ListDisplayToggleButton,
-} from './components/ListDisplayToggleButton';
 import { ManualLinkSheet } from './components/ManualLinkSheet';
 import { NewLinkSheet } from './components/NewLinkSheet';
 import { SearchInput } from './components/SearchInput';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'> & {};
 
+const EMPTY_ARRAY: IBookmark[] = [];
+
 export const HomeScreen = ({ navigation }: Props) => {
   const { colours } = useTheme();
-  const localLinks = useLocalLinks(state => state.localLinks);
+
   const loadingLocalLinks = useLocalLinks(state => state.loadingLocalLinks);
 
-  const [linkBeingEdited, setLinkBeingEdited] = useState<ILink | undefined>();
+  const [linkBeingEdited, setLinkBeingEdited] = useState<
+    IBookmark | undefined
+  >();
   const [loadingNewLinkDetails, setLoadingNewLinkDetails] = useState(false);
-  const [newLinkDetails, setNewLinkDetails] = useState();
+  const [newLinkDetails, setNewLinkDetails] = useState<IBookmark | undefined>();
 
   const defaultHomeToList = useUser5ettings(
     state => state.settings.defaultHomeToList,
@@ -58,7 +67,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     });
   }, [navigation]);
 
-  const presentEditLinkSheet = (item: ILink) => {
+  const presentEditLinkSheet = (item: IBookmark) => {
     setLinkBeingEdited(item);
     editLinkSheetRef?.current?.present();
   };
@@ -79,12 +88,27 @@ export const HomeScreen = ({ navigation }: Props) => {
 
     setLoadingNewLinkDetails(true);
 
-    const newPreviewDetails = await getLinkPreview(sharedData);
+    const newPreviewDetails = (await getLinkPreview(
+      sharedData,
+    )) as unknown as IBookmark;
 
     setNewLinkDetails(newPreviewDetails);
 
     newLinkSheetRef?.current?.present();
   }, []);
+
+  const [{ value: bookmarks, loading }, fetchBookmarks] = useAsyncFn(
+    async () => {
+      const data = await BookmarksAPI.fetchAllBookmarks();
+      return data ?? [];
+    },
+    [],
+    { loading: true, value: [] },
+  );
+
+  useEffect(() => {
+    fetchBookmarks();
+  }, [fetchBookmarks]);
 
   React.useEffect(() => {
     ShareMenu.getInitialShare(handleShare);
@@ -114,21 +138,14 @@ export const HomeScreen = ({ navigation }: Props) => {
             style={styles.sortIcon}
           />
         </FiltersContainer>
-        {currentListDisplayType === 'grid' ? (
-          <GridList
-            data={localLinks}
-            loadingLinks={loadingLocalLinks}
-            onItemLongPress={presentEditLinkSheet}
-          />
-        ) : (
-          <RowList
-            data={localLinks}
-            loadingLinks={loadingLocalLinks}
-            onItemLongPress={presentEditLinkSheet}
-          />
-        )}
+        <MultiDisplayList
+          currentListDisplayType={currentListDisplayType}
+          data={bookmarks ?? EMPTY_ARRAY}
+          loadingLinks={loading ?? loadingLocalLinks}
+          onItemLongPress={presentEditLinkSheet}
+        />
       </ScreenContainer>
-      <ManualLinkSheet ref={manualLinkSheetRef} />
+      <ManualLinkSheet ref={manualLinkSheetRef} addBookmarkToList={() => {}} />
       {linkBeingEdited ? (
         <EditLinkSheet
           ref={editLinkSheetRef}
@@ -147,6 +164,7 @@ export const HomeScreen = ({ navigation }: Props) => {
 const ScreenContainer = styled.View`
   flex: 1;
   padding-top: 10px;
+  background-color: #fafbfc;
 `;
 
 const FiltersContainer = styled.View`
