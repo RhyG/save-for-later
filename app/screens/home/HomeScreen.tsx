@@ -1,30 +1,23 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { getLinkPreview } from 'link-preview-js';
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import React, { useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { TextInput as RNTextInput, StyleSheet } from 'react-native';
 import ShareMenu from 'react-native-share-menu';
 import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
 import styled, { useTheme } from 'styled-components/native';
 
-import { BookmarksAPI } from '@app/api/bookmarks';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
-import { EditLinkSheet } from '@app/components/sheets/EditBookmarkSheet';
+import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
+import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
+import { useBookmarks } from '@app/hooks/useBookmarks';
+import { useSheetRef } from '@app/hooks/useSheetRef';
 import { HomeStackParamList } from '@app/navigation/types';
 import { useLocalLinks } from '@app/store/localLinks';
 import { useUser5ettings } from '@app/store/userSettings';
 import { IBookmark } from '@app/types';
 
 import { AddLinkHeaderButton } from './components/AddLinkHeaderButton';
-import { ManualLinkSheet } from './components/ManualLinkSheet';
 import { NewLinkSheet } from './components/NewLinkSheet';
 import { SearchInput } from './components/SearchInput';
 
@@ -37,7 +30,7 @@ export const HomeScreen = ({ navigation }: Props) => {
 
   const loadingLocalLinks = useLocalLinks(state => state.loadingLocalLinks);
 
-  const [linkBeingEdited, setLinkBeingEdited] = useState<
+  const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<
     IBookmark | undefined
   >();
   const [loadingNewLinkDetails, setLoadingNewLinkDetails] = useState(false);
@@ -53,62 +46,55 @@ export const HomeScreen = ({ navigation }: Props) => {
   );
 
   const searchInputRef = useRef<RNTextInput>();
-  const manualLinkSheetRef = useRef<BottomSheetModal>(null);
-  const editLinkSheetRef = useRef<BottomSheetModal>(null);
-  const newLinkSheetRef = useRef<BottomSheetModal>(null);
+
+  const manualBookmarkSheet = useSheetRef();
+  const editBookmarkSheet = useSheetRef();
+  const newBookmarkSheet = useSheetRef();
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <AddLinkHeaderButton
-          onAddLinkButtonPress={() => manualLinkSheetRef?.current?.present()}
+          onAddLinkButtonPress={() => manualBookmarkSheet.present()}
         />
       ),
     });
-  }, [navigation]);
+  }, [navigation, manualBookmarkSheet]);
 
-  const presentEditLinkSheet = (item: IBookmark) => {
-    setLinkBeingEdited(item);
-    editLinkSheetRef?.current?.present();
+  const { isLoading, data: bookmarks } = useBookmarks();
+
+  const presentEditBookmarkSheet = (item: IBookmark) => {
+    setBookmarkBeingEdited(item);
+    editBookmarkSheet.present();
   };
 
-  const handleShare = React.useCallback(async (item: any) => {
-    if (!item) {
-      return;
-    }
+  const handleShare = React.useCallback(
+    async (item: any) => {
+      if (!item) {
+        return;
+      }
 
-    const { data } = item;
+      const { data } = item;
 
-    const sharedData = data[0]?.data ?? null;
+      const sharedData = data[0]?.data ?? null;
 
-    if (!sharedData) {
-      console.error('Error with share', data);
-      return;
-    }
+      if (!sharedData) {
+        console.error('Error with share', data);
+        return;
+      }
 
-    setLoadingNewLinkDetails(true);
+      setLoadingNewLinkDetails(true);
 
-    const newPreviewDetails = (await getLinkPreview(
-      sharedData,
-    )) as unknown as IBookmark;
+      const newPreviewDetails = (await getLinkPreview(
+        sharedData,
+      )) as unknown as IBookmark;
 
-    setNewLinkDetails(newPreviewDetails);
+      setNewLinkDetails(newPreviewDetails);
 
-    newLinkSheetRef?.current?.present();
-  }, []);
-
-  const [{ value: bookmarks, loading }, fetchBookmarks] = useAsyncFn(
-    async () => {
-      const data = await BookmarksAPI.fetchAllBookmarks();
-      return data ?? [];
+      newBookmarkSheet.present();
     },
-    [],
-    { loading: true, value: [] },
+    [newBookmarkSheet],
   );
-
-  useEffect(() => {
-    fetchBookmarks();
-  }, [fetchBookmarks]);
 
   React.useEffect(() => {
     ShareMenu.getInitialShare(handleShare);
@@ -141,19 +127,22 @@ export const HomeScreen = ({ navigation }: Props) => {
         <MultiDisplayList
           currentListDisplayType={currentListDisplayType}
           data={bookmarks ?? EMPTY_ARRAY}
-          loadingLinks={loading ?? loadingLocalLinks}
-          onItemLongPress={presentEditLinkSheet}
+          loadingBookmarks={isLoading ?? loadingLocalLinks}
+          onItemLongPress={presentEditBookmarkSheet}
         />
       </ScreenContainer>
-      <ManualLinkSheet ref={manualLinkSheetRef} addBookmarkToList={() => {}} />
-      {linkBeingEdited ? (
-        <EditLinkSheet
-          ref={editLinkSheetRef}
-          linkBeingEdited={linkBeingEdited}
+      <ManualBookmarkSheet
+        ref={manualBookmarkSheet.sheetRef}
+        addBookmarkToList={() => {}}
+      />
+      {bookmarkBeingEdited ? (
+        <EditBookmarkSheet
+          ref={editBookmarkSheet.sheetRef}
+          bookmarkBeingEdited={bookmarkBeingEdited}
         />
       ) : null}
       <NewLinkSheet
-        ref={newLinkSheetRef}
+        ref={newBookmarkSheet.sheetRef}
         linkDetails={newLinkDetails}
         loadingLinkDetails={loadingNewLinkDetails}
       />
