@@ -9,6 +9,8 @@ interface ICollectionAPI {
     icon: string,
     user_id: string,
   ) => Promise<ICollection>;
+  updateCollectionName: (id: string, newName: string) => Promise<ICollection>;
+  updateCollectionIcon: (id: string, newIcon: string) => Promise<ICollection>;
 }
 
 export const CollectionAPI: ICollectionAPI = {
@@ -59,6 +61,42 @@ export const CollectionAPI: ICollectionAPI = {
 
     if (error) {
       throw new Error(`Error adding collection - ${error.message}`);
+    }
+
+    const newCollection = data[0];
+
+    if (!newCollection) {
+      throw new Error('Collection not created.');
+    }
+
+    return newCollection;
+  },
+  updateCollectionName: async (id: string, newName: string) => {
+    const { error, data } = await supabase
+      .from<ICollection>('collections')
+      .update({ name: newName })
+      .eq('id', id);
+
+    if (error) {
+      throw new Error(`Error updating collection name - ${error.message}`);
+    }
+
+    const newCollection = data[0];
+
+    if (!newCollection) {
+      throw new Error('Collection not created.');
+    }
+
+    return newCollection;
+  },
+  updateCollectionIcon: async (id: string, newIcon: string) => {
+    const { error, data } = await supabase
+      .from<ICollection>('collections')
+      .update({ icon: newIcon })
+      .eq('id', id);
+
+    if (error) {
+      throw new Error(`Error updating collection name - ${error.message}`);
     }
 
     const newCollection = data[0];
