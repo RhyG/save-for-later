@@ -9,41 +9,34 @@ type Props = {
   name: string;
   bookmarkCount: number;
   id: string;
+  icon: string;
 };
 
-const getRandomColour = () => {
-  const blue = '#c9d3ff';
-  const yellow = '#fef9e0';
-  const red = '#fbdbe6';
-  const purple = '#bfbde1';
-
-  const coloursList = [blue, yellow, red, purple];
-
-  const randomColour = Math.floor(
-    Math.random() * (coloursList.length - 1 - 0 + 1) + 0,
-  );
-
-  return coloursList[randomColour];
+const getFormattedBookmarkCount = (count: number) => {
+  const hasBookmarks = count > 0;
+  return hasBookmarks ? `${count} bookmark${count > 1 ? 's' : ''}` : 'Empty';
 };
 
-export const Collection = ({ name, bookmarkCount, id }: Props) => {
+export const Collection = ({ name, bookmarkCount, id, icon }: Props) => {
   const navigation = useNavigation<CollectionScreenNavigationProp>();
 
   const { colours } = useTheme();
 
   const onCollectionPress = () => {
-    navigation.navigate('Collection', { collectionId: id });
+    navigation.navigate('Collection', { id, name });
   };
 
   return (
     <CollectionContainer onPress={onCollectionPress}>
-      <CollectionIcon style={{ backgroundColor: getRandomColour() }} />
+      <IconContainer>
+        <Text fontSize="lg">{icon}</Text>
+      </IconContainer>
       <TextContainer>
         <Text marginTop={0.5} fontSize="lg">
           {name}
         </Text>
-        <Text color={colours.grey200} fontSize="sm" bold>
-          {bookmarkCount > 0 ? `${bookmarkCount} bookmarks` : 'Empty'}
+        <Text color={colours.grey200} fontSize="sm" bold marginTop={0.5}>
+          {getFormattedBookmarkCount(bookmarkCount)}
         </Text>
       </TextContainer>
     </CollectionContainer>
@@ -57,15 +50,23 @@ const CollectionContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   border-width: 2px;
-  border-color: ${({ theme }) => theme.colours.grey000};
+  /* border-color: ${({ theme }) => theme.colours.grey000}; */
+  border-color: #eef1f5;
+  background-color: #fff;
 `;
 
-const CollectionIcon = styled.View`
+const IconContainer = styled.View`
   height: 40px;
   width: 40px;
   border-radius: 50px;
+  /* background-color: ${({ theme }) => theme.colours.grey000}; */
+  /* background-color: ${({ theme }) => theme.colours.grey000}; */
+  align-items: center;
+  justify-content: center;
+  border-color: #ebf0f3;
+  /* border-width: 2px; */
 `;
 
 const TextContainer = styled.View`
-  margin-left: 20px;
+  margin-left: 5px;
 `;

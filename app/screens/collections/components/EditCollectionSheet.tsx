@@ -1,5 +1,6 @@
 import {
   BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetTextInput,
 } from '@gorhom/bottom-sheet';
@@ -13,18 +14,32 @@ import styled, { useTheme } from 'styled-components/native';
 import { Text } from '@app/components/Text';
 
 type Props = {
-  addCollection: (name: string, collectionIcon: string) => void;
+  updateCollection: ({
+    newName,
+    newIcon,
+  }: {
+    newName?: string;
+    newIcon?: string;
+  }) => void;
+  collectionName: string;
+  collectionIcon: string;
 };
 
 const bottomSheetStyle = { zIndex: 2 };
 
-export const AddCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
-  ({ addCollection }, ref) => {
+/* Renders the darkened backdrop behind the sheet */
+const renderBackdrop = (props: BottomSheetBackdropProps) => (
+  <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />
+);
+
+export const EditCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
+  ({ updateCollection, collectionName, collectionIcon }, ref) => {
     const { colours } = useTheme();
     const { bottom: bottomInset } = useSafeAreaInsets();
 
-    const [inputValue, setInputValue] = useState('');
-    const [collectionIcon, setCollectionIcon] = useState<string>('');
+    // TODO try a ref for the collection name value
+    const [nameInputValue, setNameInputValue] = useState(collectionName);
+    const [icon, setIcon] = useState<string>(collectionIcon);
 
     const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
@@ -37,24 +52,12 @@ export const AddCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
       return [snapPoint];
     }, [bottomInset]);
 
-    /* Renders the darkened backdrop behind the sheet */
-    const renderBackdrop = useCallback(
-      props => (
-        <BottomSheetBackdrop
-          {...props}
-          disappearsOnIndex={-1}
-          appearsOnIndex={1}
-        />
-      ),
-      [],
-    );
-
-    const onAddCollectionButtonPress = () => {
-      addCollection(inputValue, collectionIcon);
+    const onUpdateCollectionButtonPress = () => {
+      updateCollection({ newName: nameInputValue, newIcon: icon });
     };
 
     const handlePick = (emoji: EmojiType) => {
-      setCollectionIcon(emoji.emoji);
+      setIcon(emoji.emoji);
     };
 
     return (
@@ -70,19 +73,20 @@ export const AddCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
             <InputContainer isFocused={false}>
               <TextInput
                 placeholder="Collection name"
-                onChangeText={setInputValue}
+                defaultValue={collectionName}
+                onChangeText={setNameInputValue}
                 // @ts-ignore this type is gross, not sure how to fix
                 ref={collectionNameInputRef}
                 placeholderTextColor={colours.grey100}
               />
             </InputContainer>
-            <AddCollectionButton onPress={onAddCollectionButtonPress}>
-              <Text color={colours.grey300}>Add collection</Text>
+            <AddCollectionButton onPress={onUpdateCollectionButtonPress}>
+              <Text color={colours.grey300}>Update collection</Text>
             </AddCollectionButton>
             <AddCollectionButton onPress={() => setEmojiPickerOpen(true)}>
               <Text color={colours.grey300}>Pick icon</Text>
             </AddCollectionButton>
-            <Text>{collectionIcon}</Text>
+            <Text>{icon}</Text>
           </SheetContainer>
         </BottomSheetModal>
         <EmojiPicker

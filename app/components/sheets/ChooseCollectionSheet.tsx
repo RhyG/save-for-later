@@ -30,9 +30,6 @@ const keyExtractor = (collection: ICollection) => collection.id;
 
 export const ChooseCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
   ({ bookmarkId }, ref) => {
-    // const { bottom: bottomInset } = useSafeAreaInsets();
-    // const { colours } = useTheme();
-
     const { data } = useCollections();
 
     const [selectedCollections, setSelectedCollections] = useState<string[]>(
@@ -55,11 +52,14 @@ export const ChooseCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
       );
 
       for await (const collection of collectionsToUpdate) {
-        const { id, bookmarks } = collection;
+        const { id, bookmarks, bookmark_count } = collection;
 
         const { data, error } = await supabase
           .from('collections')
-          .update({ bookmarks: [...bookmarks, bookmarkId] })
+          .update({
+            bookmarks: [...bookmarks, bookmarkId],
+            bookmark_count: bookmark_count + 1,
+          })
           .eq('id', id);
 
         console.log({ data, error });
