@@ -1,15 +1,17 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useCallback, useMemo, useRef } from 'react';
 
+const noop = () => {};
+
 export const useSheetRef = () => {
-  const sheetRef = useRef<BottomSheetModal>();
+  const sheetRef = useRef<BottomSheetModal | null>(null);
 
   const present = useCallback(() => {
-    sheetRef.current?.present();
+    sheetRef.current?.present() ?? noop();
   }, []);
 
   const dismiss = useCallback(() => {
-    sheetRef.current?.dismiss();
+    sheetRef.current?.dismiss() ?? noop();
   }, []);
 
   // Return value is memoised to ensure they are memory safe when required as a dependency.

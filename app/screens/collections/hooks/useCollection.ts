@@ -13,18 +13,20 @@ type UseCollectionValue = {
   bookmarks: IBookmark[];
   errorFetchingBookmarks: string | null;
   loadingBookmarks: boolean;
+  fetchCollection: () => void;
 };
 
 /**
  * Returns collection details
  * @param id {string} Collection ID
- * @returns {UseQueryResult<ICollection, string>} the collection
+ * @returns {UseCollectionValue} collection data and bookmarks for the collection.
  */
 export const useCollection = (id: string): UseCollectionValue => {
   const {
     data: collectionInformation,
     error: errorFetchingCollection,
     isLoading: loadingCollection,
+    refetch: fetchCollection,
   } = useQuery<ICollection, string>(['collection', id], () =>
     CollectionAPI.fetchCollectionDetails(id),
   );
@@ -44,5 +46,6 @@ export const useCollection = (id: string): UseCollectionValue => {
     bookmarks,
     errorFetchingBookmarks,
     loadingBookmarks,
+    fetchCollection,
   };
 };
