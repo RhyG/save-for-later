@@ -1,9 +1,5 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-} from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo } from 'react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import React, { useMemo } from 'react';
 import { Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,27 +8,23 @@ import Icon from 'react-native-vector-icons/Feather';
 import styled, { useTheme } from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
-import { supabase } from '@app/lib/supabase';
+import { useSheetRef } from '@app/hooks/useSheetRef';
 import { IBookmark } from '@app/types';
 
+import { BottomSheet } from './BottomSheet';
 import { ChooseCollectionSheet } from './ChooseCollectionSheet';
 
 type Props = {
   bookmarkBeingEdited: IBookmark;
+  deleteBookmark: (id: string) => Promise<void>;
 };
 
-const bottomSheetStyle = { zIndex: 2 };
-
-const Backdrop = (props: BottomSheetBackdropProps) => (
-  <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />
-);
-
 export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
-  ({ bookmarkBeingEdited }, ref) => {
+  ({ bookmarkBeingEdited, deleteBookmark }, ref) => {
     const { bottom: bottomInset } = useSafeAreaInsets();
     const { colours } = useTheme();
 
-    const chooseCollectionRef = React.useRef();
+    const chooseCollectionRef = useSheetRef();
 
     const {
       title,
@@ -42,10 +34,8 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
       description,
     } = bookmarkBeingEdited;
 
-    /* Renders the darkened backdrop behind the sheet */
-
-    const deleteLink = () => {
-      // @ts-ignore types are hard
+    const onDeleteButtonPress = () => {
+      deleteBookmark(bookmarkId);
       ref?.current?.dismiss();
     };
 
@@ -65,101 +55,75 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
       return [`${snapPointAdjustedForInset}%`];
     }, [bottomInset, preview_image]);
 
-    const tempOnPress = async () => {
-      const { data, error } = await supabase
-        .from('collections')
-        .update({ bookmarks: [bookmarkId] })
-        .eq('id', 'e1988eb5-9e76-4428-be63-757708413349');
-
-      console.log({ data, error });
-    };
-
     return (
       <>
-        <BottomSheetModal
-          index={0}
-          snapPoints={snapPoints}
-          ref={ref}
-          enablePanDownToClose={true}
-          style={bottomSheetStyle}
-          backdropComponent={Backdrop}>
-          <SheetContainer>
-            <LinkDetailsContainer>
-              <Text fontSize="lg" bold numberOfLines={2}>
-                {title ?? 'Oops!'}
+        <BottomSheet ref={ref} sheetTitle={title} customSnapPoints={snapPoints}>
+          <LinkDetailsContainer>
+            <TouchableOpacity onPress={() => Linking.openURL(url)}>
+              <Text fontSize="md" secondary numberOfLines={1}>
+                {url}
               </Text>
-              <TouchableOpacity onPress={() => Linking.openURL(url)}>
-                <Text marginTop={1} fontSize="md" secondary numberOfLines={1}>
-                  {url}
-                </Text>
-              </TouchableOpacity>
-              <Text marginTop={2} fontSize="md" secondary numberOfLines={4}>
-                {description}
-              </Text>
+            </TouchableOpacity>
+            <Text marginTop={2} fontSize="md" secondary numberOfLines={4}>
+              {description}
+            </Text>
 
-              <BottomRowContainer>
-                <BottomRowGroup>
-                  <TouchableOpacity
-                    onPress={() => chooseCollectionRef?.current?.present()}>
-                    <Icon
-                      name="folder-plus"
-                      color={colours.purple100}
-                      size={28}
-                    />
-                  </TouchableOpacity>
-                </BottomRowGroup>
-                <BottomRowGroup>
-                  <SelectContainer onPress={tempOnPress}>
-                    <Text color={colours.purple100} bold>
-                      SELECT
-                    </Text>
-                  </SelectContainer>
-                  <TouchableOpacity onPress={deleteLink}>
-                    <Icon
-                      name="trash-2"
-                      color={colours.red}
-                      size={25}
-                      style={{ marginLeft: 'auto' }}
-                    />
-                  </TouchableOpacity>
-                </BottomRowGroup>
-              </BottomRowContainer>
-            </LinkDetailsContainer>
-            {preview_image ? (
-              <ImageContainer>
-                {isSVG ? (
-                  <SvgUri
-                    uri="https://reactnavigation.org/img/spiro.svg"
-                    width="100%"
-                    height="100%"
+            <BottomRowContainer>
+              <BottomRowGroup>
+                <TouchableOpacity onPress={() => chooseCollectionRef.present()}>
+                  <Icon
+                    name="folder-plus"
+                    color={colours.purple100}
+                    size={28}
                   />
-                ) : (
-                  // <SvgXml xml={xml} width="100%" height="100%" />
-                  <PreviewImage
-                    source={{
-                      uri: preview_image,
-                    }}
-                    accessibilityRole="image"
-                    resizeMode="cover"
+                </TouchableOpacity>
+              </BottomRowGroup>
+              <BottomRowGroup>
+                <SelectContainer onPress={() => {}}>
+                  <Text color={colours.purple100} bold>
+                    SELECT
+                  </Text>
+                </SelectContainer>
+                <TouchableOpacity onPress={onDeleteButtonPress}>
+                  <Icon
+                    name="trash-2"
+                    color={colours.red}
+                    size={25}
+                    style={{ marginLeft: 'auto' }}
                   />
-                )}
-              </ImageContainer>
-            ) : null}
-          </SheetContainer>
-        </BottomSheetModal>
+                </TouchableOpacity>
+              </BottomRowGroup>
+            </BottomRowContainer>
+          </LinkDetailsContainer>
+          {preview_image ? (
+            <ImageContainer>
+              {isSVG ? (
+                <SvgUri
+                  uri="https://reactnavigation.org/img/spiro.svg"
+                  width="100%"
+                  height="100%"
+                />
+              ) : (
+                // <SvgXml xml={xml} width="100%" height="100%" />
+                <PreviewImage
+                  source={{
+                    uri: preview_image,
+                  }}
+                  accessibilityRole="image"
+                  resizeMode="cover"
+                />
+              )}
+            </ImageContainer>
+          ) : null}
+        </BottomSheet>
         <ChooseCollectionSheet
-          ref={chooseCollectionRef}
+          ref={chooseCollectionRef.sheetRef}
           bookmarkId={bookmarkId}
         />
       </>
     );
   },
 );
-
-const SheetContainer = styled.View`
-  padding: 10px 20px 30px 20px;
-  flex: 1;
-`;
 
 const BottomRowContainer = styled.View`
   margin-top: auto;
@@ -188,8 +152,7 @@ const SelectContainer = styled.TouchableOpacity`
 `;
 
 const ImageContainer = styled.View`
-  flex: 1.5;
-  height: 40px;
+  flex: 2;
   margin-top: 10px;
 `;
 

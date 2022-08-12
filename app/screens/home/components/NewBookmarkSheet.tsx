@@ -1,14 +1,10 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-} from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import React from 'react';
 import shortid from 'shortid';
 import styled, { useTheme } from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
+import { BottomSheet } from '@app/components/sheets/BottomSheet';
 import { useLocalLinks } from '@app/store/localLinks';
 
 type Props = {
@@ -16,33 +12,11 @@ type Props = {
   loadingLinkDetails: boolean;
 };
 
-const bottomSheetStyle = { zIndex: 2 };
-
-export const NewLinkSheet = React.forwardRef<BottomSheetModal, Props>(
+export const NewBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
   ({ linkDetails, loadingLinkDetails }, ref) => {
     const { colours } = useTheme();
-    const { bottom: bottomInset } = useSafeAreaInsets();
 
     const addLink = useLocalLinks(state => state.addLink);
-
-    /* The bottom sheet is slightly higher on phones with a bottom bar */
-    const snapPoints = useMemo(() => {
-      const snapPoint = bottomInset > 0 ? '45%' : '48%';
-
-      return [snapPoint];
-    }, [bottomInset]);
-
-    /* Renders the darkened backdrop behind the sheet */
-    const renderBackdrop = useCallback(
-      (props: BottomSheetBackdropProps) => (
-        <BottomSheetBackdrop
-          {...props}
-          disappearsOnIndex={-1}
-          appearsOnIndex={1}
-        />
-      ),
-      [],
-    );
 
     const onAddLinkButtonPress = () => {
       if (linkDetails) {
@@ -52,13 +26,7 @@ export const NewLinkSheet = React.forwardRef<BottomSheetModal, Props>(
     };
 
     return (
-      <BottomSheetModal
-        index={0}
-        snapPoints={snapPoints}
-        ref={ref}
-        enablePanDownToClose={true}
-        style={bottomSheetStyle}
-        backdropComponent={renderBackdrop}>
+      <BottomSheet ref={ref} sheetTitle="New bookmark">
         <SheetContainer>
           {linkDetails ? (
             <>
@@ -71,7 +39,7 @@ export const NewLinkSheet = React.forwardRef<BottomSheetModal, Props>(
             <Text color={colours.grey300}>ADD LINK</Text>
           </AddLinkButton>
         </SheetContainer>
-      </BottomSheetModal>
+      </BottomSheet>
     );
   },
 );

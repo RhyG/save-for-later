@@ -18,7 +18,7 @@ import { useUser5ettings } from '@app/store/userSettings';
 import { IBookmark } from '@app/types';
 
 import { AddLinkHeaderButton } from './components/AddLinkHeaderButton';
-import { NewLinkSheet } from './components/NewLinkSheet';
+import { NewBookmarkSheet } from './components/NewBookmarkSheet';
 import { SearchInput } from './components/SearchInput';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'> & {};
@@ -61,7 +61,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     });
   }, [navigation, manualBookmarkSheet]);
 
-  const { isLoading, data: bookmarks } = useBookmarks();
+  const { isLoading, data: bookmarks, deleteBookmark } = useBookmarks();
 
   const presentEditBookmarkSheet = (item: IBookmark) => {
     setBookmarkBeingEdited(item);
@@ -139,9 +139,10 @@ export const HomeScreen = ({ navigation }: Props) => {
         <EditBookmarkSheet
           ref={editBookmarkSheet.sheetRef}
           bookmarkBeingEdited={bookmarkBeingEdited}
+          deleteBookmark={deleteBookmark}
         />
       ) : null}
-      <NewLinkSheet
+      <NewBookmarkSheet
         ref={newBookmarkSheet.sheetRef}
         linkDetails={newLinkDetails}
         loadingLinkDetails={loadingNewLinkDetails}
