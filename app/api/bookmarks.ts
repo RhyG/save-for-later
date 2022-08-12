@@ -5,6 +5,8 @@ interface IBookmarksAPI {
   fetchAllBookmarks: () => Promise<IBookmark[]>;
   fetchBookmarkByID: (id: string) => Promise<IBookmark>;
   fetchBookmarksByCollection: (collectionId: string) => Promise<IBookmark[]>;
+  deleteBookmark: (id: string) => Promise<void>;
+  addBookmark: (bookmark: IBookmark) => Promise<IBookmark>;
 }
 
 export const BookmarksAPI: IBookmarksAPI = {
@@ -55,5 +57,33 @@ export const BookmarksAPI: IBookmarksAPI = {
     );
 
     return bookmarks;
+  },
+  deleteBookmark: async (id: string) => {
+    const { error } = await supabase.from('bookmarks').delete().eq('id', id);
+
+    if (error) {
+      throw new Error(
+        `Error deleting bookmark with ID: ${id} - ${error.message}`,
+      );
+    }
+  },
+  addBookmark: async (bookmark: IBookmark) => {
+    const { data, error } = await supabase
+      .from<IBookmark>('bookmarks')
+      .insert([bookmark]);
+
+    if (error) {
+      throw new Error(
+        `Error adding bookmark with ID: ${bookmark.id} - ${error.message}`,
+      );
+    }
+
+    const newBookmark = data[0];
+
+    if (!newBookmark) {
+      throw new Error('No bookmark returned from insert.');
+    }
+
+    return newBookmark;
   },
 };

@@ -1,15 +1,3 @@
-export type Bookmark = {
-  url: string;
-  collections: collection[];
-  id: string;
-  userID: string;
-  title: string;
-  description: string;
-  previewImage?: string;
-  userTitle?: string;
-  numberOfOpens: number;
-};
-
 export interface IBookmark {
   url: string;
   collections: collection[];
@@ -22,11 +10,12 @@ export interface IBookmark {
   number_of_opens: number;
 }
 
-export type Collection = {
+export interface ICollection {
   id: string;
-  createdAt: string;
+  created_at: string;
   bookmarks: string[];
-  bookmarkCount: number;
+  bookmark_count: number;
   name: string;
-  userID: string;
-};
+  user_id: string;
+  icon: string;
+}
