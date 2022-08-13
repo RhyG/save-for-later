@@ -62,4 +62,7 @@ const SettingsRowContainer = styled.View`
   padding: 20px;
   flex-direction: row;
   border-radius: 10px;
+  border-color: #ebf0f3;
+  /* border-color: ${({ theme }) => theme.colours.grey100}; */
+  border-width: 2px;
 `;

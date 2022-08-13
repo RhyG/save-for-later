@@ -2,9 +2,9 @@ import create from 'zustand';
 
 import AsyncStorage from '@app/modules/AsyncStorage';
 
-export type DisplayType = 'grid' | 'list';
+export type DisplayType = 'grid' | 'row';
 
-export type SettingsKeys = 'darkMode' | 'defaultHomeToList';
+export type SettingsKeys = 'darkMode' | 'defaultHomeToRow';
 
 export type SettingsValueTypes = boolean;
 
@@ -15,7 +15,7 @@ interface ISettingsState {
 
 const DEFAULT_SETTINGS = {
   darkMode: false,
-  defaultHomeToList: false,
+  defaultHomeToRow: false,
 };
 
 export const useUser5ettings = create<ISettingsState>(set => ({

@@ -12,7 +12,7 @@ import { SettingsRow } from './components/SettingsRow';
 // type Props = NativeStackScreenProps<SettingsStackParamList, 'Settings'> & {};
 
 export const SettingsScreen = () => {
-  const { darkMode, defaultHomeToList } = useUser5ettings(
+  const { darkMode, defaultHomeToRow } = useUser5ettings(
     state => state.settings,
   );
   const updateSetting = useUser5ettings(state => state.updateSetting);
@@ -25,7 +25,7 @@ export const SettingsScreen = () => {
   );
 
   return (
-    <Container>
+    <Container scrollEnabled={false}>
       <SettingsRow
         title="Dark mode"
         subtitle="Have you ever wanted to look so far as to go when you be how do like more?"
@@ -34,11 +34,11 @@ export const SettingsScreen = () => {
         settingsKey="darkMode"
       />
       <SettingsRow
-        title="Default home layout to list"
-        subtitle="Default the home bookmark list to show as a list."
-        value={defaultHomeToList}
+        title="Default home layout to row"
+        subtitle="Default the home bookmark list to show rows."
+        value={defaultHomeToRow}
         onToggle={toggleSetting}
-        settingsKey="defaultHomeToList"
+        settingsKey="defaultHomeToRow"
       />
     </Container>
   );
@@ -46,6 +46,6 @@ export const SettingsScreen = () => {
 
 const Container = styled.ScrollView`
   flex: 1;
-  background-color: #edeef7;
-  padding: 20px;
+  background-color: #fafbfc;
+  padding: 10px;
 `;

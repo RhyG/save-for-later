@@ -3,7 +3,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import styled, { useTheme } from 'styled-components/native';
 
-export type DisplayType = 'grid' | 'list';
+export type DisplayType = 'grid' | 'row';
 
 type Props = {
   currentDisplayType: DisplayType;
@@ -20,7 +20,7 @@ export const ListDisplayToggleButton = ({
 
   return (
     <>
-      {currentDisplayType === 'list' ? (
+      {currentDisplayType === 'row' ? (
         <ButtonContainer onPress={() => onToggleDisplayTypePress('grid')}>
           <FeatherIcon
             name="grid"
@@ -30,7 +30,7 @@ export const ListDisplayToggleButton = ({
           />
         </ButtonContainer>
       ) : (
-        <ButtonContainer onPress={() => onToggleDisplayTypePress('list')}>
+        <ButtonContainer onPress={() => onToggleDisplayTypePress('row')}>
           <EntypoIcon
             name="list"
             color={colours.grey400}
