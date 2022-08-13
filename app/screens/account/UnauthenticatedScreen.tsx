@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useReducer, useRef, useState } from 'react';
 import { Alert, TextInput as RNTextInput } from 'react-native';
 
 import { AccountAPI } from '@app/api/account';
@@ -9,45 +9,45 @@ import { TextInput } from '@app/components/TextInput';
 import { MAXIMUM_UNAUTHENTICATED_BOOKMARKS } from '@app/config/constants';
 import { validateEmail as _validateEmail } from '@app/lib/validation';
 
+import { CodeInput } from './components/CodeInput';
 import { SubmitButton } from './components/SubmitButton';
-
-// type Props = NativeStackScreenProps<AccountStackParamList, 'Account'> & {};
-
-type FormState = 'email' | 'code';
 
 export const UnauthenticatedScreen = () => {
   const [emailInputValue, setEmailInputValue] = useState('');
-  const [OTP, setOTP] = useState('');
-  const [formState, setFormState] = useState<FormState>('email');
+  const [submitting, setSubmitting] = useState(false);
+
   const emailInputRef = useRef<RNTextInput>();
 
-  const submitEmail = async () => {
-    try {
-      const user = await AccountAPI.signIn(emailInputValue);
+  const [formState, toggleFormState] = useReducer(() => 'code', 'email');
 
-      if (user) {
-        console.log('HERE', user);
-        setFormState('code');
-      }
+  const submitEmail = async () => {
+    setSubmitting(true);
+    try {
+      await AccountAPI.signIn(emailInputValue);
+
+      toggleFormState();
     } catch (error) {
       Alert.alert('Error signing in.');
     }
+    setSubmitting(false);
   };
 
   const validateEmail = () => {
-    const isValid = _validateEmail(emailInputRef?.current?.value);
-    console.log({ isValid });
+    // const isValid = _validateEmail(emailInputRef?.current?.value);
+    // console.log({ isValid });
   };
 
-  const submitOTP = async () => {
+  const submitOTP = async (code: string) => {
+    setSubmitting(true);
     // TODO manually set the session in the store here rather than in an effect
     try {
-      const res = await AccountAPI.submitOTP(emailInputValue, OTP);
+      const res = await AccountAPI.submitOTP(emailInputValue, code);
       console.log(res);
     } catch (error) {
       console.log(error);
       Alert.alert('Error submitting OTP.');
     }
+    setSubmitting(false);
   };
 
   return (
@@ -63,14 +63,13 @@ export const UnauthenticatedScreen = () => {
               autoCapitalize="none"
               // @ts-ignore
               ref={emailInputRef}
+              keyboardType="email-address"
+              editable={!submitting}
             />
-            <SubmitButton onPress={submitEmail} />
+            <SubmitButton onPress={submitEmail} submitting={submitting} />
           </>
         ) : (
-          <>
-            <TextInput placeholder="Code" onChangeText={setOTP} value={OTP} />
-            <SubmitButton onPress={submitOTP} />
-          </>
+          <CodeInput submitCode={submitOTP} submitting={submitting} />
         )}
 
         <Text>

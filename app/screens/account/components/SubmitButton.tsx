@@ -5,11 +5,12 @@ import { Text } from '@app/components/Text';
 
 type Props = {
   onPress: () => void;
+  submitting: boolean;
 };
 
-export const SubmitButton = ({ onPress }: Props) => {
+export const SubmitButton = ({ onPress, submitting }: Props) => {
   return (
-    <StyledSubmitButton onPress={onPress}>
+    <StyledSubmitButton onPress={onPress} disabled={submitting}>
       <Text fontSize="md" color="#fff" bold>
         SUBMIT
       </Text>
@@ -17,8 +18,9 @@ export const SubmitButton = ({ onPress }: Props) => {
   );
 };
 
-const StyledSubmitButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colours.purple100};
+const StyledSubmitButton = styled.TouchableOpacity<{ disabled: boolean }>`
+  background-color: ${({ disabled, theme }) =>
+    disabled ? theme.colours.grey300 : theme.colours.purple100};
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 15px;
   align-items: center;
