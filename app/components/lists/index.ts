@@ -6,3 +6,5 @@ export * from './grid-list/GridListTile';
 
 export * from './ListEmptyComponent';
 export * from './LoadingComponent';
+
+export * from './ListDisplayToggleButton';

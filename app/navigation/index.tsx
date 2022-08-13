@@ -7,6 +7,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
 import { useTheme } from 'styled-components/native';
 
+import { Text } from '@app/components/Text';
 import { AccountScreen } from '@app/screens/account';
 import { CollectionsScreen } from '@app/screens/collections';
 import { CollectionScreen } from '@app/screens/collections';
@@ -24,7 +25,7 @@ import {
 const screenOptions = {
   contentStyle: { backgroundColor: '#fff' },
   headerStyle: { backgroundColor: '#fff' },
-  headerShadowVisible: false,
+  // headerShadowVisible: false,
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -100,7 +101,13 @@ export default function App() {
           name="HomeTab"
           component={HomeStackScreen}
           options={() => ({
-            tabBarLabel: () => null,
+            tabBarLabel: ({ focused }) =>
+              // <Text
+              //   color={focused ? colours.purple100 : colours.grey300}
+              //   fontSize="xs">
+              //   Home
+              // </Text>
+              null,
             tabBarIcon: ({ focused }) => (
               <OcticonsIcon
                 name="home"
@@ -114,7 +121,13 @@ export default function App() {
           name="CollectionsTab"
           component={CollectionsStackScreen}
           options={() => ({
-            tabBarLabel: () => null,
+            tabBarLabel: ({ focused }) =>
+              // <Text
+              //   color={focused ? colours.purple100 : colours.grey300}
+              //   fontSize="xs">
+              //   Home
+              // </Text>
+              null,
             tabBarIcon: ({ focused }) => (
               <FeatherIcon
                 name="folder"
@@ -128,7 +141,13 @@ export default function App() {
           name="AccountTab"
           component={AccountStackScreen}
           options={() => ({
-            tabBarLabel: () => null,
+            tabBarLabel: ({ focused }) =>
+              // <Text
+              //   color={focused ? colours.purple100 : colours.grey300}
+              //   fontSize="xs">
+              //   Home
+              // </Text>
+              null,
             tabBarIcon: ({ focused }) => (
               <FeatherIcon
                 name="user"
@@ -142,7 +161,13 @@ export default function App() {
           name="SettingsTab"
           component={SettingsStackScreen}
           options={() => ({
-            tabBarLabel: () => null,
+            tabBarLabel: ({ focused }) =>
+              // <Text
+              //   color={focused ? colours.purple100 : colours.grey300}
+              //   fontSize="xs">
+              //   Home
+              // </Text>
+              null,
             tabBarIcon: ({ focused }) => (
               <IonIcon
                 name="settings-outline"

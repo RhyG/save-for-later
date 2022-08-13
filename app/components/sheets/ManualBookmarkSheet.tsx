@@ -65,7 +65,7 @@ export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
     };
 
     return (
-      <BottomSheet sheetTitle="Manual Bookmark" ref={ref}>
+      <BottomSheet sheetTitle="Add a bookmark" ref={ref}>
         <InputContainer isFocused={false}>
           <TextInput
             placeholder="URL"
@@ -73,6 +73,7 @@ export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
             // @ts-ignore this type is gross, not sure how to fix
             ref={urlInputRef}
             placeholderTextColor={colours.grey100}
+            autoComplete="off"
           />
         </InputContainer>
         {previewDetails ? (

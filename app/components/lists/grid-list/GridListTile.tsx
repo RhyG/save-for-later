@@ -1,10 +1,9 @@
 import React from 'react';
 import { Dimensions, Linking } from 'react-native';
-import { SvgUri, SvgXml } from 'react-native-svg';
+import { SvgUri } from 'react-native-svg';
 import styled, { useTheme } from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
-import { ILink } from '@app/models';
 import { IBookmark } from '@app/types';
 
 const { width } = Dimensions.get('window');

@@ -35,7 +35,7 @@ export const AccountScreen = ({ navigation }: Props) => {
 };
 
 const ScreenContainer = styled.View`
-  flex: 2;
+  flex: 1;
   background-color: ${({ theme }) => theme.colours.purple100};
 `;
 

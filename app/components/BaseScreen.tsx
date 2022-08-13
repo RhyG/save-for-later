@@ -14,4 +14,5 @@ export const BaseScreen = ({ children, noPadding }: Props): JSX.Element => {
 const BaseScreenContainer = styled.View<{ noPadding?: boolean }>`
   flex: 1;
   padding: ${props => (props.noPadding ? 0 : 10)}px;
+  background-color: #f9fcff;
 `;
