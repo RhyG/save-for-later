@@ -1,7 +1,11 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useLayoutEffect, useRef } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import {
+  FlatList,
+  ListRenderItem,
+  RefreshControl as RNRefreshControl,
+} from 'react-native';
 
 import { CollectionAPI } from '@app/api/collections';
 import { BaseScreen } from '@app/components/BaseScreen';
@@ -35,7 +39,7 @@ export const CollectionsScreen = ({ navigation }: Props) => {
 
   const addCollectionSheetRef = useRef<BottomSheetModal>(null);
 
-  const { data: collections, loading } = useCollections();
+  const { data: collections, isLoading, refetch } = useCollections();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -57,9 +61,19 @@ export const CollectionsScreen = ({ navigation }: Props) => {
     }
   };
 
+  const RefreshControl = useMemo(
+    () => <RNRefreshControl refreshing={isLoading} onRefresh={refetch} />,
+    [isLoading, refetch],
+  );
+
   return (
     <BaseScreen>
-      <FlatList data={collections} renderItem={renderCollection} />
+      <FlatList
+        data={collections}
+        renderItem={renderCollection}
+        refreshing={isLoading}
+        refreshControl={RefreshControl}
+      />
       <AddCollectionSheet
         ref={addCollectionSheetRef}
         addCollection={onAddCollection}

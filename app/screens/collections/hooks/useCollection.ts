@@ -14,6 +14,8 @@ type UseCollectionValue = {
   errorFetchingBookmarks: string | null;
   loadingBookmarks: boolean;
   fetchCollection: () => void;
+  fetchBookmarks: () => void;
+  removeBookmarkFromCollection: (id: string) => Promise<void>;
 };
 
 /**
@@ -35,9 +37,17 @@ export const useCollection = (id: string): UseCollectionValue => {
     data: bookmarks = EMPTY_ARRAY,
     error: errorFetchingBookmarks,
     isLoading: loadingBookmarks,
+    refetch: fetchBookmarks,
   } = useQuery<IBookmark[], string>(['collection-bookmarks', id], () =>
     BookmarksAPI.fetchBookmarksByCollection(id),
   );
+
+  const removeBookmarkFromCollection = async (bookmarkId: string) => {
+    await CollectionAPI.removeBookmarkFromCollection(
+      collectionInformation?.id ?? '',
+      bookmarkId,
+    );
+  };
 
   return {
     collectionInformation,
@@ -47,5 +57,7 @@ export const useCollection = (id: string): UseCollectionValue => {
     errorFetchingBookmarks,
     loadingBookmarks,
     fetchCollection,
+    fetchBookmarks,
+    removeBookmarkFromCollection,
   };
 };

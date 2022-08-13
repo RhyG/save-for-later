@@ -2,6 +2,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useReducer, useState } from 'react';
 import styled from 'styled-components/native';
 
+import { BookmarksAPI } from '@app/api/bookmarks';
 import { CollectionAPI } from '@app/api/collections';
 import { BaseScreen } from '@app/components/BaseScreen';
 import { Text } from '@app/components/Text';
@@ -38,6 +39,8 @@ export const CollectionScreen = ({ route }: Props) => {
     bookmarks,
     loadingBookmarks,
     fetchCollection,
+    fetchBookmarks,
+    removeBookmarkFromCollection,
   } = useCollection(collectionId);
 
   const [currentListDisplayType, toggleListDisplayType] = useReducer(
@@ -74,6 +77,22 @@ export const CollectionScreen = ({ route }: Props) => {
     fetchCollection();
   };
 
+  const deleteBookmark = async (id: string) => {
+    await BookmarksAPI.deleteBookmark(id);
+    fetchCollection();
+  };
+
+  const onRemoveFromCollectionPress = async (bookmarkId: string) => {
+    try {
+      await removeBookmarkFromCollection(bookmarkId);
+
+      fetchBookmarks();
+      editBookmarkSheet.dismiss();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <BaseScreen noPadding>
@@ -107,6 +126,9 @@ export const CollectionScreen = ({ route }: Props) => {
         <EditBookmarkSheet
           ref={editBookmarkSheet.sheetRef}
           bookmarkBeingEdited={bookmarkBeingEdited}
+          bookmarkInCollection={true}
+          deleteBookmark={deleteBookmark}
+          removeBookmarkFromCollection={onRemoveFromCollectionPress}
         />
       ) : null}
     </>

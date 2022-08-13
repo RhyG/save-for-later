@@ -6,7 +6,7 @@ import { HeaderAddButton } from '@app/components/HeaderAddButton';
 
 export const useHeaderAddButton = (
   onAddButtonPress: () => void,
-  additionalOptions: Record<string, unknown>,
+  additionalOptions?: Record<string, unknown>,
 ) => {
   const navigation = useNavigation();
 

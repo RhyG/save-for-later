@@ -14,13 +14,28 @@ import { IBookmark } from '@app/types';
 import { BottomSheet } from './BottomSheet';
 import { ChooseCollectionSheet } from './ChooseCollectionSheet';
 
-type Props = {
+type CommonProps = {
   bookmarkBeingEdited: IBookmark;
   deleteBookmark: (id: string) => Promise<void>;
 };
 
+type ConditionalProps = {
+  bookmarkInCollection: boolean;
+  removeBookmarkFromCollection: (id: string) => Promise<void>;
+};
+
+type Props = CommonProps & ConditionalProps;
+
 export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
-  ({ bookmarkBeingEdited, deleteBookmark }, ref) => {
+  (
+    {
+      bookmarkBeingEdited,
+      deleteBookmark,
+      bookmarkInCollection,
+      removeBookmarkFromCollection,
+    },
+    ref,
+  ) => {
     const { bottom: bottomInset } = useSafeAreaInsets();
     const { colours } = useTheme();
 
@@ -70,9 +85,16 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
 
             <BottomRowContainer>
               <BottomRowGroup>
-                <TouchableOpacity onPress={() => chooseCollectionRef.present()}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (bookmarkInCollection) {
+                      removeBookmarkFromCollection(bookmarkId);
+                    } else {
+                      chooseCollectionRef?.present();
+                    }
+                  }}>
                   <Icon
-                    name="folder-plus"
+                    name={bookmarkInCollection ? 'folder-minus' : 'folder-plus'}
                     color={colours.purple100}
                     size={28}
                   />

@@ -11,6 +11,10 @@ interface ICollectionAPI {
   ) => Promise<ICollection>;
   updateCollectionName: (id: string, newName: string) => Promise<ICollection>;
   updateCollectionIcon: (id: string, newIcon: string) => Promise<ICollection>;
+  removeBookmarkFromCollection: (
+    collectionId: string,
+    bookmarkId: string,
+  ) => Promise<void>;
 }
 
 export const CollectionAPI: ICollectionAPI = {
@@ -106,5 +110,27 @@ export const CollectionAPI: ICollectionAPI = {
     }
 
     return newCollection;
+  },
+  removeBookmarkFromCollection: async (
+    collectionId: string,
+    bookmarkId: string,
+  ) => {
+    const collectionToUpdate = await CollectionAPI.fetchCollectionDetails(
+      collectionId,
+    );
+
+    const updatedBookmarks = collectionToUpdate.bookmarks.filter(
+      id => id !== bookmarkId,
+    );
+
+    const { data, error } = await supabase
+      .from('collections')
+      .update({
+        bookmarks: updatedBookmarks,
+        bookmark_count: updatedBookmarks.length,
+      })
+      .eq('id', collectionId);
+
+    console.log('HERE:', data, error);
   },
 };
