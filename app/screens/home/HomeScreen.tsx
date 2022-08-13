@@ -1,6 +1,5 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { getLinkPreview } from 'link-preview-js';
-import React, { useLayoutEffect, useReducer, useRef, useState } from 'react';
+import React, { useReducer, useRef, useState } from 'react';
 import { TextInput as RNTextInput, StyleSheet } from 'react-native';
 import ShareMenu from 'react-native-share-menu';
 import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
@@ -11,21 +10,20 @@ import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useBookmarks } from '@app/hooks/useBookmarks';
+import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
 import { useSheetRef } from '@app/hooks/useSheetRef';
-import { HomeStackParamList } from '@app/navigation/types';
 import { useLocalLinks } from '@app/store/localLinks';
 import { useUser5ettings } from '@app/store/userSettings';
 import { IBookmark } from '@app/types';
 
-import { AddLinkHeaderButton } from './components/AddLinkHeaderButton';
 import { NewBookmarkSheet } from './components/NewBookmarkSheet';
 import { SearchInput } from './components/SearchInput';
 
-type Props = NativeStackScreenProps<HomeStackParamList, 'Home'> & {};
+// type Props = NativeStackScreenProps<HomeStackParamList, 'Home'> & {};
 
 const EMPTY_ARRAY: IBookmark[] = [];
 
-export const HomeScreen = ({ navigation }: Props) => {
+export const HomeScreen = () => {
   const { colours } = useTheme();
 
   const loadingLocalLinks = useLocalLinks(state => state.loadingLocalLinks);
@@ -36,13 +34,13 @@ export const HomeScreen = ({ navigation }: Props) => {
   const [loadingNewLinkDetails, setLoadingNewLinkDetails] = useState(false);
   const [newLinkDetails, setNewLinkDetails] = useState<IBookmark | undefined>();
 
-  const defaultHomeToList = useUser5ettings(
-    state => state.settings.defaultHomeToList,
+  const defaultHomeToRow = useUser5ettings(
+    state => state.settings.defaultHomeToRow,
   );
 
   const [currentListDisplayType, toggleListDisplayType] = useReducer(
     (_: DisplayType, action: DisplayType) => action,
-    defaultHomeToList ? 'list' : 'grid',
+    defaultHomeToRow ? 'row' : 'grid',
   );
 
   const searchInputRef = useRef<RNTextInput>();
@@ -51,15 +49,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   const editBookmarkSheet = useSheetRef();
   const newBookmarkSheet = useSheetRef();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <AddLinkHeaderButton
-          onAddLinkButtonPress={() => manualBookmarkSheet.present()}
-        />
-      ),
-    });
-  }, [navigation, manualBookmarkSheet]);
+  useHeaderAddButton(() => manualBookmarkSheet.present());
 
   const { isLoading, data: bookmarks, deleteBookmark } = useBookmarks();
 

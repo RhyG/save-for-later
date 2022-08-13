@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useLayoutEffect, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import styled from 'styled-components/native';
 
 import { CollectionAPI } from '@app/api/collections';
@@ -8,13 +8,13 @@ import { Text } from '@app/components/Text';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
+import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { CollectionsStackParamList } from '@app/navigation/types';
 import { IBookmark } from '@app/types';
 
 import { EditCollectionButton } from './components/EditCollectionButton';
 import { EditCollectionSheet } from './components/EditCollectionSheet';
-import { HeaderAddButton } from './components/HeaderAddButton';
 import { useCollection } from './hooks/useCollection';
 
 type Props = NativeStackScreenProps<
@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps<
   'Collection'
 > & {};
 
-export const CollectionScreen = ({ route, navigation }: Props) => {
+export const CollectionScreen = ({ route }: Props) => {
   const collectionId = route.params.id;
   const collectionName = route.params.name;
 
@@ -45,18 +45,11 @@ export const CollectionScreen = ({ route, navigation }: Props) => {
     'grid',
   );
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: collectionInformation?.name ?? collectionName ?? '',
-      // TODO disable button when loading or no collection info
-      headerRight: () => (
-        <HeaderAddButton onAddButtonPress={() => console.log('first')} />
-      ),
-    });
-  }, [navigation, collectionName, collectionInformation, editCollectionSheet]); // TODO figure out how to only add collection name and avoid object as dependency
+  useHeaderAddButton(() => console.log('first'), {
+    headerTitle: collectionInformation?.name ?? collectionName ?? '',
+  });
 
   const presentEditBookmarkSheet = (item: IBookmark) => {
-    console.log({ item });
     setBookmarkBeingEdited(item);
     editBookmarkSheet.present();
   };
@@ -86,9 +79,6 @@ export const CollectionScreen = ({ route, navigation }: Props) => {
       <BaseScreen noPadding>
         <Header>
           <Text fontSize="xxl">{collectionInformation?.icon ?? ''}</Text>
-          {/* <Text fontSize="lg" marginLeft={2}>
-          {collectionInformation?.name ?? ''}
-        </Text> */}
           <BookmarkCountPill>
             <Text bold>{bookmarks?.length ?? ''}</Text>
           </BookmarkCountPill>
