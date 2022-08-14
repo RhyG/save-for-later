@@ -19,6 +19,7 @@ interface ICollectionAPI {
     collectionId: string,
     bookmarkId: string,
   ) => Promise<void>;
+  deleteCollection: (collectionId: string) => Promise<void>;
 }
 
 export const CollectionAPI: ICollectionAPI = {
@@ -150,8 +151,6 @@ export const CollectionAPI: ICollectionAPI = {
 
     const updatedBookmarks = [...bookmarks, bookmarkId];
 
-    console.log({ collectionId, bookmarkId, updatedBookmarks });
-
     await supabase
       .from('collections')
       .update({
@@ -159,5 +158,15 @@ export const CollectionAPI: ICollectionAPI = {
         bookmark_count: bookmark_count + 1,
       })
       .eq('id', collectionId);
+  },
+  deleteCollection: async (collectionId: string) => {
+    const { error } = await supabase
+      .from('collections')
+      .delete()
+      .eq('id', collectionId);
+
+    if (error) {
+      throw new Error(`Error deleting collection - ${error.message}`);
+    }
   },
 };

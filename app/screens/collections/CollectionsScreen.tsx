@@ -1,7 +1,6 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
+  Alert,
   FlatList,
   ListRenderItem,
   RefreshControl as RNRefreshControl,
@@ -10,56 +9,78 @@ import {
 import { CollectionAPI } from '@app/api/collections';
 import { BaseScreen } from '@app/components/BaseScreen';
 import { useCollections } from '@app/hooks/useCollections';
-import { CollectionsStackParamList } from '@app/navigation/types';
+import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
+import { useSheetRef } from '@app/hooks/useSheetRef';
 import { useAuth } from '@app/store/auth';
 import { ICollection } from '@app/types';
 
 import { AddCollectionSheet } from './components/AddCollectionSheet';
 import { Collection } from './components/Collection';
-import { HeaderAddButton } from './components/HeaderAddButton';
 
-type Props = NativeStackScreenProps<
-  CollectionsStackParamList,
-  'Collections'
-> & {};
+// type Props = NativeStackScreenProps<
+//   CollectionsStackParamList,
+//   'Collections'
+// > & {};
 
-const renderCollection: ListRenderItem<ICollection> = ({ item }) => {
-  return (
-    <Collection
-      name={item.name}
-      bookmarkCount={item.bookmark_count}
-      id={item.id}
-      icon={item.icon}
-    />
-  );
-};
-
-export const CollectionsScreen = ({ navigation }: Props) => {
+export const CollectionsScreen = () => {
   const session = useAuth(state => state.session);
 
-  const addCollectionSheetRef = useRef<BottomSheetModal>(null);
+  const addCollectionSheetRef = useSheetRef();
 
   const { data: collections, isLoading, refetch } = useCollections();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderAddButton
-          onAddButtonPress={() => addCollectionSheetRef?.current?.present()}
-        />
-      ),
-    });
-  }, [navigation]);
+  useHeaderAddButton(() => addCollectionSheetRef?.present());
 
   const onAddCollection = async (name: string, icon: string) => {
     try {
       await CollectionAPI.addCollection(name, icon, session?.user?.id ?? '');
 
-      addCollectionSheetRef?.current?.dismiss();
+      addCollectionSheetRef?.dismiss();
+      refetch();
     } catch (error) {
       console.error(error);
     }
   };
+
+  const onItemLongPress = useCallback(
+    async (id: string) => {
+      try {
+        Alert.alert(
+          'Delete collection?',
+          'This will permanently delete the collection.',
+          [
+            {
+              text: 'Delete',
+              onPress: async () => {
+                await CollectionAPI.deleteCollection(id);
+                refetch();
+              },
+              style: 'destructive',
+            },
+            { text: 'Cancel', style: 'cancel' },
+          ],
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [refetch],
+  );
+
+  const renderCollection: ListRenderItem<ICollection> = useCallback(
+    ({ item }) => {
+      return (
+        <Collection
+          name={item.name}
+          bookmarkCount={item.bookmark_count}
+          id={item.id}
+          icon={item.icon}
+          onItemLongPress={onItemLongPress}
+        />
+      );
+    },
+    [onItemLongPress],
+  );
 
   const RefreshControl = useMemo(
     () => <RNRefreshControl refreshing={isLoading} onRefresh={refetch} />,
@@ -75,7 +96,7 @@ export const CollectionsScreen = ({ navigation }: Props) => {
         refreshControl={RefreshControl}
       />
       <AddCollectionSheet
-        ref={addCollectionSheetRef}
+        ref={addCollectionSheetRef.sheetRef}
         addCollection={onAddCollection}
       />
     </BaseScreen>
