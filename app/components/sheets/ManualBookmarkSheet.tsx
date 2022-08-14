@@ -6,14 +6,13 @@ import styled, { useTheme } from 'styled-components/native';
 
 import { Text } from '@app/components/Text';
 import { generateBookmarkWithPreviewDetails } from '@app/lib/bookmarks';
-import { supabase } from '@app/lib/supabase';
 import { useAuth } from '@app/store/auth';
 import { IBookmark } from '@app/types';
 
 import { BottomSheet } from './BottomSheet';
 
 type Props = {
-  addBookmarkToList: (bookmark: IBookmark) => void;
+  addBookmarkToList: (bookmark: Omit<IBookmark, 'id'>) => void;
 };
 
 export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
@@ -49,17 +48,7 @@ export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
         );
 
         if (newBookmark) {
-          try {
-            const { data, error } = await supabase
-              .from('bookmarks')
-              .insert([{ ...newBookmark }]);
-
-            console.log('CREATED', { data, error });
-            const savedBookmark = data[0];
-            addBookmarkToList({ ...savedBookmark });
-          } catch (error) {
-            console.log({ error });
-          }
+          addBookmarkToList({ ...newBookmark });
         }
       }
     };
