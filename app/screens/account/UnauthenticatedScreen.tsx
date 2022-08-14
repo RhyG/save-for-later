@@ -51,38 +51,36 @@ export const UnauthenticatedScreen = () => {
   };
 
   return (
-    <BaseScreen>
-      <DismissKeyboardWrapper>
-        {formState === 'email' ? (
-          <>
-            <TextInput
-              placeholder="Email address"
-              onBlur={validateEmail}
-              onChangeText={setEmailInputValue}
-              value={emailInputValue}
-              autoCapitalize="none"
-              // @ts-ignore
-              ref={emailInputRef}
-              keyboardType="email-address"
-              editable={!submitting}
-            />
-            <SubmitButton onPress={submitEmail} submitting={submitting} />
-          </>
-        ) : (
-          <CodeInput submitCode={submitOTP} submitting={submitting} />
-        )}
+    <DismissKeyboardWrapper>
+      {formState === 'email' ? (
+        <>
+          <TextInput
+            placeholder="Email address"
+            onBlur={validateEmail}
+            onChangeText={setEmailInputValue}
+            value={emailInputValue}
+            autoCapitalize="none"
+            // @ts-ignore
+            ref={emailInputRef}
+            keyboardType="email-address"
+            editable={!submitting}
+          />
+          <SubmitButton onPress={submitEmail} submitting={submitting} />
+        </>
+      ) : (
+        <CodeInput submitCode={submitOTP} submitting={submitting} />
+      )}
 
-        <Text>
-          Due to the small amount of data an app can store on a phone, the
-          number of bookmarks you can save without an account is limited to{' '}
-          {MAXIMUM_UNAUTHENTICATED_BOOKMARKS}.
-        </Text>
-        <Text marginTop={2}>
-          To create an account, we just need an email so we can tell who owns
-          what bookmarks. From there you can create as many bookmarks and
-          collections as you like.
-        </Text>
-      </DismissKeyboardWrapper>
-    </BaseScreen>
+      <Text>
+        Due to the small amount of data an app can store on a phone, the number
+        of bookmarks you can save without an account is limited to{' '}
+        {MAXIMUM_UNAUTHENTICATED_BOOKMARKS}.
+      </Text>
+      <Text marginTop={2}>
+        To create an account, we just need an email so we can tell who owns what
+        bookmarks. From there you can create as many bookmarks and collections
+        as you like.
+      </Text>
+    </DismissKeyboardWrapper>
   );
 };

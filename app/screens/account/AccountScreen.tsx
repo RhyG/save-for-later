@@ -23,8 +23,11 @@ export const AccountScreen = ({ navigation }: Props) => {
   return (
     <ScreenContainer>
       <HeaderContainer>
-        <Text fontSize="md" color="#fff" bold>
-          Welcome!
+        <Text marginTop={3} fontSize="xxl" color="#fff" bold>
+          Welcome{session ? ' back' : ''}!
+        </Text>
+        <Text marginTop={2} fontSize="xxxl">
+          👋
         </Text>
       </HeaderContainer>
       <Sheet>
@@ -40,10 +43,11 @@ const ScreenContainer = styled.View`
 `;
 
 const Sheet = styled.View`
-  background-color: #fff;
   flex: 2;
+  background-color: #fff;
   border-top-left-radius: ${({ theme }) => theme.borderRadius};
   border-top-right-radius: ${({ theme }) => theme.borderRadius};
+  padding: 10px;
 `;
 
 const HeaderContainer = styled.View`
