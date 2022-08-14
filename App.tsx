@@ -9,19 +9,16 @@ import { supabase } from '@app/lib/supabase';
 import AsyncStorage from '@app/modules/AsyncStorage';
 import Navigator from '@app/navigation/index';
 import { useAuth } from '@app/store/auth';
-import { useLocalLinks } from '@app/store/localLinks';
-import { IBookmark } from '@app/types';
+import { DEFAULT_SETTINGS, useUser5ettings } from '@app/store/userSettings';
 
 // Fetch local links from storage on app mount
 (async () => {
-  const storedLinks = await AsyncStorage.getItem<{ links: IBookmark[] }>(
-    'links',
-    {
-      links: [],
-    },
+  const settings = await AsyncStorage.getItem<typeof DEFAULT_SETTINGS>(
+    'settings',
+    DEFAULT_SETTINGS,
   );
 
-  useLocalLinks.getState().setLocalLinks(storedLinks.links);
+  useUser5ettings.getState().updateSettings(settings);
 })();
 
 export default function App() {
@@ -30,8 +27,6 @@ export default function App() {
   useEffect(() => {
     // We love the sesh, so we get the sesh straight away.
     const sesh = supabase.auth.session();
-
-    console.log({ sesh });
 
     setSession(sesh);
 
