@@ -8,6 +8,7 @@ interface IAccountAPI {
     email: string,
     token: string,
   ) => Promise<{ user: User | null; session: Session | null } | null>;
+  signOut: () => Promise<void>;
 }
 
 // 1. Use signIn({ email: '' }) to send a code
@@ -35,5 +36,8 @@ export const AccountAPI: IAccountAPI = {
     }
 
     return { user, session };
+  },
+  signOut: async () => {
+    await supabase.auth.signOut();
   },
 };
