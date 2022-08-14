@@ -15,6 +15,10 @@ interface ICollectionAPI {
     collectionId: string,
     bookmarkId: string,
   ) => Promise<void>;
+  addBookmarkToCollection: (
+    collectionId: string,
+    bookmarkId: string,
+  ) => Promise<void>;
 }
 
 export const CollectionAPI: ICollectionAPI = {
@@ -119,11 +123,15 @@ export const CollectionAPI: ICollectionAPI = {
       collectionId,
     );
 
+    if (!collectionToUpdate) {
+      throw new Error('Collection not found');
+    }
+
     const updatedBookmarks = collectionToUpdate.bookmarks.filter(
       id => id !== bookmarkId,
     );
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('collections')
       .update({
         bookmarks: updatedBookmarks,
@@ -131,6 +139,25 @@ export const CollectionAPI: ICollectionAPI = {
       })
       .eq('id', collectionId);
 
-    console.log('HERE:', data, error);
+    if (error) {
+      throw new Error(`Error removing bookmark from collection - ${error}`);
+    }
+  },
+  addBookmarkToCollection: async (collectionId: string, bookmarkId: string) => {
+    const collection = await CollectionAPI.fetchCollectionDetails(collectionId);
+
+    const { bookmarks, bookmark_count } = collection;
+
+    const updatedBookmarks = [...bookmarks, bookmarkId];
+
+    console.log({ collectionId, bookmarkId, updatedBookmarks });
+
+    await supabase
+      .from('collections')
+      .update({
+        bookmarks: updatedBookmarks,
+        bookmark_count: bookmark_count + 1,
+      })
+      .eq('id', collectionId);
   },
 };

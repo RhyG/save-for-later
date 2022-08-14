@@ -6,7 +6,7 @@ interface IBookmarksAPI {
   fetchBookmarkByID: (id: string) => Promise<IBookmark>;
   fetchBookmarksByCollection: (collectionId: string) => Promise<IBookmark[]>;
   deleteBookmark: (id: string) => Promise<void>;
-  addBookmark: (bookmark: IBookmark) => Promise<IBookmark>;
+  addBookmark: (bookmark: Omit<IBookmark, 'id'>) => Promise<IBookmark>;
 }
 
 export const BookmarksAPI: IBookmarksAPI = {
@@ -67,15 +67,13 @@ export const BookmarksAPI: IBookmarksAPI = {
       );
     }
   },
-  addBookmark: async (bookmark: IBookmark) => {
+  addBookmark: async (bookmark: Omit<IBookmark, 'id'>) => {
     const { data, error } = await supabase
       .from<IBookmark>('bookmarks')
       .insert([bookmark]);
 
     if (error) {
-      throw new Error(
-        `Error adding bookmark with ID: ${bookmark.id} - ${error.message}`,
-      );
+      throw new Error(`Error adding bookmark - ${error.message}`);
     }
 
     const newBookmark = data[0];
