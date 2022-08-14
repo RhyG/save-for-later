@@ -9,6 +9,7 @@ import { Text } from '@app/components/Text';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
+import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { CollectionsStackParamList } from '@app/navigation/types';
@@ -29,6 +30,7 @@ export const CollectionScreen = ({ route }: Props) => {
 
   const editCollectionSheet = useSheetRef();
   const editBookmarkSheet = useSheetRef();
+  const manualBookmarkSheet = useSheetRef();
 
   const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<
     IBookmark | undefined
@@ -48,7 +50,7 @@ export const CollectionScreen = ({ route }: Props) => {
     'grid',
   );
 
-  useHeaderAddButton(() => console.log('first'), {
+  useHeaderAddButton(() => manualBookmarkSheet.present(), {
     headerTitle: collectionInformation?.name ?? collectionName ?? '',
   });
 
@@ -93,6 +95,24 @@ export const CollectionScreen = ({ route }: Props) => {
     }
   };
 
+  const addBookmark = async (bookmark: Omit<IBookmark, 'id'>) => {
+    try {
+      // Save the bookmark
+      const savedBookmark = await BookmarksAPI.addBookmark(bookmark);
+
+      // Add the bookmark to the collection
+      await CollectionAPI.addBookmarkToCollection(
+        collectionId,
+        savedBookmark.id,
+      );
+
+      fetchCollection();
+      manualBookmarkSheet.dismiss();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <BaseScreen noPadding>
@@ -131,6 +151,10 @@ export const CollectionScreen = ({ route }: Props) => {
           removeBookmarkFromCollection={onRemoveFromCollectionPress}
         />
       ) : null}
+      <ManualBookmarkSheet
+        ref={manualBookmarkSheet.sheetRef}
+        addBookmarkToList={addBookmark}
+      />
     </>
   );
 };

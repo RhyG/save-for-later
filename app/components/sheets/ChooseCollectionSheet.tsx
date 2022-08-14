@@ -1,12 +1,12 @@
 import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useMemo, useState } from 'react';
 import { ListRenderItem } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
+import { CollectionAPI } from '@app/api/collections';
 import { Text } from '@app/components/Text';
 import { useCollections } from '@app/hooks/useCollections';
-import { supabase } from '@app/lib/supabase';
 import { ICollection } from '@app/types';
 
 import { BottomSheet } from './BottomSheet';
@@ -40,28 +40,25 @@ export const ChooseCollectionSheet = forwardRef<BottomSheetModal, Props>(
         selectedCollections.includes(coll.id),
       );
 
-      for await (const collection of collectionsToUpdate) {
-        const { id, bookmarks, bookmark_count } = collection;
-
-        const { data, error } = await supabase
-          .from('collections')
-          .update({
-            bookmarks: [...bookmarks, bookmarkId],
-            bookmark_count: bookmark_count + 1,
-          })
-          .eq('id', id);
-
-        console.log({ data, error });
+      for await (const { id } of collectionsToUpdate) {
+        await CollectionAPI.addBookmarkToCollection(id, bookmarkId);
       }
 
       setSelectedCollections([]);
       ref?.current?.dismiss?.();
     };
 
+    // Omit any collections that already contain the bookmark from the list
+    const filteredCollections = useMemo(() => {
+      return collections?.filter(
+        collection => !collection.bookmarks.includes(bookmarkId),
+      );
+    }, [collections, bookmarkId]);
+
     return (
       <BottomSheet ref={ref} sheetTitle="Choose collection">
         <BottomSheetFlatList
-          data={collections}
+          data={filteredCollections}
           renderItem={renderCollection}
           keyExtractor={keyExtractor}
         />
