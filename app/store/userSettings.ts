@@ -10,22 +10,27 @@ export type SettingsValueTypes = boolean;
 
 interface ISettingsState {
   settings: { [key in SettingsKeys]: SettingsValueTypes };
+  updateSettings: (settings: {
+    [key in SettingsKeys]: SettingsValueTypes;
+  }) => void;
   updateSetting: (settingKey: SettingsKeys, value: SettingsValueTypes) => void;
 }
 
-const DEFAULT_SETTINGS = {
+export const DEFAULT_SETTINGS = {
   darkMode: false,
   defaultHomeToRow: false,
 };
 
 export const useUser5ettings = create<ISettingsState>(set => ({
   settings: DEFAULT_SETTINGS,
+  updateSettings: (settings: { [key in SettingsKeys]: SettingsValueTypes }) => {
+    set(() => ({ settings }));
+  },
   updateSetting: async (
     settingKey: SettingsKeys,
     value: SettingsValueTypes,
   ) => {
     set(({ settings }) => {
-      console.log(settingKey, value);
       const newSettings = {
         ...settings,
         [settingKey]: value,
