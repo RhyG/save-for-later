@@ -51,7 +51,12 @@ export const HomeScreen = () => {
 
   useHeaderAddButton(() => manualBookmarkSheet.present());
 
-  const { isLoading, data: bookmarks, deleteBookmark } = useBookmarks();
+  const {
+    isLoading,
+    data: bookmarks,
+    deleteBookmark,
+    refetch,
+  } = useBookmarks();
 
   const presentEditBookmarkSheet = (item: IBookmark) => {
     setBookmarkBeingEdited(item);
@@ -86,17 +91,17 @@ export const HomeScreen = () => {
     [newBookmarkSheet],
   );
 
-  React.useEffect(() => {
-    ShareMenu.getInitialShare(handleShare);
-  }, [handleShare]);
+  // React.useEffect(() => {
+  //   ShareMenu.getInitialShare(handleShare);
+  // }, [handleShare]);
 
-  React.useEffect(() => {
-    const listener = ShareMenu.addNewShareListener(handleShare);
+  // React.useEffect(() => {
+  //   const listener = ShareMenu.addNewShareListener(handleShare);
 
-    return () => {
-      listener.remove();
-    };
-  }, [handleShare]);
+  //   return () => {
+  //     listener.remove();
+  //   };
+  // }, [handleShare]);
 
   return (
     <>
@@ -119,6 +124,7 @@ export const HomeScreen = () => {
           data={bookmarks ?? EMPTY_ARRAY}
           loadingBookmarks={isLoading ?? loadingLocalLinks}
           onItemLongPress={presentEditBookmarkSheet}
+          refreshList={refetch}
         />
       </ScreenContainer>
       <ManualBookmarkSheet

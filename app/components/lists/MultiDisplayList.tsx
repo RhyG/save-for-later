@@ -9,7 +9,8 @@ import { RowList } from './row-list/RowList';
 export type ListProps = {
   data: IBookmark[];
   loadingBookmarks: boolean;
-  onItemLongPress?: (item: IBookmark) => void;
+  onItemLongPress: (item: IBookmark) => void;
+  refreshList: () => void;
 };
 
 type Props = {
