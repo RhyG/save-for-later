@@ -1,12 +1,16 @@
 import { getLinkPreview } from 'link-preview-js';
 import React, { useReducer, useRef, useState } from 'react';
-import { TextInput as RNTextInput, StyleSheet } from 'react-native';
+import { TextInput as RNTextInput } from 'react-native';
 import ShareMenu from 'react-native-share-menu';
-import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
 import styled, { useTheme } from 'styled-components/native';
 
+import { BookmarksAPI } from '@app/api/bookmarks';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
+import {
+  SortListButton,
+  SortMethod,
+} from '@app/components/lists/SortListButton';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useBookmarks } from '@app/hooks/useBookmarks';
@@ -31,8 +35,12 @@ export const HomeScreen = () => {
   const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<
     IBookmark | undefined
   >();
-  const [loadingNewLinkDetails, setLoadingNewLinkDetails] = useState(false);
-  const [newLinkDetails, setNewLinkDetails] = useState<IBookmark | undefined>();
+  const [loadingNewBookmarkDetails, setLoadingNewBookmarkDetails] =
+    useState(false);
+  const [newBookmarkDetails, setNewBookmarkDetails] = useState<
+    IBookmark | undefined
+  >();
+  const [sortBy, setSortBy] = useState<SortMethod>('newest');
 
   const defaultHomeToRow = useUser5ettings(
     state => state.settings.defaultHomeToRow,
@@ -78,13 +86,13 @@ export const HomeScreen = () => {
         return;
       }
 
-      setLoadingNewLinkDetails(true);
+      setLoadingNewBookmarkDetails(true);
 
       const newPreviewDetails = (await getLinkPreview(
         sharedData,
       )) as unknown as IBookmark;
 
-      setNewLinkDetails(newPreviewDetails);
+      setNewBookmarkDetails(newPreviewDetails);
 
       newBookmarkSheet.present();
     },
@@ -103,6 +111,26 @@ export const HomeScreen = () => {
   //   };
   // }, [handleShare]);
 
+  const filteredBookmarks = React.useMemo(() => {
+    return bookmarks?.sort((a, b) => {
+      // const dateA = new Date(a.created_at);
+      // const dateB = new Date(b.created_at);
+
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+  }, [bookmarks]);
+
+  const addNewBookmark = async (bookmark: IBookmark) => {
+    try {
+      await BookmarksAPI.addBookmark(bookmark);
+      refetch();
+      manualBookmarkSheet.dismiss();
+    } catch (error) {
+      // TODO update with more graceful errors when implemented
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <ScreenContainer>
@@ -112,16 +140,11 @@ export const HomeScreen = () => {
             currentDisplayType={currentListDisplayType}
             onToggleDisplayTypePress={toggleListDisplayType}
           />
-          <MaterialIconsIcon
-            name="sort"
-            color={colours.grey400}
-            size={25}
-            style={styles.sortIcon}
-          />
+          <SortListButton onSortMethodPress={setSortBy} />
         </FiltersContainer>
         <MultiDisplayList
           currentListDisplayType={currentListDisplayType}
-          data={bookmarks ?? EMPTY_ARRAY}
+          data={filteredBookmarks ?? EMPTY_ARRAY}
           loadingBookmarks={isLoading ?? loadingLocalLinks}
           onItemLongPress={presentEditBookmarkSheet}
           refreshList={refetch}
@@ -129,7 +152,7 @@ export const HomeScreen = () => {
       </ScreenContainer>
       <ManualBookmarkSheet
         ref={manualBookmarkSheet.sheetRef}
-        addBookmarkToList={() => {}}
+        addNewBookmark={addNewBookmark}
       />
       {bookmarkBeingEdited ? (
         <EditBookmarkSheet
@@ -140,8 +163,8 @@ export const HomeScreen = () => {
       ) : null}
       <NewBookmarkSheet
         ref={newBookmarkSheet.sheetRef}
-        linkDetails={newLinkDetails}
-        loadingLinkDetails={loadingNewLinkDetails}
+        linkDetails={newBookmarkDetails}
+        loadingLinkDetails={loadingNewBookmarkDetails}
       />
     </>
   );
@@ -150,7 +173,7 @@ export const HomeScreen = () => {
 const ScreenContainer = styled.View`
   flex: 1;
   padding-top: 10px;
-  background-color: #fafbfc;
+  /* background-color: #fafbfc; */
 `;
 
 const FiltersContainer = styled.View`
@@ -160,7 +183,3 @@ const FiltersContainer = styled.View`
   padding-left: 10px;
   padding-right: 10px;
 `;
-
-const styles = StyleSheet.create({
-  sortIcon: { marginLeft: 10 },
-});
