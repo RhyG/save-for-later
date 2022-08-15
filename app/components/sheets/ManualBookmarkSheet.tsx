@@ -9,14 +9,15 @@ import { generateBookmarkWithPreviewDetails } from '@app/lib/bookmarks';
 import { useAuth } from '@app/store/auth';
 import { IBookmark } from '@app/types';
 
+import { Button } from '../buttons/Button';
 import { BottomSheet } from './BottomSheet';
 
 type Props = {
-  addBookmarkToList: (bookmark: Omit<IBookmark, 'id'>) => void;
+  addNewBookmark: (bookmark: Omit<IBookmark, 'id'>) => void;
 };
 
 export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
-  ({ addBookmarkToList }, ref) => {
+  ({ addNewBookmark }, ref) => {
     const { colours } = useTheme();
 
     const session = useAuth(state => state.session);
@@ -48,7 +49,7 @@ export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
         );
 
         if (newBookmark) {
-          addBookmarkToList({ ...newBookmark });
+          addNewBookmark({ ...newBookmark });
         }
       }
     };
@@ -57,12 +58,13 @@ export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
       <BottomSheet sheetTitle="Add a bookmark" ref={ref}>
         <InputContainer isFocused={false}>
           <TextInput
-            placeholder="URL"
+            placeholder="Bookmark URL"
             onChangeText={fetchPreviewDetails}
             // @ts-ignore this type is gross, not sure how to fix
             ref={urlInputRef}
             placeholderTextColor={colours.grey100}
             autoComplete="off"
+            autoCorrect={false}
           />
         </InputContainer>
         {previewDetails ? (
@@ -72,9 +74,11 @@ export const ManualBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
             <Text>{previewDetails?.description ?? ''}</Text>
           </>
         ) : null}
-        <AddLinkButton onPress={onAddLinkButtonPress}>
-          <Text color={colours.grey300}>ADD LINK</Text>
-        </AddLinkButton>
+        <Button
+          onPress={onAddLinkButtonPress}
+          title="Save bookmark"
+          containerStyle={buttonContainerStyle}
+        />
       </BottomSheet>
     );
   },
@@ -91,6 +95,4 @@ const TextInput = styled(BottomSheetTextInput)`
   padding: 10px;
 `;
 
-const AddLinkButton = styled.TouchableOpacity`
-  margin-top: 10px;
-`;
+const buttonContainerStyle = { marginTop: 'auto' };

@@ -174,7 +174,7 @@ const SelectContainer = styled.TouchableOpacity`
 `;
 
 const ImageContainer = styled.View`
-  flex: 2;
+  flex: 2.2;
   margin-top: 10px;
 `;
 

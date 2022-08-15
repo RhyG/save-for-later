@@ -10,7 +10,9 @@ type Props = { item: IBookmark; onItemLongPress: (item: IBookmark) => void };
 export const RowListItem = ({ item, onItemLongPress }: Props) => {
   const { title, description, url, preview_image } = item;
 
-  const isSVG = preview_image?.slice(-5).includes('.svg');
+  const isSVG =
+    preview_image?.slice(-5).includes('.svg') ||
+    preview_image?.includes('image/svg');
 
   const openLink = () => {
     Linking.openURL(url);
@@ -26,19 +28,21 @@ export const RowListItem = ({ item, onItemLongPress }: Props) => {
           {description}
         </Text>
       </TextContainer>
-      <ImageContainer>
-        {isSVG ? (
-          <TempImage />
-        ) : (
-          <PreviewImage
-            source={{
-              uri: preview_image,
-            }}
-            accessibilityRole="image"
-            resizeMode="cover"
-          />
-        )}
-      </ImageContainer>
+      {!!preview_image ? (
+        <ImageContainer>
+          {isSVG ? (
+            <TempImage />
+          ) : (
+            <PreviewImage
+              source={{
+                uri: preview_image,
+              }}
+              accessibilityRole="image"
+              resizeMode="cover"
+            />
+          )}
+        </ImageContainer>
+      ) : null}
     </RowContainer>
   );
 };

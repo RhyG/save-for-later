@@ -12,6 +12,7 @@ import { Text } from '@app/components/Text';
 type Props = React.PropsWithChildren<{
   sheetTitle?: string;
   customSnapPoints?: string[];
+  alignHeader?: 'auto' | 'left' | 'center' | 'right' | 'justify';
 }>;
 
 const bottomSheetStyle = { zIndex: 2 };
@@ -22,7 +23,7 @@ const Backdrop = (props: BottomSheetBackdropProps) => (
 );
 
 export const BottomSheet = React.forwardRef<BottomSheetModal, Props>(
-  ({ sheetTitle, customSnapPoints, children }, ref) => {
+  ({ sheetTitle, customSnapPoints, alignHeader, children }, ref) => {
     const { bottom: bottomInset } = useSafeAreaInsets();
 
     /* The bottom sheet is slightly higher on phones with a bottom bar */
@@ -46,7 +47,12 @@ export const BottomSheet = React.forwardRef<BottomSheetModal, Props>(
           backdropComponent={Backdrop}>
           <SheetContainer>
             {sheetTitle ? (
-              <Text fontSize="lg" bold numberOfLines={2} marginBottom={2}>
+              <Text
+                fontSize="lg"
+                bold
+                numberOfLines={2}
+                marginBottom={2}
+                align={alignHeader ?? 'left'}>
                 {sheetTitle}
               </Text>
             ) : null}

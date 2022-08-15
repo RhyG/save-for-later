@@ -8,6 +8,7 @@ export interface IBookmark {
   preview_image?: string;
   user_title?: string;
   number_of_opens: number;
+  created_at?: Date;
 }
 
 export interface ICollection {
