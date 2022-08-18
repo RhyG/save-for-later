@@ -9,13 +9,7 @@ import { Button } from '@app/components/buttons/Button';
 import { BottomSheet } from '@app/components/sheets/BottomSheet';
 
 type Props = {
-  updateCollection: ({
-    newName,
-    newIcon,
-  }: {
-    newName?: string;
-    newIcon?: string;
-  }) => void;
+  updateCollection: ({ newName, newIcon }: { newName?: string; newIcon?: string }) => void;
   collectionName: string;
   collectionIcon: string;
 };
@@ -44,10 +38,7 @@ export const EditCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
 
     return (
       <>
-        <BottomSheet
-          sheetTitle={`Update ${collectionName}`}
-          ref={ref}
-          customSnapPoints={customSnapPoints}>
+        <BottomSheet sheetTitle={`Update ${collectionName}`} ref={ref} customSnapPoints={customSnapPoints}>
           <InputContainer isFocused={false}>
             <TextInput
               placeholder="Collection name"
@@ -67,11 +58,7 @@ export const EditCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
             containerStyle={{ marginTop: 'auto' }}
           />
         </BottomSheet>
-        <EmojiPicker
-          onEmojiSelected={handlePick}
-          open={emojiPickerOpen}
-          onClose={() => setEmojiPickerOpen(false)}
-        />
+        <EmojiPicker onEmojiSelected={handlePick} open={emojiPickerOpen} onClose={() => setEmojiPickerOpen(false)} />
       </>
     );
   },
@@ -79,8 +66,7 @@ export const EditCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
 
 const InputContainer = styled.View<{ isFocused: boolean }>`
   border-radius: 10px;
-  border-color: ${({ theme, isFocused }) =>
-    isFocused ? theme.colours.purple100 : theme.colours.grey200};
+  border-color: ${({ theme, isFocused }) => (isFocused ? theme.colours.purple100 : theme.colours.grey200)};
   border-width: 2px;
 `;
 

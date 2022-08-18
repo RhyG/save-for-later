@@ -7,9 +7,7 @@ type Props = {
   onEditCollectionButtonPress: () => void;
 };
 
-export const EditCollectionButton = ({
-  onEditCollectionButtonPress,
-}: Props) => {
+export const EditCollectionButton = ({ onEditCollectionButtonPress }: Props) => {
   const { colours } = useTheme();
 
   return (

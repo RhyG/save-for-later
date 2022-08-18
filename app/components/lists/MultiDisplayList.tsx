@@ -17,17 +17,6 @@ type Props = {
   currentListDisplayType: DisplayType;
 } & ListProps;
 
-export const MultiDisplayList = ({
-  currentListDisplayType,
-  ...listProps
-}: Props) => {
-  return (
-    <>
-      {currentListDisplayType === 'grid' ? (
-        <GridList {...listProps} />
-      ) : (
-        <RowList {...listProps} />
-      )}
-    </>
-  );
+export const MultiDisplayList = ({ currentListDisplayType, ...listProps }: Props) => {
+  return <>{currentListDisplayType === 'grid' ? <GridList {...listProps} /> : <RowList {...listProps} />}</>;
 };

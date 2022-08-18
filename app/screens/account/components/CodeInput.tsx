@@ -11,10 +11,7 @@ type Props = {
   submitting: boolean;
 };
 
-const InputField = React.forwardRef<
-  RNTextInput,
-  React.ComponentProps<typeof RNTextInput>
->((props, ref) => {
+const InputField = React.forwardRef<RNTextInput, React.ComponentProps<typeof RNTextInput>>((props, ref) => {
   return (
     <InputFieldContainer>
       <Input
@@ -103,10 +100,7 @@ export const CodeInput = ({ submitCode, submitting }: Props) => {
           }}
         />
       </Container>
-      <SubmitButton
-        onPress={() => submitCode(code.join(''))}
-        submitting={submitting}
-      />
+      <SubmitButton onPress={() => submitCode(code.join(''))} submitting={submitting} />
     </>
   );
 };

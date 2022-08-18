@@ -20,8 +20,7 @@ export const SubmitButton = ({ title, onPress, submitting }: Props) => {
 };
 
 const StyledSubmitButton = styled.TouchableOpacity<{ disabled?: boolean }>`
-  background-color: ${({ disabled, theme }) =>
-    disabled ? theme.colours.grey300 : theme.colours.purple100};
+  background-color: ${({ disabled, theme }) => (disabled ? theme.colours.grey300 : theme.colours.purple100)};
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 15px;
   align-items: center;

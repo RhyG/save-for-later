@@ -12,31 +12,18 @@ type Props = {
 
 const ICON_STYLES = { marginLeft: 10 };
 
-export const ListDisplayToggleButton = ({
-  currentDisplayType,
-  onToggleDisplayTypePress,
-}: Props) => {
+export const ListDisplayToggleButton = ({ currentDisplayType, onToggleDisplayTypePress }: Props) => {
   const { colours } = useTheme();
 
   return (
     <>
       {currentDisplayType === 'row' ? (
         <ButtonContainer onPress={() => onToggleDisplayTypePress('grid')}>
-          <FeatherIcon
-            name="grid"
-            color={colours.grey400}
-            size={25}
-            style={ICON_STYLES}
-          />
+          <FeatherIcon name="grid" color={colours.grey400} size={25} style={ICON_STYLES} />
         </ButtonContainer>
       ) : (
         <ButtonContainer onPress={() => onToggleDisplayTypePress('row')}>
-          <EntypoIcon
-            name="list"
-            color={colours.grey400}
-            size={25}
-            style={ICON_STYLES}
-          />
+          <EntypoIcon name="list" color={colours.grey400} size={25} style={ICON_STYLES} />
         </ButtonContainer>
       )}
     </>

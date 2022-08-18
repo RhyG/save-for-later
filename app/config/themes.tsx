@@ -60,15 +60,11 @@ export const BORDER_RADIUS = '10px';
 
 export const StyledComponentsTheme: DefaultTheme = {
   borderRadius: BORDER_RADIUS,
-  spacing: (...units: number[]) =>
-    `${units.map(u => u * SPACING_SIZE).join('px ')}px`,
+  spacing: (...units: number[]) => `${units.map(u => u * SPACING_SIZE).join('px ')}px`,
   pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
   font: StyledComponentsFonts,
   colours,
   utils: {
-    numbersToPixels: (...units: any[]) =>
-      units
-        .map(unit => (typeof unit === 'number' ? `${unit}px` : unit))
-        .join(' '),
+    numbersToPixels: (...units: any[]) => units.map(unit => (typeof unit === 'number' ? `${unit}px` : unit)).join(' '),
   },
 };

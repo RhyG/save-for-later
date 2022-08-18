@@ -7,10 +7,7 @@ import styled, { useTheme } from 'styled-components/native';
 import { BookmarksAPI } from '@app/api/bookmarks';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
-import {
-  SortListButton,
-  SortMethod,
-} from '@app/components/lists/SortListButton';
+import { SortListButton } from '@app/components/lists/SortListButton';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useBookmarks } from '@app/hooks/useBookmarks';
@@ -32,19 +29,12 @@ export const HomeScreen = () => {
 
   const loadingLocalLinks = useLocalLinks(state => state.loadingLocalLinks);
 
-  const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<
-    IBookmark | undefined
-  >();
-  const [loadingNewBookmarkDetails, setLoadingNewBookmarkDetails] =
-    useState(false);
-  const [newBookmarkDetails, setNewBookmarkDetails] = useState<
-    IBookmark | undefined
-  >();
-  const [sortBy, setSortBy] = useState<SortMethod>('newest');
+  const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<IBookmark | undefined>();
+  const [loadingNewBookmarkDetails, setLoadingNewBookmarkDetails] = useState(false);
+  const [newBookmarkDetails, setNewBookmarkDetails] = useState<IBookmark | undefined>();
+  // const [sortBy, setSortBy] = useState<SortMethod>('newest');
 
-  const defaultHomeToRow = useUser5ettings(
-    state => state.settings.defaultHomeToRow,
-  );
+  const defaultHomeToRow = useUser5ettings(state => state.settings.defaultHomeToRow);
 
   const [currentListDisplayType, toggleListDisplayType] = useReducer(
     (_: DisplayType, action: DisplayType) => action,
@@ -59,12 +49,7 @@ export const HomeScreen = () => {
 
   useHeaderAddButton(() => manualBookmarkSheet.present());
 
-  const {
-    isLoading,
-    data: bookmarks,
-    deleteBookmark,
-    refetch,
-  } = useBookmarks();
+  const { isLoading, data: bookmarks, deleteBookmark, refetch } = useBookmarks();
 
   const presentEditBookmarkSheet = (item: IBookmark) => {
     setBookmarkBeingEdited(item);
@@ -88,9 +73,7 @@ export const HomeScreen = () => {
 
       setLoadingNewBookmarkDetails(true);
 
-      const newPreviewDetails = (await getLinkPreview(
-        sharedData,
-      )) as unknown as IBookmark;
+      const newPreviewDetails = (await getLinkPreview(sharedData)) as unknown as IBookmark;
 
       setNewBookmarkDetails(newPreviewDetails);
 
@@ -140,7 +123,7 @@ export const HomeScreen = () => {
             currentDisplayType={currentListDisplayType}
             onToggleDisplayTypePress={toggleListDisplayType}
           />
-          <SortListButton onSortMethodPress={setSortBy} />
+          <SortListButton onSortMethodPress={() => {}} />
         </FiltersContainer>
         <MultiDisplayList
           currentListDisplayType={currentListDisplayType}
@@ -150,10 +133,7 @@ export const HomeScreen = () => {
           refreshList={refetch}
         />
       </ScreenContainer>
-      <ManualBookmarkSheet
-        ref={manualBookmarkSheet.sheetRef}
-        addNewBookmark={addNewBookmark}
-      />
+      <ManualBookmarkSheet ref={manualBookmarkSheet.sheetRef} addNewBookmark={addNewBookmark} />
       {bookmarkBeingEdited ? (
         <EditBookmarkSheet
           ref={editBookmarkSheet.sheetRef}

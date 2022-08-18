@@ -20,10 +20,7 @@ interface IStorageModule {
    * @param {string} key - key of the item to be stored.
    * @param {string | Record<string, unknown>} value - value of item to be stored.
    */
-  setItem: (
-    key: string,
-    value: string | Record<string, unknown>,
-  ) => Promise<void>;
+  setItem: (key: string, value: string | Record<string, unknown>) => Promise<void>;
   /**
    * Removes an item from storage.
    * @param {string} key - key of the item to be removed.
@@ -34,10 +31,7 @@ interface IStorageModule {
 
 const StorageModule: IStorageModule = {
   cache: {},
-  getItem: async (
-    key: string,
-    defaultValue: string | number | Record<string, unknown>,
-  ) => {
+  getItem: async (key: string, defaultValue: string | number | Record<string, unknown>) => {
     let result;
 
     if (StorageModule.cache[key]) {

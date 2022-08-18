@@ -13,13 +13,7 @@ type Props = {
   settingsKey: SettingsKeys;
 };
 
-const _SettingsRow = ({
-  value,
-  title,
-  subtitle,
-  onToggle,
-  settingsKey,
-}: Props) => {
+const _SettingsRow = ({ value, title, subtitle, onToggle, settingsKey }: Props) => {
   const { colours } = useTheme();
 
   return (

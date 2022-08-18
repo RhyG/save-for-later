@@ -25,11 +25,7 @@ export type TextProps = {
   letterSpacing?: number;
   uppercase?: boolean;
   capitalize?: boolean;
-  textDecoration?:
-    | 'none'
-    | 'underline'
-    | 'line-through'
-    | 'underline line-through';
+  textDecoration?: 'none' | 'underline' | 'line-through' | 'underline line-through';
   italic?: boolean;
 } & RNTextProps;
 
@@ -42,10 +38,7 @@ export const Text = (props: TextProps): JSX.Element => (
 );
 
 const TextContainer = styled.Text<TextProps>`
-  font-size: ${props =>
-    props.fontSize
-      ? props.theme.font.size[props.fontSize]
-      : props.theme.font.size.sm};
+  font-size: ${props => (props.fontSize ? props.theme.font.size[props.fontSize] : props.theme.font.size.sm)};
   font-weight: ${props => {
     if (props.extraBold) {
       return props.theme.font.weight.extraBold;
@@ -58,18 +51,13 @@ const TextContainer = styled.Text<TextProps>`
     return props.theme.font.weight.regular;
   }};
   text-align: ${props => props.align ?? 'auto'};
-  margin-top: ${props =>
-    props.theme.spacing(props.marginVertical || props.marginTop || 0)};
-  margin-bottom: ${props =>
-    props.theme.spacing(props.marginVertical || props.marginBottom || 0)};
-  margin-left: ${props =>
-    props.theme.spacing(props.marginHorizontal || props.marginLeft || 0)};
-  margin-right: ${props =>
-    props.theme.spacing(props.marginHorizontal || props.marginRight || 0)};
+  margin-top: ${props => props.theme.spacing(props.marginVertical || props.marginTop || 0)};
+  margin-bottom: ${props => props.theme.spacing(props.marginVertical || props.marginBottom || 0)};
+  margin-left: ${props => props.theme.spacing(props.marginHorizontal || props.marginLeft || 0)};
+  margin-right: ${props => props.theme.spacing(props.marginHorizontal || props.marginRight || 0)};
   flex-wrap: ${props => (props.wrap ? 'wrap' : 'nowrap')};
   flex: ${props => props.flex || 'none'};
-  width: ${props =>
-    props.width ? props.theme.utils.numbersToPixels(props.width) : 'auto'};
+  width: ${props => (props.width ? props.theme.utils.numbersToPixels(props.width) : 'auto')};
   opacity: ${props => props.opacity || 1};
   color: ${props => {
     if (props.color) {

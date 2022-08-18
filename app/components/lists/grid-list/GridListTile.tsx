@@ -23,14 +23,10 @@ export const GridListTile = ({ item, onLongPress }: Props): JSX.Element => {
     Linking.openURL(url);
   };
 
-  const isSVG =
-    preview_image?.slice(-5).includes('.svg') ||
-    preview_image?.includes('image/svg');
+  const isSVG = preview_image?.slice(-5).includes('.svg') || preview_image?.includes('image/svg');
 
   return (
-    <PressablePreview
-      onPress={onPreviewPress}
-      onLongPress={() => onLongPress(item)}>
+    <PressablePreview onPress={onPreviewPress} onLongPress={() => onLongPress(item)}>
       {preview_image ? (
         isSVG ? (
           <SVGContainer>
@@ -51,12 +47,7 @@ export const GridListTile = ({ item, onLongPress }: Props): JSX.Element => {
         </NoImage>
       )}
       <ContentContainer>
-        <Text
-          bold
-          numberOfLines={1}
-          marginBottom={0.5}
-          color={colours.grey400}
-          fontSize="sm">
+        <Text bold numberOfLines={1} marginBottom={0.5} color={colours.grey400} fontSize="sm">
           {title}
         </Text>
         <Text numberOfLines={3} fontSize="xs" style={{ lineHeight: 15 }}>

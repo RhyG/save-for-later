@@ -1,9 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  FlatList,
-  ListRenderItem,
-  RefreshControl as RNRefreshControl,
-} from 'react-native';
+import { FlatList, ListRenderItem, RefreshControl as RNRefreshControl } from 'react-native';
 
 import { IBookmark } from '@app/types';
 
@@ -12,12 +8,7 @@ import { RowListItem } from './RowListItem';
 
 const keyExtractor = (item: IBookmark) => item.id;
 
-export const RowList = ({
-  data,
-  onItemLongPress,
-  loadingBookmarks,
-  refreshList,
-}: ListProps) => {
+export const RowList = ({ data, onItemLongPress, loadingBookmarks, refreshList }: ListProps) => {
   const renderItem = useCallback<ListRenderItem<IBookmark>>(
     ({ item }) => {
       return <RowListItem item={item} onItemLongPress={onItemLongPress} />;
@@ -26,9 +17,7 @@ export const RowList = ({
   );
 
   const RefreshControl = useMemo(() => {
-    return (
-      <RNRefreshControl refreshing={loadingBookmarks} onRefresh={refreshList} />
-    );
+    return <RNRefreshControl refreshing={loadingBookmarks} onRefresh={refreshList} />;
   }, [loadingBookmarks, refreshList]);
 
   return (

@@ -1,10 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  Alert,
-  FlatList,
-  ListRenderItem,
-  RefreshControl as RNRefreshControl,
-} from 'react-native';
+import { Alert, FlatList, ListRenderItem, RefreshControl as RNRefreshControl } from 'react-native';
 
 import { CollectionAPI } from '@app/api/collections';
 import { BaseScreen } from '@app/components/BaseScreen';
@@ -45,21 +40,17 @@ export const CollectionsScreen = () => {
   const onItemLongPress = useCallback(
     async (id: string) => {
       try {
-        Alert.alert(
-          'Delete collection?',
-          'This will permanently delete the collection.',
-          [
-            {
-              text: 'Delete',
-              onPress: async () => {
-                await CollectionAPI.deleteCollection(id);
-                refetch();
-              },
-              style: 'destructive',
+        Alert.alert('Delete collection?', 'This will permanently delete the collection.', [
+          {
+            text: 'Delete',
+            onPress: async () => {
+              await CollectionAPI.deleteCollection(id);
+              refetch();
             },
-            { text: 'Cancel', style: 'cancel' },
-          ],
-        );
+            style: 'destructive',
+          },
+          { text: 'Cancel', style: 'cancel' },
+        ]);
       } catch (error) {
         console.error(error);
       }
@@ -95,10 +86,7 @@ export const CollectionsScreen = () => {
         refreshing={isLoading}
         refreshControl={RefreshControl}
       />
-      <AddCollectionSheet
-        ref={addCollectionSheetRef.sheetRef}
-        addCollection={onAddCollection}
-      />
+      <AddCollectionSheet ref={addCollectionSheetRef.sheetRef} addCollection={onAddCollection} />
     </BaseScreen>
   );
 };

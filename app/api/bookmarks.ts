@@ -11,10 +11,7 @@ interface IBookmarksAPI {
 
 export const BookmarksAPI: IBookmarksAPI = {
   fetchAllBookmarks: async () => {
-    const { body, error } = await supabase
-      .from('bookmarks')
-      .select()
-      .order('created_at', { ascending: false });
+    const { body, error } = await supabase.from('bookmarks').select().order('created_at', { ascending: false });
 
     if (error) {
       throw new Error(`Error fetching all bookmarks - ${error.message}`);
@@ -24,37 +21,24 @@ export const BookmarksAPI: IBookmarksAPI = {
     return body as unknown as IBookmark[];
   },
   fetchBookmarkByID: async (id: string) => {
-    const { data, error } = await supabase
-      .from('bookmarks')
-      .select('*')
-      .eq('id', id);
+    const { data, error } = await supabase.from('bookmarks').select('*').eq('id', id);
 
     if (error) {
-      throw new Error(
-        `Error fetching bookmark with ID: ${id} - ${error.message}`,
-      );
+      throw new Error(`Error fetching bookmark with ID: ${id} - ${error.message}`);
     }
 
     return data[0] as IBookmark;
   },
   fetchBookmarksByCollection: async (collectionId: string) => {
-    let { data: collections, error } = await supabase
-      .from('collections')
-      .select('*')
-      .limit(1)
-      .eq('id', collectionId);
+    let { data: collections, error } = await supabase.from('collections').select('*').limit(1).eq('id', collectionId);
 
     if (error) {
-      throw new Error(
-        `Error fetching collection with ID ${collectionId} - ${error.message}`,
-      );
+      throw new Error(`Error fetching collection with ID ${collectionId} - ${error.message}`);
     }
 
     const collection = collections?.[0];
 
-    const bookmarks = await Promise.all(
-      collection.bookmarks.map(BookmarksAPI.fetchBookmarkByID),
-    );
+    const bookmarks = await Promise.all(collection.bookmarks.map(BookmarksAPI.fetchBookmarkByID));
 
     return bookmarks;
   },
@@ -62,15 +46,11 @@ export const BookmarksAPI: IBookmarksAPI = {
     const { error } = await supabase.from('bookmarks').delete().eq('id', id);
 
     if (error) {
-      throw new Error(
-        `Error deleting bookmark with ID: ${id} - ${error.message}`,
-      );
+      throw new Error(`Error deleting bookmark with ID: ${id} - ${error.message}`);
     }
   },
   addBookmark: async (bookmark: Omit<IBookmark, 'id'>) => {
-    const { data, error } = await supabase
-      .from<IBookmark>('bookmarks')
-      .insert([bookmark]);
+    const { data, error } = await supabase.from<IBookmark>('bookmarks').insert([bookmark]);
 
     if (error) {
       throw new Error(`Error adding bookmark - ${error.message}`);

@@ -47,10 +47,7 @@ describe('AsyncStorage', () => {
 
       AsyncStorage.setItem(itemKey, itemToStore);
 
-      expect(NativeStorage.setItem).toHaveBeenCalledWith(
-        itemKey,
-        'json:{"value":"store_me"}',
-      );
+      expect(NativeStorage.setItem).toHaveBeenCalledWith(itemKey, 'json:{"value":"store_me"}');
     });
   });
 

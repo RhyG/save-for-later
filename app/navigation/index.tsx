@@ -25,37 +25,24 @@ import {
 const screenOptions = {
   contentStyle: { backgroundColor: '#fff' },
   headerStyle: { backgroundColor: '#fff' },
-  // headerShadowVisible: false,
+  headerShadowVisible: false,
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 const HomeStackScreen = () => {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={screenOptions}
-      />
+      <HomeStack.Screen name="Home" component={HomeScreen} options={screenOptions} />
     </HomeStack.Navigator>
   );
 };
 
-const CollectionsStack =
-  createNativeStackNavigator<CollectionsStackParamList>();
+const CollectionsStack = createNativeStackNavigator<CollectionsStackParamList>();
 const CollectionsStackScreen = () => {
   return (
     <CollectionsStack.Navigator>
-      <CollectionsStack.Screen
-        name="Collections"
-        component={CollectionsScreen}
-        options={screenOptions}
-      />
-      <CollectionsStack.Screen
-        name="Collection"
-        component={CollectionScreen}
-        options={screenOptions}
-      />
+      <CollectionsStack.Screen name="Collections" component={CollectionsScreen} options={screenOptions} />
+      <CollectionsStack.Screen name="Collection" component={CollectionScreen} options={screenOptions} />
     </CollectionsStack.Navigator>
   );
 };
@@ -77,11 +64,7 @@ const AccountStack = createNativeStackNavigator<AccountStackParamList>();
 const AccountStackScreen = () => {
   return (
     <AccountStack.Navigator>
-      <AccountStack.Screen
-        name="Account"
-        component={AccountScreen}
-        options={screenOptions}
-      />
+      <AccountStack.Screen name="Account" component={AccountScreen} options={screenOptions} />
     </AccountStack.Navigator>
   );
 };
@@ -109,11 +92,7 @@ export default function App() {
               // </Text>
               null,
             tabBarIcon: ({ focused }) => (
-              <OcticonsIcon
-                name="home"
-                color={focused ? colours.purple100 : colours.grey300}
-                size={25}
-              />
+              <OcticonsIcon name="home" color={focused ? colours.purple100 : colours.grey300} size={25} />
             ),
           })}
         />
@@ -129,11 +108,7 @@ export default function App() {
               // </Text>
               null,
             tabBarIcon: ({ focused }) => (
-              <FeatherIcon
-                name="folder"
-                color={focused ? colours.purple100 : colours.grey300}
-                size={25}
-              />
+              <FeatherIcon name="folder" color={focused ? colours.purple100 : colours.grey300} size={25} />
             ),
           })}
         />
@@ -149,11 +124,7 @@ export default function App() {
               // </Text>
               null,
             tabBarIcon: ({ focused }) => (
-              <FeatherIcon
-                name="user"
-                color={focused ? colours.purple100 : colours.grey300}
-                size={25}
-              />
+              <FeatherIcon name="user" color={focused ? colours.purple100 : colours.grey300} size={25} />
             ),
           })}
         />
@@ -169,11 +140,7 @@ export default function App() {
               // </Text>
               null,
             tabBarIcon: ({ focused }) => (
-              <IonIcon
-                name="settings-outline"
-                color={focused ? colours.purple100 : colours.grey300}
-                size={25}
-              />
+              <IonIcon name="settings-outline" color={focused ? colours.purple100 : colours.grey300} size={25} />
             ),
           })}
         />

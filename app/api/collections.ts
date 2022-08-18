@@ -4,21 +4,11 @@ import { ICollection } from '@app/types';
 interface ICollectionAPI {
   fetchCollections: () => Promise<ICollection[]>;
   fetchCollectionDetails: (id: string) => Promise<ICollection>;
-  addCollection: (
-    name: string,
-    icon: string,
-    user_id: string,
-  ) => Promise<ICollection>;
+  addCollection: (name: string, icon: string, user_id: string) => Promise<ICollection>;
   updateCollectionName: (id: string, newName: string) => Promise<ICollection>;
   updateCollectionIcon: (id: string, newIcon: string) => Promise<ICollection>;
-  removeBookmarkFromCollection: (
-    collectionId: string,
-    bookmarkId: string,
-  ) => Promise<void>;
-  addBookmarkToCollection: (
-    collectionId: string,
-    bookmarkId: string,
-  ) => Promise<void>;
+  removeBookmarkFromCollection: (collectionId: string, bookmarkId: string) => Promise<void>;
+  addBookmarkToCollection: (collectionId: string, bookmarkId: string) => Promise<void>;
   deleteCollection: (collectionId: string) => Promise<void>;
 }
 
@@ -36,16 +26,10 @@ export const CollectionAPI: ICollectionAPI = {
     return data;
   },
   fetchCollectionDetails: async (id: string) => {
-    const { data, error } = await supabase
-      .from<ICollection>('collections')
-      .select('*')
-      .limit(1)
-      .eq('id', id);
+    const { data, error } = await supabase.from<ICollection>('collections').select('*').limit(1).eq('id', id);
 
     if (error) {
-      throw new Error(
-        `Error fetching collection with ID ${id} - ${error.message}`,
-      );
+      throw new Error(`Error fetching collection with ID ${id} - ${error.message}`);
     }
 
     const collection = data[0];
@@ -64,9 +48,7 @@ export const CollectionAPI: ICollectionAPI = {
       user_id,
     };
 
-    const { error, data } = await supabase
-      .from<ICollection>('collections')
-      .insert([{ ...newCollectionDetails }]);
+    const { error, data } = await supabase.from<ICollection>('collections').insert([{ ...newCollectionDetails }]);
 
     if (error) {
       throw new Error(`Error adding collection - ${error.message}`);
@@ -81,10 +63,7 @@ export const CollectionAPI: ICollectionAPI = {
     return newCollection;
   },
   updateCollectionName: async (id: string, newName: string) => {
-    const { error, data } = await supabase
-      .from<ICollection>('collections')
-      .update({ name: newName })
-      .eq('id', id);
+    const { error, data } = await supabase.from<ICollection>('collections').update({ name: newName }).eq('id', id);
 
     if (error) {
       throw new Error(`Error updating collection name - ${error.message}`);
@@ -99,10 +78,7 @@ export const CollectionAPI: ICollectionAPI = {
     return newCollection;
   },
   updateCollectionIcon: async (id: string, newIcon: string) => {
-    const { error, data } = await supabase
-      .from<ICollection>('collections')
-      .update({ icon: newIcon })
-      .eq('id', id);
+    const { error, data } = await supabase.from<ICollection>('collections').update({ icon: newIcon }).eq('id', id);
 
     if (error) {
       throw new Error(`Error updating collection name - ${error.message}`);
@@ -116,21 +92,14 @@ export const CollectionAPI: ICollectionAPI = {
 
     return newCollection;
   },
-  removeBookmarkFromCollection: async (
-    collectionId: string,
-    bookmarkId: string,
-  ) => {
-    const collectionToUpdate = await CollectionAPI.fetchCollectionDetails(
-      collectionId,
-    );
+  removeBookmarkFromCollection: async (collectionId: string, bookmarkId: string) => {
+    const collectionToUpdate = await CollectionAPI.fetchCollectionDetails(collectionId);
 
     if (!collectionToUpdate) {
       throw new Error('Collection not found');
     }
 
-    const updatedBookmarks = collectionToUpdate.bookmarks.filter(
-      id => id !== bookmarkId,
-    );
+    const updatedBookmarks = collectionToUpdate.bookmarks.filter(id => id !== bookmarkId);
 
     const { error } = await supabase
       .from('collections')
@@ -160,10 +129,7 @@ export const CollectionAPI: ICollectionAPI = {
       .eq('id', collectionId);
   },
   deleteCollection: async (collectionId: string) => {
-    const { error } = await supabase
-      .from('collections')
-      .delete()
-      .eq('id', collectionId);
+    const { error } = await supabase.from('collections').delete().eq('id', collectionId);
 
     if (error) {
       throw new Error(`Error deleting collection - ${error.message}`);

@@ -6,13 +6,11 @@ type Props = React.PropsWithChildren<{
 }>;
 
 export const BaseScreen = ({ children, noPadding }: Props): JSX.Element => {
-  return (
-    <BaseScreenContainer noPadding={noPadding}>{children}</BaseScreenContainer>
-  );
+  return <BaseScreenContainer noPadding={noPadding}>{children}</BaseScreenContainer>;
 };
 
 const BaseScreenContainer = styled.View<{ noPadding?: boolean }>`
   flex: 1;
   padding: ${props => (props.noPadding ? 0 : 10)}px;
-  background-color: #f9fcff;
+  /* background-color: #f9fcff; */
 `;

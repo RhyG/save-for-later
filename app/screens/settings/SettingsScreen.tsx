@@ -1,20 +1,14 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
 
-import {
-  SettingsKeys,
-  SettingsValueTypes,
-  useUser5ettings,
-} from '@app/store/userSettings';
+import { SettingsKeys, SettingsValueTypes, useUser5ettings } from '@app/store/userSettings';
 
 import { SettingsRow } from './components/SettingsRow';
 
 // type Props = NativeStackScreenProps<SettingsStackParamList, 'Settings'> & {};
 
 export const SettingsScreen = () => {
-  const { darkMode, defaultHomeToRow } = useUser5ettings(
-    state => state.settings,
-  );
+  const { darkMode, defaultHomeToRow } = useUser5ettings(state => state.settings);
   const updateSetting = useUser5ettings(state => state.updateSetting);
 
   const toggleSetting = useCallback(

@@ -29,24 +29,17 @@ export const useCollection = (id: string): UseCollectionValue => {
     error: errorFetchingCollection,
     isLoading: loadingCollection,
     refetch: fetchCollection,
-  } = useQuery<ICollection, string>(['collection', id], () =>
-    CollectionAPI.fetchCollectionDetails(id),
-  );
+  } = useQuery<ICollection, string>(['collection', id], () => CollectionAPI.fetchCollectionDetails(id));
 
   const {
     data: bookmarks = EMPTY_ARRAY,
     error: errorFetchingBookmarks,
     isLoading: loadingBookmarks,
     refetch: fetchBookmarks,
-  } = useQuery<IBookmark[], string>(['collection-bookmarks', id], () =>
-    BookmarksAPI.fetchBookmarksByCollection(id),
-  );
+  } = useQuery<IBookmark[], string>(['collection-bookmarks', id], () => BookmarksAPI.fetchBookmarksByCollection(id));
 
   const removeBookmarkFromCollection = async (bookmarkId: string) => {
-    await CollectionAPI.removeBookmarkFromCollection(
-      collectionInformation?.id ?? '',
-      bookmarkId,
-    );
+    await CollectionAPI.removeBookmarkFromCollection(collectionInformation?.id ?? '', bookmarkId);
   };
 
   return {

@@ -11,12 +11,7 @@ type ButtonProps = {
   containerStyle?: ViewStyle;
 };
 
-export const Button = ({
-  title,
-  onPress,
-  disabled,
-  containerStyle,
-}: ButtonProps) => {
+export const Button = ({ title, onPress, disabled, containerStyle }: ButtonProps) => {
   return (
     <StyledButton onPress={onPress} disabled={disabled} style={containerStyle}>
       <Text fontSize="md" color="#fff" bold>
@@ -27,8 +22,7 @@ export const Button = ({
 };
 
 const StyledButton = styled.TouchableOpacity<{ disabled?: boolean }>`
-  background-color: ${({ disabled, theme }) =>
-    disabled ? theme.colours.grey300 : theme.colours.purple100};
+  background-color: ${({ disabled, theme }) => (disabled ? theme.colours.grey300 : theme.colours.purple100)};
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 15px;
   align-items: center;

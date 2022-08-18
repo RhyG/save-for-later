@@ -15,66 +15,50 @@ type Props = {
 
 const customSnapPoints = ['35%'];
 
-export const AddCollectionSheet = React.forwardRef<BottomSheetModal, Props>(
-  ({ addCollection }, ref) => {
-    const { colours } = useTheme();
+export const AddCollectionSheet = React.forwardRef<BottomSheetModal, Props>(({ addCollection }, ref) => {
+  const { colours } = useTheme();
 
-    const [inputValue, setInputValue] = useState('');
-    const [collectionIcon, setCollectionIcon] = useState<string>(
-      getRandomEmoji(),
-    );
+  const [inputValue, setInputValue] = useState('');
+  const [collectionIcon, setCollectionIcon] = useState<string>(getRandomEmoji());
 
-    const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
-    const collectionNameInputRef = useRef<typeof BottomSheetTextInput>();
+  const collectionNameInputRef = useRef<typeof BottomSheetTextInput>();
 
-    const onAddCollectionButtonPress = () => {
-      addCollection(inputValue, collectionIcon);
-    };
+  const onAddCollectionButtonPress = () => {
+    addCollection(inputValue, collectionIcon);
+  };
 
-    const handlePick = (emoji: EmojiType) => {
-      setCollectionIcon(emoji.emoji);
-    };
+  const handlePick = (emoji: EmojiType) => {
+    setCollectionIcon(emoji.emoji);
+  };
 
-    return (
-      <>
-        <BottomSheet
-          sheetTitle="New collection"
-          ref={ref}
-          customSnapPoints={customSnapPoints}>
-          <InputContainer isFocused={false}>
-            <TextInput
-              placeholder="Collection name"
-              onChangeText={setInputValue}
-              // @ts-ignore this type is gross, not sure how to fix
-              ref={collectionNameInputRef}
-              placeholderTextColor={colours.grey100}
-            />
-          </InputContainer>
-
-          <ChooseIconButton onPress={() => setEmojiPickerOpen(true)}>
-            <Text fontSize="xxxl">{collectionIcon}</Text>
-          </ChooseIconButton>
-          <Button
-            title="Create collection"
-            onPress={onAddCollectionButtonPress}
-            containerStyle={{ marginTop: 'auto' }}
+  return (
+    <>
+      <BottomSheet sheetTitle="New collection" ref={ref} customSnapPoints={customSnapPoints}>
+        <InputContainer isFocused={false}>
+          <TextInput
+            placeholder="Collection name"
+            onChangeText={setInputValue}
+            // @ts-ignore this type is gross, not sure how to fix
+            ref={collectionNameInputRef}
+            placeholderTextColor={colours.grey100}
           />
-        </BottomSheet>
-        <EmojiPicker
-          onEmojiSelected={handlePick}
-          open={emojiPickerOpen}
-          onClose={() => setEmojiPickerOpen(false)}
-        />
-      </>
-    );
-  },
-);
+        </InputContainer>
+
+        <ChooseIconButton onPress={() => setEmojiPickerOpen(true)}>
+          <Text fontSize="xxxl">{collectionIcon}</Text>
+        </ChooseIconButton>
+        <Button title="Create collection" onPress={onAddCollectionButtonPress} containerStyle={{ marginTop: 'auto' }} />
+      </BottomSheet>
+      <EmojiPicker onEmojiSelected={handlePick} open={emojiPickerOpen} onClose={() => setEmojiPickerOpen(false)} />
+    </>
+  );
+});
 
 const InputContainer = styled.View<{ isFocused: boolean }>`
   border-radius: 10px;
-  border-color: ${({ theme, isFocused }) =>
-    isFocused ? theme.colours.purple100 : theme.colours.grey200};
+  border-color: ${({ theme, isFocused }) => (isFocused ? theme.colours.purple100 : theme.colours.grey200)};
   border-width: 2px;
 `;
 

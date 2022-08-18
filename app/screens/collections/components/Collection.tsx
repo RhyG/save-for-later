@@ -18,13 +18,7 @@ const getFormattedBookmarkCount = (count: number) => {
   return hasBookmarks ? `${count} bookmark${count > 1 ? 's' : ''}` : 'Empty';
 };
 
-export const Collection = ({
-  name,
-  bookmarkCount,
-  id,
-  icon,
-  onItemLongPress,
-}: Props) => {
+export const Collection = ({ name, bookmarkCount, id, icon, onItemLongPress }: Props) => {
   const navigation = useNavigation<CollectionScreenNavigationProp>();
 
   const { colours } = useTheme();
@@ -34,9 +28,7 @@ export const Collection = ({
   };
 
   return (
-    <CollectionContainer
-      onPress={onCollectionPress}
-      onLongPress={() => onItemLongPress(id)}>
+    <CollectionContainer onPress={onCollectionPress} onLongPress={() => onItemLongPress(id)}>
       <IconContainer>
         <Text fontSize="lg">{icon}</Text>
       </IconContainer>

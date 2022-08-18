@@ -19,10 +19,7 @@ import { EditCollectionButton } from './components/EditCollectionButton';
 import { EditCollectionSheet } from './components/EditCollectionSheet';
 import { useCollection } from './hooks/useCollection';
 
-type Props = NativeStackScreenProps<
-  CollectionsStackParamList,
-  'Collection'
-> & {};
+type Props = NativeStackScreenProps<CollectionsStackParamList, 'Collection'> & {};
 
 export const CollectionScreen = ({ route }: Props) => {
   const collectionId = route.params.id;
@@ -32,9 +29,7 @@ export const CollectionScreen = ({ route }: Props) => {
   const editBookmarkSheet = useSheetRef();
   const manualBookmarkSheet = useSheetRef();
 
-  const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<
-    IBookmark | undefined
-  >();
+  const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<IBookmark | undefined>();
 
   const {
     collectionInformation,
@@ -59,13 +54,7 @@ export const CollectionScreen = ({ route }: Props) => {
     editBookmarkSheet.present();
   };
 
-  const updateCollection = async ({
-    newName,
-    newIcon,
-  }: {
-    newName?: string;
-    newIcon?: string;
-  }) => {
+  const updateCollection = async ({ newName, newIcon }: { newName?: string; newIcon?: string }) => {
     if (newName) {
       await CollectionAPI.updateCollectionName(collectionId, newName);
     }
@@ -101,10 +90,7 @@ export const CollectionScreen = ({ route }: Props) => {
       const savedBookmark = await BookmarksAPI.addBookmark(bookmark);
 
       // Add the bookmark to the collection
-      await CollectionAPI.addBookmarkToCollection(
-        collectionId,
-        savedBookmark.id,
-      );
+      await CollectionAPI.addBookmarkToCollection(collectionId, savedBookmark.id);
 
       fetchCollection();
       manualBookmarkSheet.dismiss();
@@ -121,9 +107,7 @@ export const CollectionScreen = ({ route }: Props) => {
           <BookmarkCountPill>
             <Text bold>{bookmarks?.length ?? ''}</Text>
           </BookmarkCountPill>
-          <EditCollectionButton
-            onEditCollectionButtonPress={() => editCollectionSheet.present()}
-          />
+          <EditCollectionButton onEditCollectionButtonPress={() => editCollectionSheet.present()} />
           <ListDisplayToggleButton
             currentDisplayType={currentListDisplayType}
             onToggleDisplayTypePress={toggleListDisplayType}
@@ -151,10 +135,7 @@ export const CollectionScreen = ({ route }: Props) => {
           removeBookmarkFromCollection={onRemoveFromCollectionPress}
         />
       ) : null}
-      <ManualBookmarkSheet
-        ref={manualBookmarkSheet.sheetRef}
-        addBookmarkToList={addBookmark}
-      />
+      <ManualBookmarkSheet ref={manualBookmarkSheet.sheetRef} addBookmarkToList={addBookmark} />
     </>
   );
 };

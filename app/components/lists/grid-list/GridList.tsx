@@ -1,9 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  FlatList,
-  ListRenderItem,
-  RefreshControl as RNRefreshControl,
-} from 'react-native';
+import { FlatList, ListRenderItem, RefreshControl as RNRefreshControl } from 'react-native';
 
 import { IBookmark } from '@app/types';
 
@@ -20,12 +16,7 @@ const getItemLayout = (_: IBookmark[] | null | undefined, index: number) => ({
 
 const keyExtractor = (item: IBookmark) => item.id;
 
-export const GridList = ({
-  data,
-  loadingBookmarks,
-  onItemLongPress,
-  refreshList,
-}: ListProps) => {
+export const GridList = ({ data, loadingBookmarks, onItemLongPress, refreshList }: ListProps) => {
   const renderItem = useCallback<ListRenderItem<IBookmark>>(
     ({ item }) => <GridListTile item={item} onLongPress={onItemLongPress} />,
     [onItemLongPress],
@@ -40,9 +31,7 @@ export const GridList = ({
   }, [loadingBookmarks, data.length]);
 
   const RefreshControl = useMemo(() => {
-    return (
-      <RNRefreshControl refreshing={loadingBookmarks} onRefresh={refreshList} />
-    );
+    return <RNRefreshControl refreshing={loadingBookmarks} onRefresh={refreshList} />;
   }, [loadingBookmarks, refreshList]);
 
   return (

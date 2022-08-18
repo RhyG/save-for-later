@@ -13,10 +13,7 @@ import { DEFAULT_SETTINGS, useUser5ettings } from '@app/store/userSettings';
 
 // Fetch local links from storage on app mount
 (async () => {
-  const settings = await AsyncStorage.getItem<typeof DEFAULT_SETTINGS>(
-    'settings',
-    DEFAULT_SETTINGS,
-  );
+  const settings = await AsyncStorage.getItem<typeof DEFAULT_SETTINGS>('settings', DEFAULT_SETTINGS);
 
   useUser5ettings.getState().updateSettings(settings);
 })();

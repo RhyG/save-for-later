@@ -26,10 +26,7 @@ export const useUser5ettings = create<ISettingsState>(set => ({
   updateSettings: (settings: { [key in SettingsKeys]: SettingsValueTypes }) => {
     set(() => ({ settings }));
   },
-  updateSetting: async (
-    settingKey: SettingsKeys,
-    value: SettingsValueTypes,
-  ) => {
+  updateSetting: async (settingKey: SettingsKeys, value: SettingsValueTypes) => {
     set(({ settings }) => {
       const newSettings = {
         ...settings,

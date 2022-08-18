@@ -17,23 +17,12 @@ type RadioButtonProps = {
   containerStyle?: StyleProp<ViewStyle>;
 };
 
-export const RadioButton = ({
-  selected,
-  onPress,
-  containerStyle,
-}: RadioButtonProps) => {
+export const RadioButton = ({ selected, onPress, containerStyle }: RadioButtonProps) => {
   const { colours } = useTheme();
 
   return (
     <RadioOuter onPress={onPress} style={containerStyle} selected={selected}>
-      {selected && (
-        <Icon
-          testID="radio-button-check-icon"
-          name="check"
-          color="#fff"
-          size={20}
-        />
-      )}
+      {selected && <Icon testID="radio-button-check-icon" name="check" color="#fff" size={20} />}
     </RadioOuter>
   );
 };
@@ -47,6 +36,5 @@ const RadioOuter = styled.TouchableOpacity<{ selected: boolean }>`
   padding-top: 2px;
   align-items: center;
   justify-content: center;
-  background-color: ${({ selected, theme }) =>
-    selected ? theme.colours.purple100 : '#fff'};
+  background-color: ${({ selected, theme }) => (selected ? theme.colours.purple100 : '#fff')};
 `;

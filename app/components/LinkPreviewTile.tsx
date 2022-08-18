@@ -14,12 +14,7 @@ type Props = {
   url: string;
 };
 
-export const LinkPreviewTile = ({
-  title,
-  image,
-  description,
-  url,
-}: Props): JSX.Element => {
+export const LinkPreviewTile = ({ title, image, description, url }: Props): JSX.Element => {
   const onPreviewPress = useCallback(() => {
     Linking.openURL(url);
   }, [url]);

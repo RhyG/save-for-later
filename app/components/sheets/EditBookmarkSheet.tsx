@@ -27,36 +27,20 @@ type ConditionalProps = {
 type Props = CommonProps & ConditionalProps;
 
 export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
-  (
-    {
-      bookmarkBeingEdited,
-      deleteBookmark,
-      bookmarkInCollection,
-      removeBookmarkFromCollection,
-    },
-    ref,
-  ) => {
+  ({ bookmarkBeingEdited, deleteBookmark, bookmarkInCollection, removeBookmarkFromCollection }, ref) => {
     const { bottom: bottomInset } = useSafeAreaInsets();
     const { colours } = useTheme();
 
     const chooseCollectionRef = useSheetRef();
 
-    const {
-      title,
-      url,
-      id: bookmarkId,
-      preview_image,
-      description,
-    } = bookmarkBeingEdited;
+    const { title, url, id: bookmarkId, preview_image, description } = bookmarkBeingEdited;
 
     const onDeleteButtonPress = () => {
       deleteBookmark(bookmarkId);
       ref?.current?.dismiss();
     };
 
-    const isSVG =
-      preview_image?.slice(-5).includes('.svg') ||
-      preview_image?.includes('image/svg');
+    const isSVG = preview_image?.slice(-5).includes('.svg') || preview_image?.includes('image/svg');
 
     /* The bottom sheet is slightly higher on phones with a bottom bar */
     const snapPoints = useMemo(() => {
@@ -64,8 +48,7 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
 
       const snapPoint = preview_image ? 45 : 25;
 
-      const snapPointAdjustedForInset =
-        bottomInset > 0 ? snapPoint + 3 : snapPoint;
+      const snapPointAdjustedForInset = bottomInset > 0 ? snapPoint + 3 : snapPoint;
 
       return [`${snapPointAdjustedForInset}%`];
     }, [bottomInset, preview_image]);
@@ -107,12 +90,7 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
                   </Text>
                 </SelectContainer>
                 <TouchableOpacity onPress={onDeleteButtonPress}>
-                  <Icon
-                    name="trash-2"
-                    color={colours.red}
-                    size={25}
-                    style={{ marginLeft: 'auto' }}
-                  />
+                  <Icon name="trash-2" color={colours.red} size={25} style={{ marginLeft: 'auto' }} />
                 </TouchableOpacity>
               </BottomRowGroup>
             </BottomRowContainer>
@@ -120,11 +98,7 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
           {preview_image ? (
             <ImageContainer>
               {isSVG ? (
-                <SvgUri
-                  uri="https://reactnavigation.org/img/spiro.svg"
-                  width="100%"
-                  height="100%"
-                />
+                <SvgUri uri="https://reactnavigation.org/img/spiro.svg" width="100%" height="100%" />
               ) : (
                 // <SvgXml xml={xml} width="100%" height="100%" />
                 <PreviewImage
@@ -138,10 +112,7 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
             </ImageContainer>
           ) : null}
         </BottomSheet>
-        <ChooseCollectionSheet
-          ref={chooseCollectionRef.sheetRef}
-          bookmarkId={bookmarkId}
-        />
+        <ChooseCollectionSheet ref={chooseCollectionRef.sheetRef} bookmarkId={bookmarkId} />
       </>
     );
   },

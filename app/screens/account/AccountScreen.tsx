@@ -30,9 +30,7 @@ export const AccountScreen = ({ navigation }: Props) => {
           👋
         </Text>
       </HeaderContainer>
-      <Sheet>
-        {session ? <AuthenticatedScreen /> : <UnauthenticatedScreen />}
-      </Sheet>
+      <Sheet>{session ? <AuthenticatedScreen /> : <UnauthenticatedScreen />}</Sheet>
     </ScreenContainer>
   );
 };

@@ -1,7 +1,9 @@
+import { IBookmark } from '@app/types';
+
 export const generateBookmarkWithPreviewDetails = (
   details: any,
   user_id?: string,
-) => {
+): Omit<IBookmark, 'id'> | undefined => {
   if (!user_id) {
     return;
   }

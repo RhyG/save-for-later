@@ -4,10 +4,7 @@ import { supabase } from '@app/lib/supabase';
 
 interface IAccountAPI {
   signIn: (email: string) => Promise<User | null>;
-  submitOTP: (
-    email: string,
-    token: string,
-  ) => Promise<{ user: User | null; session: Session | null } | null>;
+  submitOTP: (email: string, token: string) => Promise<{ user: User | null; session: Session | null } | null>;
   signOut: () => Promise<void>;
 }
 

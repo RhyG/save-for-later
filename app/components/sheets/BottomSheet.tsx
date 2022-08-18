@@ -1,8 +1,4 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useMemo } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
@@ -30,8 +26,7 @@ export const BottomSheet = React.forwardRef<BottomSheetModal, Props>(
     const snapPoints = useMemo(() => {
       const snapPoint = bottomInset > 0 ? '45%' : '48%';
 
-      const snapPointAdjustedForInset =
-        bottomInset > 0 ? snapPoint + 3 : snapPoint;
+      const snapPointAdjustedForInset = bottomInset > 0 ? snapPoint + 3 : snapPoint;
 
       return [`${snapPointAdjustedForInset}%`];
     }, [bottomInset]);
@@ -47,12 +42,7 @@ export const BottomSheet = React.forwardRef<BottomSheetModal, Props>(
           backdropComponent={Backdrop}>
           <SheetContainer>
             {sheetTitle ? (
-              <Text
-                fontSize="lg"
-                bold
-                numberOfLines={2}
-                marginBottom={2}
-                align={alignHeader ?? 'left'}>
+              <Text fontSize="lg" bold numberOfLines={2} marginBottom={2} align={alignHeader ?? 'left'}>
                 {sheetTitle}
               </Text>
             ) : null}
