@@ -1,8 +1,6 @@
-import { getLinkPreview } from 'link-preview-js';
 import React, { useReducer, useRef, useState } from 'react';
 import { TextInput as RNTextInput } from 'react-native';
-import ShareMenu from 'react-native-share-menu';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 
 import { BookmarksAPI } from '@app/api/bookmarks';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
@@ -12,8 +10,8 @@ import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useBookmarks } from '@app/hooks/useBookmarks';
 import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
+import { useShareIntent } from '@app/hooks/useShareIntent';
 import { useSheetRef } from '@app/hooks/useSheetRef';
-import { useLocalLinks } from '@app/store/localLinks';
 import { useUser5ettings } from '@app/store/userSettings';
 import { IBookmark } from '@app/types';
 
@@ -25,13 +23,7 @@ import { SearchInput } from './components/SearchInput';
 const EMPTY_ARRAY: IBookmark[] = [];
 
 export const HomeScreen = () => {
-  const { colours } = useTheme();
-
-  const loadingLocalLinks = useLocalLinks(state => state.loadingLocalLinks);
-
   const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<IBookmark | undefined>();
-  const [loadingNewBookmarkDetails, setLoadingNewBookmarkDetails] = useState(false);
-  const [newBookmarkDetails, setNewBookmarkDetails] = useState<IBookmark | undefined>();
   // const [sortBy, setSortBy] = useState<SortMethod>('newest');
 
   const defaultHomeToRow = useUser5ettings(state => state.settings.defaultHomeToRow);
@@ -56,54 +48,7 @@ export const HomeScreen = () => {
     editBookmarkSheet.present();
   };
 
-  const handleShare = React.useCallback(
-    async (item: any) => {
-      if (!item) {
-        return;
-      }
-
-      const { data } = item;
-
-      const sharedData = data[0]?.data ?? null;
-
-      if (!sharedData) {
-        console.error('Error with share', data);
-        return;
-      }
-
-      setLoadingNewBookmarkDetails(true);
-
-      const newPreviewDetails = (await getLinkPreview(sharedData)) as unknown as IBookmark;
-
-      setNewBookmarkDetails(newPreviewDetails);
-
-      newBookmarkSheet.present();
-    },
-    [newBookmarkSheet],
-  );
-
-  // React.useEffect(() => {
-  //   ShareMenu.getInitialShare(handleShare);
-  // }, [handleShare]);
-
-  // React.useEffect(() => {
-  //   const listener = ShareMenu.addNewShareListener(handleShare);
-
-  //   return () => {
-  //     listener.remove();
-  //   };
-  // }, [handleShare]);
-
-  const filteredBookmarks = React.useMemo(() => {
-    return bookmarks?.sort((a, b) => {
-      // const dateA = new Date(a.created_at);
-      // const dateB = new Date(b.created_at);
-
-      return new Date(b.created_at) - new Date(a.created_at);
-    });
-  }, [bookmarks]);
-
-  const addNewBookmark = async (bookmark: IBookmark) => {
+  const addNewBookmark = async (bookmark: Omit<IBookmark, 'id'>) => {
     try {
       await BookmarksAPI.addBookmark(bookmark);
       refetch();
@@ -113,6 +58,8 @@ export const HomeScreen = () => {
       console.error(error);
     }
   };
+
+  const { newBookmarkDetails, loadingNewBookmarkDetails } = useShareIntent(addNewBookmark);
 
   return (
     <>
@@ -127,8 +74,8 @@ export const HomeScreen = () => {
         </FiltersContainer>
         <MultiDisplayList
           currentListDisplayType={currentListDisplayType}
-          data={filteredBookmarks ?? EMPTY_ARRAY}
-          loadingBookmarks={isLoading ?? loadingLocalLinks}
+          data={bookmarks ?? EMPTY_ARRAY}
+          loadingBookmarks={isLoading}
           onItemLongPress={presentEditBookmarkSheet}
           refreshList={refetch}
         />
@@ -153,12 +100,11 @@ export const HomeScreen = () => {
 const ScreenContainer = styled.View`
   flex: 1;
   padding-top: 10px;
-  /* background-color: #fafbfc; */
 `;
 
 const FiltersContainer = styled.View`
   flex-direction: row;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
