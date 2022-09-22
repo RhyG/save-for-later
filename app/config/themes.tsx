@@ -33,6 +33,12 @@ export const HeaderStyle = {
   shadowOffset: { height: 0, width: 0 },
 };
 
+export const DEFAULT_SHADOW = '0px 2.7px 5px rgba(0, 0, 0, 0.15)';
+
+export const generateShadow = ({ width = 0, height = 0, radius = 0, color = '#000' }) => {
+  return `${width}px ${height}px ${radius}px ${color}`;
+};
+
 export const StyledComponentsFonts = {
   size: {
     xs: '12px',
@@ -64,6 +70,7 @@ export const StyledComponentsTheme: DefaultTheme = {
   pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
   font: StyledComponentsFonts,
   colours,
+  shadow: DEFAULT_SHADOW,
   utils: {
     numbersToPixels: (...units: any[]) => units.map(unit => (typeof unit === 'number' ? `${unit}px` : unit)).join(' '),
   },
