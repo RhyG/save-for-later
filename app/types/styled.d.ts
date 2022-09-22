@@ -6,6 +6,7 @@ declare module 'styled-components' {
     colours: Record<string, string>;
     spacing: (...units: number[]) => string;
     pixelsToSpacing: (pixels: number) => number;
+    shadow: string;
     font: {
       size: { [key in FontSize]: string };
       weight: { [key in 'regular' | 'bold' | 'extraBold']: number };
