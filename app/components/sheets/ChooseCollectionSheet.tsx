@@ -20,7 +20,6 @@ const keyExtractor = (collection: ICollection) => collection.id;
 
 export const ChooseCollectionSheet = forwardRef<BottomSheetModal, Props>(({ bookmarkId }, ref) => {
   const { data: collections } = useCollections();
-  const numberOfCollections = collections?.length ?? 0;
 
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
@@ -59,20 +58,22 @@ export const ChooseCollectionSheet = forwardRef<BottomSheetModal, Props>(({ book
 
   // Omit any collections that already contain the bookmark from the list
   const filteredCollections = useMemo(() => {
-    return collections?.filter(collection => !collection.bookmarks.includes(bookmarkId));
+    return collections?.filter(collection => !collection.bookmarks.includes(bookmarkId)) ?? [];
   }, [collections, bookmarkId]);
 
   const customSnapPoints = useMemo(() => {
-    if (numberOfCollections <= 4) {
+    const numOfCollections = filteredCollections?.length ?? 0;
+
+    if (numOfCollections <= 4) {
       return ['40%'];
     }
 
-    if (numberOfCollections <= 8) {
+    if (numOfCollections <= 8) {
       return ['60%'];
     }
 
     return ['75%'];
-  }, [numberOfCollections]);
+  }, [filteredCollections.length]);
 
   return (
     <BottomSheet ref={ref} sheetTitle="Choose collection" customSnapPoints={customSnapPoints}>

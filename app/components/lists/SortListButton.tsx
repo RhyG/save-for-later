@@ -13,7 +13,11 @@ export type SortType = 'newest' | 'oldest';
 
 type Coordinates = { x: number; y: number };
 
-export const SortListButton = () => {
+type Props = {
+  onSortMethodPress: () => void;
+};
+
+export const SortListButton = (_: Props) => {
   const [buttonPosition, setButtonPosition] = useState<Coordinates>({
     x: 0,
     y: 0,

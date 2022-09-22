@@ -2,7 +2,6 @@ import React, { useReducer, useRef, useState } from 'react';
 import { Alert, TextInput as RNTextInput } from 'react-native';
 
 import { AccountAPI } from '@app/api/account';
-import { BaseScreen } from '@app/components/BaseScreen';
 import { DismissKeyboardWrapper } from '@app/components/DismissKeyboardWrapper';
 import { Text } from '@app/components/Text';
 import { TextInput } from '@app/components/TextInput';
@@ -65,7 +64,7 @@ export const UnauthenticatedScreen = () => {
             keyboardType="email-address"
             editable={!submitting}
           />
-          <SubmitButton onPress={submitEmail} submitting={submitting} />
+          <SubmitButton onPress={submitEmail} submitting={submitting} title="Submit" />
         </>
       ) : (
         <CodeInput submitCode={submitOTP} submitting={submitting} />

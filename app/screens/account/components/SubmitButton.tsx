@@ -6,14 +6,14 @@ import { Text } from '@app/components/Text';
 type Props = {
   onPress: () => void;
   submitting?: boolean;
-  title?: string;
+  title: string;
 };
 
 export const SubmitButton = ({ title, onPress, submitting }: Props) => {
   return (
     <StyledSubmitButton onPress={onPress} disabled={submitting}>
       <Text fontSize="md" color="#fff" bold>
-        {title ?? 'SUBMIT'}
+        {title}
       </Text>
     </StyledSubmitButton>
   );

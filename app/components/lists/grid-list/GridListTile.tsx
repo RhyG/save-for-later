@@ -64,6 +64,7 @@ const PressablePreview = styled.TouchableOpacity`
   background-color: #fff;
   height: ${GRID_ITEM_WIDTH}px;
   width: ${GRID_ITEM_WIDTH}px;
+  box-shadow: ${({ theme }) => theme.shadow};
 `;
 
 const SVGContainer = styled.View`
@@ -80,11 +81,8 @@ const ContentContainer = styled.View`
   flex: 1;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-right-width: 1px;
-  border-top-width: 1px;
-  border-color: ${({ theme }) => theme.colours.grey100};
+  /* border-width: 1px; */
+  /* border-color: ${({ theme }) => theme.colours.grey100}; */
 `;
 
 const PreviewImage = styled.Image`

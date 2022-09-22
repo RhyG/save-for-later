@@ -50,7 +50,8 @@ const CollectionContainer = styled.TouchableOpacity`
   padding: 10px;
   flex-direction: row;
   align-items: center;
-  border-width: 2px;
+  /* border-width: 2px; */
+  box-shadow: ${({ theme }) => theme.shadow};
   /* border-color: ${({ theme }) => theme.colours.grey000}; */
   border-color: #eef1f5;
   background-color: #fff;

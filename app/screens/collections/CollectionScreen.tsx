@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 import { BookmarksAPI } from '@app/api/bookmarks';
 import { CollectionAPI } from '@app/api/collections';
 import { BaseScreen } from '@app/components/BaseScreen';
+import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
@@ -107,11 +108,12 @@ export const CollectionScreen = ({ route }: Props) => {
           <BookmarkCountPill>
             <Text bold>{bookmarks?.length ?? ''}</Text>
           </BookmarkCountPill>
-          <EditCollectionButton onEditCollectionButtonPress={() => editCollectionSheet.present()} />
           <ListDisplayToggleButton
             currentDisplayType={currentListDisplayType}
             onToggleDisplayTypePress={toggleListDisplayType}
           />
+          <Space horizontal units={2} />
+          <EditCollectionButton onEditCollectionButtonPress={() => editCollectionSheet.present()} />
         </Header>
         <MultiDisplayList
           currentListDisplayType={currentListDisplayType}

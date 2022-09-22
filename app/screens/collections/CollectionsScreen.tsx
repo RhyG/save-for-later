@@ -12,11 +12,6 @@ import { ICollection } from '@app/types';
 import { AddCollectionSheet } from './components/AddCollectionSheet';
 import { Collection } from './components/Collection';
 
-// type Props = NativeStackScreenProps<
-//   CollectionsStackParamList,
-//   'Collections'
-// > & {};
-
 export const CollectionsScreen = () => {
   const session = useAuth(state => state.session);
 
@@ -79,12 +74,13 @@ export const CollectionsScreen = () => {
   );
 
   return (
-    <BaseScreen>
+    <BaseScreen noPadding>
       <FlatList
         data={collections}
         renderItem={renderCollection}
         refreshing={isLoading}
         refreshControl={RefreshControl}
+        contentContainerStyle={{ padding: 10 }}
       />
       <AddCollectionSheet ref={addCollectionSheetRef.sheetRef} addCollection={onAddCollection} />
     </BaseScreen>
