@@ -7,7 +7,7 @@ import { IBookmark } from '@app/types';
 
 type Props = { item: IBookmark; onItemLongPress: (item: IBookmark) => void };
 
-export const RowListItem = ({ item, onItemLongPress }: Props) => {
+export const RowListItemV2 = ({ item, onItemLongPress }: Props) => {
   const { title, description, url, preview_image } = item;
 
   const isSVG = preview_image?.slice(-5).includes('.svg') || preview_image?.includes('image/svg');
@@ -26,7 +26,7 @@ export const RowListItem = ({ item, onItemLongPress }: Props) => {
           {description}
         </Text>
       </TextContainer>
-      {!!preview_image ? (
+      {preview_image ? (
         <ImageContainer>
           {isSVG ? (
             <TempImage />
@@ -46,17 +46,12 @@ export const RowListItem = ({ item, onItemLongPress }: Props) => {
 };
 
 const RowContainer = styled.TouchableOpacity`
-  /* background-color: ${({ theme }) => theme.colours.grey000}; */
-  /* border-width: 2px;
-  border-color: #ebf0f3; */
-  background-color: #fff;
-  /* margin-bottom: 5px; */
-  border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 0 10px;
+  border-color: #ebf0f3;
+  margin-bottom: 5px;
+  padding: 10px 0;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  box-shadow: ${({ theme }) => theme.shadow};
 `;
 
 const TextContainer = styled.View`
@@ -80,8 +75,6 @@ const PreviewImage = styled.Image`
   height: 40px;
   width: 40px;
   border-radius: 40px;
-  /* flex: 1; */
   align-self: center;
-  /* background-color: '#f7f7f8'; */
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
