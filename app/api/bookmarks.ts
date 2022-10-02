@@ -1,5 +1,5 @@
 import { supabase } from '@app/lib/supabase';
-import { IBookmark } from '@app/types';
+import { IBookmark, ICollection } from '@app/types';
 
 interface IBookmarksAPI {
   fetchAllBookmarks: () => Promise<IBookmark[]>;
@@ -11,26 +11,33 @@ interface IBookmarksAPI {
 
 export const BookmarksAPI: IBookmarksAPI = {
   fetchAllBookmarks: async () => {
-    const { body, error } = await supabase.from('bookmarks').select().order('created_at', { ascending: false });
+    const { body, error } = await supabase
+      .from<IBookmark>('bookmarks')
+      .select()
+      .order('created_at', { ascending: false });
 
     if (error) {
       throw new Error(`Error fetching all bookmarks - ${error.message}`);
     }
 
     // TODO figure out issue with `created_at` when properly typed
-    return body as unknown as IBookmark[];
+    return body;
   },
   fetchBookmarkByID: async (id: string) => {
-    const { data, error } = await supabase.from('bookmarks').select('*').eq('id', id);
+    const { data, error } = await supabase.from<IBookmark>('bookmarks').select('*').eq('id', id);
 
     if (error) {
       throw new Error(`Error fetching bookmark with ID: ${id} - ${error.message}`);
     }
 
-    return data[0] as IBookmark;
+    return data[0];
   },
   fetchBookmarksByCollection: async (collectionId: string) => {
-    let { data: collections, error } = await supabase.from('collections').select('*').limit(1).eq('id', collectionId);
+    let { data: collections, error } = await supabase
+      .from<ICollection>('collections')
+      .select('*')
+      .limit(1)
+      .eq('id', collectionId);
 
     if (error) {
       throw new Error(`Error fetching collection with ID ${collectionId} - ${error.message}`);
@@ -38,9 +45,13 @@ export const BookmarksAPI: IBookmarksAPI = {
 
     const collection = collections?.[0];
 
-    const bookmarks = await Promise.all(collection.bookmarks.map(BookmarksAPI.fetchBookmarkByID));
+    if (collection) {
+      const bookmarks = await Promise.all(collection.bookmarks.map(BookmarksAPI.fetchBookmarkByID));
 
-    return bookmarks;
+      return bookmarks;
+    }
+
+    return [];
   },
   deleteBookmark: async (id: string) => {
     const { error } = await supabase.from('bookmarks').delete().eq('id', id);
