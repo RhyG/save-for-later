@@ -6,10 +6,8 @@ interface IAccountAPI {
   signIn: (email: string) => Promise<User | null>;
   submitOTP: (email: string, token: string) => Promise<{ user: User | null; session: Session | null } | null>;
   signOut: () => Promise<void>;
+  deleteAccount: () => Promise<boolean>;
 }
-
-// 1. Use signIn({ email: '' }) to send a code
-// 2. Use verifyOTP({ token, type: 'magiclink' })
 
 export const AccountAPI: IAccountAPI = {
   signIn: async (email: string) => {
@@ -36,5 +34,9 @@ export const AccountAPI: IAccountAPI = {
   },
   signOut: async () => {
     await supabase.auth.signOut();
+  },
+  deleteAccount: async () => {
+    // figure out how to delete a user
+    return true;
   },
 };
