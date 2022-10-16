@@ -1,6 +1,6 @@
 export interface IBookmark {
   url: string;
-  collections: collection[];
+  collections: ICollection[];
   id: string;
   user_id: string;
   title: string;
