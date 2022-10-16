@@ -11,7 +11,7 @@ export const useSheetRef = () => {
   }, []);
 
   const dismiss = useCallback(() => {
-    sheetRef.current?.dismiss() ?? noop();
+    sheetRef.current?.close() ?? noop();
   }, []);
 
   // Return value is memoised to ensure they are memory safe when required as a dependency.

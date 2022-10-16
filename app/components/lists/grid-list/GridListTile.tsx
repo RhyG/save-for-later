@@ -81,8 +81,6 @@ const ContentContainer = styled.View`
   flex: 1;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  /* border-width: 1px; */
-  /* border-color: ${({ theme }) => theme.colours.grey100}; */
 `;
 
 const PreviewImage = styled.Image`

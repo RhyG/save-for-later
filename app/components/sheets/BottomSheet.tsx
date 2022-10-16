@@ -18,6 +18,9 @@ const Backdrop = (props: BottomSheetBackdropProps) => (
   <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />
 );
 
+/**
+ * A wrapper around @gorhom/bottom-sheet built for reusability and consistent styling.
+ */
 export const BottomSheet = React.forwardRef<BottomSheetModal, Props>(
   ({ sheetTitle, customSnapPoints, alignHeader, children }, ref) => {
     const { bottom: bottomInset } = useSafeAreaInsets();
@@ -39,6 +42,7 @@ export const BottomSheet = React.forwardRef<BottomSheetModal, Props>(
           ref={ref}
           enablePanDownToClose={true}
           style={bottomSheetStyle}
+          enableDismissOnClose={true}
           backdropComponent={Backdrop}>
           <SheetContainer>
             {sheetTitle ? (
