@@ -49,7 +49,7 @@ export const AddCollectionSheet = React.forwardRef<BottomSheetModal, Props>(({ a
         <ChooseIconButton onPress={() => setEmojiPickerOpen(true)}>
           <Text fontSize="xxxl">{collectionIcon}</Text>
         </ChooseIconButton>
-        <Button title="Create collection" onPress={onAddCollectionButtonPress} containerStyle={{ marginTop: 'auto' }} />
+        <Button title="Create collection" onPress={onAddCollectionButtonPress} containerStyle={buttonContainerStyle} />
       </BottomSheet>
       <EmojiPicker onEmojiSelected={handlePick} open={emojiPickerOpen} onClose={() => setEmojiPickerOpen(false)} />
     </>
@@ -76,3 +76,5 @@ const ChooseIconButton = styled.TouchableOpacity`
   align-self: center;
   margin-top: 20px;
 `;
+
+const buttonContainerStyle = { marginTop: 'auto' };
