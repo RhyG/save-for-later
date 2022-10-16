@@ -7,8 +7,8 @@ import { Text } from '@app/components/Text';
 import { ActionButton } from '@app/components/buttons/ActionButton';
 import { SPRING_DAMPING_CONFIG } from '@app/config/animation';
 
-const FAB_HIDDEN_BOTTOM_VALUE = -180;
-const FAB_VISIBLE_BOTTOM_VALUE = 20;
+const HIDDEN_BOTTOM_VALUE = -180;
+const VISIBLE_BOTTOM_VALUE = 20;
 
 type Props = {
   visible: boolean;
@@ -18,20 +18,17 @@ type Props = {
 
 export const SelectionActions = ({ visible, onDeletePress, onCancelPress }: Props) => {
   const deleteButton = useAnimatedStyle(() => {
-    let value: number;
-
-    const newBottomValue = visible ? FAB_VISIBLE_BOTTOM_VALUE : FAB_HIDDEN_BOTTOM_VALUE;
-    value = withSpring(newBottomValue, SPRING_DAMPING_CONFIG);
+    const newBottomValue = visible ? VISIBLE_BOTTOM_VALUE : HIDDEN_BOTTOM_VALUE;
 
     return {
-      bottom: value,
+      bottom: withSpring(newBottomValue, SPRING_DAMPING_CONFIG),
     };
   }, [visible]);
 
   const cancelButton = useAnimatedStyle(() => {
     let value: number;
 
-    const newBottomValue = visible ? FAB_VISIBLE_BOTTOM_VALUE : FAB_HIDDEN_BOTTOM_VALUE;
+    const newBottomValue = visible ? VISIBLE_BOTTOM_VALUE : HIDDEN_BOTTOM_VALUE;
     value = withDelay(100, withSpring(newBottomValue, SPRING_DAMPING_CONFIG));
 
     return {
