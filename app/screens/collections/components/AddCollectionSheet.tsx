@@ -19,7 +19,7 @@ export const AddCollectionSheet = React.forwardRef<BottomSheetModal, Props>(({ a
   const { colours } = useTheme();
 
   const [inputValue, setInputValue] = useState('');
-  const [collectionIcon, setCollectionIcon] = useState<string>(getRandomEmoji());
+  const [collectionIcon, setCollectionIcon] = useState(getRandomEmoji());
 
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
