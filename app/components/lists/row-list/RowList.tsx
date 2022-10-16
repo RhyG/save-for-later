@@ -4,8 +4,9 @@ import { FlatList, ListRenderItem, RefreshControl as RNRefreshControl, View } fr
 import { IBookmark } from '@app/types';
 
 import { ListProps } from '../MultiDisplayList';
-import { RowListItem } from './RowListItem';
-import { RowListItemV2 } from './RowListItemV2';
+// import { RowListItem } from './RowListItem';
+// import { RowListItemV2 } from './RowListItemV2';
+import { RowListItemV3 } from './RowListItemV3';
 
 const keyExtractor = (item: IBookmark) => item.id;
 
@@ -15,7 +16,7 @@ export const RowList = React.forwardRef<FlatList, ListProps>(
   ({ data, onItemLongPress, loadingBookmarks, refreshList, ...rest }, ref) => {
     const renderItem = useCallback<ListRenderItem<IBookmark>>(
       ({ item }) => {
-        return <RowListItemV2 item={item} onItemLongPress={onItemLongPress} />;
+        return <RowListItemV3 item={item} onItemLongPress={onItemLongPress} />;
       },
       [onItemLongPress],
     );
@@ -34,7 +35,7 @@ export const RowList = React.forwardRef<FlatList, ListProps>(
         refreshControl={RefreshControl}
         showsVerticalScrollIndicator={false}
         ref={ref}
-        ItemSeparatorComponent={ItemSeperatorComponent}
+        // ItemSeparatorComponent={ItemSeperatorComponent}
         {...rest}
       />
     );
