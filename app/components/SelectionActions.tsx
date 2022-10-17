@@ -9,6 +9,8 @@ const HIDDEN_BOTTOM_VALUE = -120;
 const VISIBLE_BOTTOM_VALUE = 20;
 const ANIM_TIMING_INCREMENT = 60;
 
+type BottomValues = typeof HIDDEN_BOTTOM_VALUE | typeof VISIBLE_BOTTOM_VALUE;
+
 type SelectionActionsProps = PropsWithChildren<{
   /**
    * Visibility state of the component.
@@ -31,7 +33,7 @@ const SelectionActions = ({ visible, children }: SelectionActionsProps) => {
       {Children.map(children, (child, index) => {
         if (isValidElement(child)) {
           // casting because despite the guard TS doesn't know that child is a valid element.
-          return cloneElement(child as ReactElement<any>, {
+          return cloneElement(child as ReactElement<{ bottomValue: BottomValues; index: number }>, {
             bottomValue: visible ? VISIBLE_BOTTOM_VALUE : HIDDEN_BOTTOM_VALUE,
             index,
           });
@@ -56,7 +58,7 @@ type ActionItemProps = PropsWithChildren<{
   /**
    * Absolute position from the bottom of the screen.
    */
-  bottomValue?: number;
+  bottomValue?: BottomValues;
   /**
    * Index of the child in the parent component.
    * Used to determine the delay of the animation.
