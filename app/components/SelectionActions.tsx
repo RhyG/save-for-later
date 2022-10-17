@@ -1,5 +1,4 @@
 import React, { Children, PropsWithChildren, ReactElement, cloneElement, isValidElement } from 'react';
-import { ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, withDelay, withSpring } from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
@@ -8,11 +7,13 @@ import { SPRING_DAMPING_CONFIG } from '@app/config/animation';
 
 const HIDDEN_BOTTOM_VALUE = -120;
 const VISIBLE_BOTTOM_VALUE = 20;
+const ANIM_TIMING_INCREMENT = 60;
 
 type SelectionActionsProps = PropsWithChildren<{
+  /**
+   * Visibility state of the component.
+   */
   visible: boolean;
-  onDeletePress: () => void;
-  onCancelPress: () => void;
 }>;
 
 /**
@@ -29,9 +30,9 @@ const SelectionActions = ({ visible, children }: SelectionActionsProps) => {
     <Container>
       {Children.map(children, (child, index) => {
         if (isValidElement(child)) {
-          // casting because despite the guard TS doesn't know that child is a valid element
+          // casting because despite the guard TS doesn't know that child is a valid element.
           return cloneElement(child as ReactElement<any>, {
-            visible,
+            bottomValue: visible ? VISIBLE_BOTTOM_VALUE : HIDDEN_BOTTOM_VALUE,
             index,
           });
         }
@@ -48,20 +49,29 @@ const SelectionActions = ({ visible, children }: SelectionActionsProps) => {
  * but allow them to be used by `cloneElement`,
  */
 type ActionItemProps = PropsWithChildren<{
+  /**
+   * Function to call on button press.
+   */
   onPress: () => void;
-  style?: ViewStyle;
-  visible?: boolean;
+  /**
+   * Absolute position from the bottom of the screen.
+   */
+  bottomValue?: number;
+  /**
+   * Index of the child in the parent component.
+   * Used to determine the delay of the animation.
+   *
+   * @defaultValue 0 - no delay, mainly to satisfy TS.
+   */
   index?: number;
 }>;
 
-const ActionItem = ({ onPress, visible, index = 0, children }: ActionItemProps) => {
+const ActionItem = ({ onPress, bottomValue = VISIBLE_BOTTOM_VALUE, index = 0, children }: ActionItemProps) => {
   const style = useAnimatedStyle(() => {
-    const newBottomValue = visible ? VISIBLE_BOTTOM_VALUE : HIDDEN_BOTTOM_VALUE;
-
     return {
-      bottom: withDelay(index * 80, withSpring(newBottomValue, SPRING_DAMPING_CONFIG)),
+      bottom: withDelay(index * ANIM_TIMING_INCREMENT, withSpring(bottomValue, SPRING_DAMPING_CONFIG)),
     };
-  }, [visible]);
+  }, [bottomValue]);
 
   return (
     <Animated.View style={[style, marginLeft]}>
