@@ -3,6 +3,9 @@ import { FlatList, ListRenderItem, RefreshControl as RNRefreshControl } from 're
 
 import { CollectionAPI } from '@app/api/collections';
 import { BaseScreen } from '@app/components/BaseScreen';
+import { SelectionActions } from '@app/components/SelectionActions';
+import { Text } from '@app/components/Text';
+import { DeleteIcon } from '@app/components/icons';
 import { useCollections } from '@app/hooks/useCollections';
 import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
 import { useSheetRef } from '@app/hooks/useSheetRef';
@@ -12,7 +15,6 @@ import { ICollection } from '@app/types';
 
 import { AddCollectionSheet } from './components/AddCollectionSheet';
 import { Collection } from './components/Collection';
-import { SelectionActions } from './components/SelectionActions';
 
 // type Props = NativeStackScreenProps<CollectionsStackParamList, 'Collections'>;
 
@@ -99,12 +101,19 @@ export const CollectionsScreen = () => {
         refreshControl={RefreshControl}
         contentContainerStyle={listContentContainerStyle}
       />
+
       <AddCollectionSheet ref={addCollectionSheetRef.sheetRef} addCollection={onAddCollection} />
-      <SelectionActions
-        visible={currentlySelectingCollections}
-        onDeletePress={deleteSelectedCollections}
-        onCancelPress={() => setSelectedCollections([])}
-      />
+
+      <SelectionActions onCancelPress={() => {}} onDeletePress={() => {}} visible={currentlySelectingCollections}>
+        <SelectionActions.Item onPress={deleteSelectedCollections}>
+          <DeleteIcon />
+        </SelectionActions.Item>
+        <SelectionActions.Item onPress={() => setSelectedCollections([])}>
+          <Text fontSize="sm" bold color="#fff">
+            CANCEL
+          </Text>
+        </SelectionActions.Item>
+      </SelectionActions>
     </BaseScreen>
   );
 };

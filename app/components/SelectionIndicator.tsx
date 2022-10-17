@@ -18,6 +18,7 @@ const SelectionIndicatorContainer = styled.View`
   border-radius: 25px;
   background-color: ${({ theme }) => theme.colours.purple100};
   position: absolute;
-  right: 10;
-  top: 10;
+  right: 10px;
+  top: 10px;
+  border: 1.5px solid #fff;
 `;
