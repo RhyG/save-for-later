@@ -23,7 +23,7 @@ type SelectionActionsProps = PropsWithChildren<{
  * This composition is probably overkill, but I took it as a good opportunity to experiment with combining
  * a compositional component pattern with animated styles conditional to the individual children.
  */
-const SelectionActions = ({ visible, children }: SelectionActionsProps) => {
+export const SelectionActions = ({ visible, children }: SelectionActionsProps) => {
   if (Children.count(children) > 5) {
     throw new Error("Calm ya farm mate 5 is enough children don't ya reckon?");
   }
@@ -76,15 +76,13 @@ const ActionItem = ({ onPress, bottomValue = VISIBLE_BOTTOM_VALUE, index = 0, ch
   }, [bottomValue]);
 
   return (
-    <Animated.View style={[style, marginLeft]}>
+    <Animated.View style={[style, marginLeft]} pointerEvents="auto">
       <ActionButton onPress={onPress}>{children}</ActionButton>
     </Animated.View>
   );
 };
 
 SelectionActions.Item = ActionItem;
-
-export { SelectionActions };
 
 const marginLeft = { marginLeft: 10 };
 

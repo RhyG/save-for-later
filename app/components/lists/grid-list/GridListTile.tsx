@@ -3,7 +3,9 @@ import { Dimensions, Linking } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import styled, { useTheme } from 'styled-components/native';
 
+import { SelectionIndicator } from '@app/components/SelectionIndicator';
 import { Text } from '@app/components/Text';
+import { useSelectionsContext } from '@app/components/providers/SelectionProvider';
 import { IBookmark } from '@app/types';
 
 const { width } = Dimensions.get('window');
@@ -12,14 +14,24 @@ export const GRID_ITEM_WIDTH = width / 2 - 15;
 type Props = {
   item: IBookmark;
   onLongPress: (item: IBookmark) => void;
+  selected: boolean;
+  addItemToSelections: (id: string) => void;
 };
 
-export const GridListTile = ({ item, onLongPress }: Props): JSX.Element => {
+export const GridListTile = ({ item, onLongPress }: Props): React.ReactElement => {
   const { colours } = useTheme();
 
-  const { title, preview_image, description, url } = item;
+  const { title, preview_image, description, url, id } = item;
+
+  const { selections, selectionsActive, updateSelections } = useSelectionsContext();
+  const itemIsSelected = selections.includes(id);
 
   const onPreviewPress = () => {
+    if (selectionsActive) {
+      updateSelections(id);
+      return;
+    }
+
     Linking.openURL(url);
   };
 
@@ -54,6 +66,7 @@ export const GridListTile = ({ item, onLongPress }: Props): JSX.Element => {
           {description}
         </Text>
       </ContentContainer>
+      {itemIsSelected ? <SelectionIndicator /> : null}
     </PressablePreview>
   );
 };

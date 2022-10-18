@@ -9,6 +9,7 @@ import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
+import { SelectionProvider } from '@app/components/providers/SelectionProvider';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
@@ -115,12 +116,25 @@ export const CollectionScreen = ({ route }: Props) => {
           <Space horizontal units={2} />
           <EditCollectionButton onEditCollectionButtonPress={() => editCollectionSheet.present()} />
         </Header>
-        <MultiDisplayList
-          currentListDisplayType={currentListDisplayType}
-          data={bookmarks}
-          loadingBookmarks={loadingBookmarks}
-          onItemLongPress={presentEditBookmarkSheet}
-        />
+
+        <SelectionProvider>
+          <MultiDisplayList
+            currentListDisplayType={currentListDisplayType}
+            data={bookmarks}
+            loadingBookmarks={loadingBookmarks}
+            onItemLongPress={presentEditBookmarkSheet}
+          />
+
+          {bookmarkBeingEdited ? (
+            <EditBookmarkSheet
+              ref={editBookmarkSheet.sheetRef}
+              bookmarkBeingEdited={bookmarkBeingEdited}
+              bookmarkInCollection={true}
+              deleteBookmark={deleteBookmark}
+              removeBookmarkFromCollection={onRemoveFromCollectionPress}
+            />
+          ) : null}
+        </SelectionProvider>
       </BaseScreen>
       <EditCollectionSheet
         ref={editCollectionSheet.sheetRef}
@@ -128,15 +142,7 @@ export const CollectionScreen = ({ route }: Props) => {
         collectionName={collectionInformation?.name ?? ''}
         collectionIcon={collectionInformation?.icon ?? ''}
       />
-      {bookmarkBeingEdited ? (
-        <EditBookmarkSheet
-          ref={editBookmarkSheet.sheetRef}
-          bookmarkBeingEdited={bookmarkBeingEdited}
-          bookmarkInCollection={true}
-          deleteBookmark={deleteBookmark}
-          removeBookmarkFromCollection={onRemoveFromCollectionPress}
-        />
-      ) : null}
+
       <ManualBookmarkSheet ref={manualBookmarkSheet.sheetRef} addBookmarkToList={addBookmark} />
     </>
   );

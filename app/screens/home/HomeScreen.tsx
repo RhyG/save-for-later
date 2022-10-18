@@ -6,6 +6,7 @@ import { BookmarksAPI } from '@app/api/bookmarks';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { SortListButton } from '@app/components/lists/SortListButton';
+import { SelectionProvider } from '@app/components/providers/SelectionProvider';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useBookmarks } from '@app/hooks/useBookmarks';
@@ -63,36 +64,43 @@ export const HomeScreen = () => {
 
   return (
     <>
-      <ScreenContainer>
-        <FiltersContainer>
-          <SearchInput ref={searchInputRef as React.Ref<RNTextInput>} />
-          <ListDisplayToggleButton
-            currentDisplayType={currentListDisplayType}
-            onToggleDisplayTypePress={toggleListDisplayType}
+      <SelectionProvider>
+        <ScreenContainer>
+          <FiltersContainer>
+            <SearchInput ref={searchInputRef as React.Ref<RNTextInput>} />
+            <ListDisplayToggleButton
+              currentDisplayType={currentListDisplayType}
+              onToggleDisplayTypePress={toggleListDisplayType}
+            />
+            <SortListButton onSortMethodPress={() => {}} />
+          </FiltersContainer>
+
+          <MultiDisplayList
+            currentListDisplayType={currentListDisplayType}
+            data={bookmarks ?? EMPTY_ARRAY}
+            loadingBookmarks={isLoading}
+            onItemLongPress={presentEditBookmarkSheet}
+            refreshList={refetch}
           />
-          <SortListButton onSortMethodPress={() => {}} />
-        </FiltersContainer>
-        <MultiDisplayList
-          currentListDisplayType={currentListDisplayType}
-          data={bookmarks ?? EMPTY_ARRAY}
-          loadingBookmarks={isLoading}
-          onItemLongPress={presentEditBookmarkSheet}
-          refreshList={refetch}
+        </ScreenContainer>
+
+        <ManualBookmarkSheet ref={manualBookmarkSheet.sheetRef} addNewBookmark={addNewBookmark} />
+
+        {bookmarkBeingEdited ? (
+          <EditBookmarkSheet
+            ref={editBookmarkSheet.sheetRef}
+            bookmarkBeingEdited={bookmarkBeingEdited}
+            deleteBookmark={deleteBookmark}
+            onSelectButtonPressed={() => {}}
+          />
+        ) : null}
+
+        <NewBookmarkSheet
+          ref={newBookmarkSheet.sheetRef}
+          linkDetails={newBookmarkDetails}
+          loadingLinkDetails={loadingNewBookmarkDetails}
         />
-      </ScreenContainer>
-      <ManualBookmarkSheet ref={manualBookmarkSheet.sheetRef} addNewBookmark={addNewBookmark} />
-      {bookmarkBeingEdited ? (
-        <EditBookmarkSheet
-          ref={editBookmarkSheet.sheetRef}
-          bookmarkBeingEdited={bookmarkBeingEdited}
-          deleteBookmark={deleteBookmark}
-        />
-      ) : null}
-      <NewBookmarkSheet
-        ref={newBookmarkSheet.sheetRef}
-        linkDetails={newBookmarkDetails}
-        loadingLinkDetails={loadingNewBookmarkDetails}
-      />
+      </SelectionProvider>
     </>
   );
 };

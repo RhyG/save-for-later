@@ -1,6 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { FlatList, FlatListProps, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
+import { SelectionActions } from '@app/components/SelectionActions';
+import { Text } from '@app/components/Text';
+import { AddToCollectionIcon, DeleteIcon } from '@app/components/icons';
+import { useSelectionsContext } from '@app/components/providers/SelectionProvider';
 import { IBookmark } from '@app/types';
 
 import { ScrollToTopFAB } from '../ScrollToTopFAB';
@@ -22,6 +26,8 @@ type Props = {
 export const MultiDisplayList = ({ currentListDisplayType, data, ...listProps }: Props) => {
   const [showScrollToTopFAB, setShowScrollToTopFAB] = useState(true);
   const [lastScrollYOffset, setLastScrollYOffset] = useState(0);
+
+  const { selectionsActive, selections, clearSelections, updateSelections } = useSelectionsContext();
 
   const listRef = useRef<FlatList<IBookmark>>(null);
 
@@ -56,26 +62,38 @@ export const MultiDisplayList = ({ currentListDisplayType, data, ...listProps }:
     listRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   }, []);
 
+  const sharedProps = {
+    ref: listRef,
+    data,
+    onScroll: listScrollHandler,
+    onScrollEndDrag,
+    selections,
+    updateSelections,
+  };
+
   return (
     <>
       {currentListDisplayType === 'grid' ? (
-        <GridList
-          ref={listRef}
-          data={data}
-          onScroll={listScrollHandler}
-          onScrollEndDrag={onScrollEndDrag}
-          {...listProps}
-        />
+        <GridList {...sharedProps} {...listProps} />
       ) : (
-        <RowList
-          ref={listRef}
-          data={data}
-          onScroll={listScrollHandler}
-          onScrollEndDrag={onScrollEndDrag}
-          {...listProps}
-        />
+        <RowList {...sharedProps} {...listProps} />
       )}
-      <ScrollToTopFAB buttonVisible={showScrollToTopFAB} onPress={scrollListToTop} />
+
+      <SelectionActions visible={selectionsActive}>
+        <SelectionActions.Item onPress={() => console.log('ADDING TO COLLECTION')}>
+          <AddToCollectionIcon />
+        </SelectionActions.Item>
+        <SelectionActions.Item onPress={() => console.log('DELETING')}>
+          <DeleteIcon />
+        </SelectionActions.Item>
+        <SelectionActions.Item onPress={clearSelections}>
+          <Text fontSize="sm" bold color="#fff">
+            CANCEL
+          </Text>
+        </SelectionActions.Item>
+      </SelectionActions>
+
+      <ScrollToTopFAB buttonVisible={!selectionsActive && showScrollToTopFAB} onPress={scrollListToTop} />
     </>
   );
 };

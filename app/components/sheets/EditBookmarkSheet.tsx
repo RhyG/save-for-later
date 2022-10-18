@@ -11,12 +11,14 @@ import { Text } from '@app/components/Text';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { IBookmark } from '@app/types';
 
+import { useSelectionsContext } from '../providers/SelectionProvider';
 import { BottomSheet } from './BottomSheet';
 import { ChooseCollectionSheet } from './ChooseCollectionSheet';
 
 type CommonProps = {
   bookmarkBeingEdited: IBookmark;
   deleteBookmark: (id: string) => Promise<void>;
+  onSelectButtonPressed: (id: string) => void;
 };
 
 type ConditionalProps = {
@@ -35,8 +37,15 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
 
     const { title, url, id: bookmarkId, preview_image, description } = bookmarkBeingEdited;
 
+    const { updateSelections } = useSelectionsContext();
+
     const onDeleteButtonPress = () => {
       deleteBookmark(bookmarkId);
+      ref?.current?.dismiss();
+    };
+
+    const onSelectButtonPress = () => {
+      updateSelections(bookmarkId);
       ref?.current?.dismiss();
     };
 
@@ -84,7 +93,7 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
                 </TouchableOpacity>
               </BottomRowGroup>
               <BottomRowGroup>
-                <SelectContainer onPress={() => {}}>
+                <SelectContainer onPress={onSelectButtonPress}>
                   <Text color={colours.purple100} bold>
                     SELECT
                   </Text>

@@ -8,6 +8,11 @@ import { LoadingComponent } from '../LoadingComponent';
 import { ListProps } from '../MultiDisplayList';
 import { GRID_ITEM_WIDTH, GridListTile } from './GridListTile';
 
+type Props = {
+  selections: string[];
+  updateSelections: (id: string) => void;
+} & ListProps;
+
 const getItemLayout = (_: IBookmark[] | null | undefined, index: number) => ({
   length: GRID_ITEM_WIDTH,
   offset: GRID_ITEM_WIDTH * index,
@@ -16,11 +21,18 @@ const getItemLayout = (_: IBookmark[] | null | undefined, index: number) => ({
 
 const keyExtractor = (item: IBookmark) => item.id;
 
-export const GridList = React.forwardRef<FlatList, ListProps>(
-  ({ data, loadingBookmarks, onItemLongPress, refreshList, ...rest }, ref) => {
+export const GridList = React.forwardRef<FlatList, Props>(
+  ({ data, loadingBookmarks, onItemLongPress, refreshList, selections, updateSelections, ...rest }, ref) => {
     const renderItem = useCallback<ListRenderItem<IBookmark>>(
-      ({ item }) => <GridListTile item={item} onLongPress={onItemLongPress} />,
-      [onItemLongPress],
+      ({ item }) => (
+        <GridListTile
+          item={item}
+          onLongPress={onItemLongPress}
+          selected={selections.includes(item.id)}
+          addItemToSelections={updateSelections}
+        />
+      ),
+      [onItemLongPress, selections, updateSelections],
     );
 
     const EmptyComponent = useMemo(() => {

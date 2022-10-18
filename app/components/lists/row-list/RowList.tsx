@@ -8,11 +8,16 @@ import { ListProps } from '../MultiDisplayList';
 // import { RowListItemV2 } from './RowListItemV2';
 import { RowListItemV3 } from './RowListItemV3';
 
+type Props = {
+  selections: string[];
+  updateSelections: (id: string) => void;
+} & ListProps;
+
 const keyExtractor = (item: IBookmark) => item.id;
 
 const ItemSeperatorComponent = () => <View style={ITEM_SEPERATOR_STYLE} />;
 
-export const RowList = React.forwardRef<FlatList, ListProps>(
+export const RowList = React.forwardRef<FlatList, Props>(
   ({ data, onItemLongPress, loadingBookmarks, refreshList, ...rest }, ref) => {
     const renderItem = useCallback<ListRenderItem<IBookmark>>(
       ({ item }) => {

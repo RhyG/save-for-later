@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem, RefreshControl as RNRefreshControl } from 'react-native';
 
 import { CollectionAPI } from '@app/api/collections';
@@ -8,6 +8,7 @@ import { Text } from '@app/components/Text';
 import { DeleteIcon } from '@app/components/icons';
 import { useCollections } from '@app/hooks/useCollections';
 import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
+import { useSelections } from '@app/hooks/useSelections';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { showDeleteAlert } from '@app/lib/alerts';
 import { useAuth } from '@app/store/auth';
@@ -24,30 +25,28 @@ export const CollectionsScreen = () => {
   const addCollectionSheetRef = useSheetRef();
 
   const { data: collections, isLoading, refetch } = useCollections();
-
-  const [selectedCollections, setSelectedCollections] = useState<ICollection['id'][]>([]);
-  const currentlySelectingCollections = selectedCollections.length > 0;
+  const { selections, selectionsActive, updateSelections, resetSelections } = useSelections();
 
   useHeaderAddButton(() => addCollectionSheetRef?.present());
 
   const deleteSelectedCollections = useCallback(async () => {
-    const pluralisedCollection = selectedCollections.length > 1 ? 'collections' : 'collection';
+    const pluralisedCollection = selections.length > 1 ? 'collections' : 'collection';
 
     try {
       showDeleteAlert(
         `Delete ${pluralisedCollection}?`,
         `This will permanently delete the ${pluralisedCollection}.`,
         async () => {
-          await Promise.all(selectedCollections.map(collectionId => CollectionAPI.deleteCollection(collectionId)));
+          await Promise.all(selections.map(collectionId => CollectionAPI.deleteCollection(collectionId)));
 
-          setSelectedCollections([]);
+          resetSelections();
           refetch();
         },
       );
     } catch (error) {
       console.error(error);
     }
-  }, [selectedCollections, refetch]);
+  }, [refetch, selections, resetSelections]);
 
   const onAddCollection = async (name: string, icon: string) => {
     try {
@@ -60,16 +59,6 @@ export const CollectionsScreen = () => {
     }
   };
 
-  const updateSelectedCollections = useCallback((collectionId: string) => {
-    setSelectedCollections(prevSelectedCollections => {
-      if (prevSelectedCollections.some(id => id === collectionId)) {
-        return prevSelectedCollections.filter(id => id !== collectionId);
-      }
-
-      return [...prevSelectedCollections, collectionId];
-    });
-  }, []);
-
   const renderCollection: ListRenderItem<ICollection> = useCallback(
     ({ item }) => {
       return (
@@ -78,13 +67,13 @@ export const CollectionsScreen = () => {
           bookmarkCount={item.bookmark_count}
           id={item.id}
           icon={item.icon}
-          onItemLongPress={updateSelectedCollections}
-          collectionSelected={selectedCollections.some(collection => collection === item.id)}
-          currentlySelectingCollections={currentlySelectingCollections}
+          onItemLongPress={updateSelections}
+          collectionSelected={selections.some(collection => collection === item.id)}
+          currentlySelectingCollections={selectionsActive}
         />
       );
     },
-    [selectedCollections, updateSelectedCollections, currentlySelectingCollections],
+    [selections, updateSelections, selectionsActive],
   );
 
   const RefreshControl = useMemo(
@@ -104,11 +93,11 @@ export const CollectionsScreen = () => {
 
       <AddCollectionSheet ref={addCollectionSheetRef.sheetRef} addCollection={onAddCollection} />
 
-      <SelectionActions onCancelPress={() => {}} onDeletePress={() => {}} visible={currentlySelectingCollections}>
+      <SelectionActions visible={selectionsActive}>
         <SelectionActions.Item onPress={deleteSelectedCollections}>
           <DeleteIcon />
         </SelectionActions.Item>
-        <SelectionActions.Item onPress={() => setSelectedCollections([])}>
+        <SelectionActions.Item onPress={resetSelections}>
           <Text fontSize="sm" bold color="#fff">
             CANCEL
           </Text>
