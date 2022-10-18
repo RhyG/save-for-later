@@ -28,7 +28,6 @@ export default function App() {
     setSession(sesh);
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      console.log('AUTH STATE CHANGED:', { sesh });
       setSession(session);
     });
   }, [setSession]);
