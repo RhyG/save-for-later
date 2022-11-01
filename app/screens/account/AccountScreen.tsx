@@ -46,6 +46,7 @@ const Sheet = styled.View`
   border-top-left-radius: ${({ theme }) => theme.borderRadius};
   border-top-right-radius: ${({ theme }) => theme.borderRadius};
   padding: 10px;
+  padding-top: 30px;
 `;
 
 const HeaderContainer = styled.View`
