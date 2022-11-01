@@ -12,7 +12,6 @@ interface IBookmarksAPI {
 
 export const BookmarksAPI: IBookmarksAPI = {
   fetchAllBookmarks: async () => {
-    return new Promise((_, rej) => setTimeout(rej, 2000));
     const { body, error } = await supabase
       .from<IBookmark>('bookmarks')
       .select()
