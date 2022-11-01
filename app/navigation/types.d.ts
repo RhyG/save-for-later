@@ -4,10 +4,14 @@ import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 
 export type RootStackParamList = {
+  TabNavigator: undefined;
   HomeTab: NavigatorScreenParams<HomeStackParamList>;
   SettingsTab: NavigatorScreenParams<SettingsStackParamList>;
   AccountTab: NavigatorScreenParams<AccountStackParamList>;
   CollectionsTab: NavigatorScreenParams<CollectionsStackParamList>;
+
+  AddBookmarkScreen: undefined;
+  ManualBookmarkScreen: undefined;
 };
 
 export type RootStackScreenProps<Name extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, Name>;
@@ -23,7 +27,7 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> = Composite
 
 export type HomecreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<HomeStackParamList, 'Collection'>,
-  StackNavigationProp<StackParamList>
+  StackNavigationProp<RootStackParamList>
 >;
 
 export type SettingsStackParamList = {
@@ -37,7 +41,7 @@ export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = C
 
 export type SettingsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<SettingsStackParamList, 'Collection'>,
-  StackNavigationProp<StackParamList>
+  StackNavigationProp<RootStackParamList>
 >;
 
 export type AccountStackParamList = {
@@ -51,7 +55,7 @@ export type AccountStackScreenProps<T extends keyof AccountStackParamList> = Com
 
 export type AccountcreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<AccountStackParamList, 'Collection'>,
-  StackNavigationProp<StackParamList>
+  StackNavigationProp<RootStackParamList>
 >;
 
 export type CollectionsStackParamList = {
@@ -66,8 +70,12 @@ export type CollectionsStackScreenProps<T extends keyof CollectionsStackParamLis
 
 export type CollectionScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<CollectionsStackParamList, 'Collection'>,
-  StackNavigationProp<StackParamList>
+  StackNavigationProp<RootStackParamList>
 >;
+
+export type AddBookmarkScreenNavigationProp = CompositeNavigationProp<StackNavigationProp<RootStackParamList>>;
+
+export type ManualBookmarkScreenNavigationProp = CompositeNavigationProp<StackNavigationProp<RootStackParamList>>;
 
 interface RootStackScreen<Name extends keyof RootStackParamList, Props = {}>
   extends React.FC<RootStackScreenProps<Name> & Props> {}

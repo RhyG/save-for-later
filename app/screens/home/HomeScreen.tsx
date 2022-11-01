@@ -29,6 +29,8 @@ export const HomeScreen = () => {
 
   const defaultHomeToRow = useUser5ettings(state => state.settings.defaultHomeToRow);
 
+  useHeaderAddButton();
+
   const [currentListDisplayType, toggleListDisplayType] = useReducer(
     (_: DisplayType, action: DisplayType) => action,
     defaultHomeToRow ? 'row' : 'grid',
@@ -39,8 +41,6 @@ export const HomeScreen = () => {
   const manualBookmarkSheet = useSheetRef();
   const editBookmarkSheet = useSheetRef();
   const newBookmarkSheet = useSheetRef();
-
-  useHeaderAddButton(() => manualBookmarkSheet.present());
 
   const { isLoading, data: bookmarks, deleteBookmark, refetch } = useBookmarks();
 

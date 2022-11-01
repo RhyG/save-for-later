@@ -47,9 +47,7 @@ export const CollectionScreen = ({ route }: Props) => {
     'grid',
   );
 
-  useHeaderAddButton(() => manualBookmarkSheet.present(), {
-    headerTitle: collectionInformation?.name ?? collectionName ?? '',
-  });
+  useHeaderAddButton({ headerTitle: collectionInformation?.name ?? collectionName ?? '' });
 
   const presentEditBookmarkSheet = (item: IBookmark) => {
     setBookmarkBeingEdited(item);

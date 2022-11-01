@@ -7,8 +7,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
 import { useTheme } from 'styled-components/native';
 
-import { Text } from '@app/components/Text';
 import { AccountScreen } from '@app/screens/account';
+import { AddBookmarkScreen, ManualBookmarkScreen } from '@app/screens/add-bookmark';
 import { CollectionsScreen } from '@app/screens/collections';
 import { CollectionScreen } from '@app/screens/collections';
 import { HomeScreen } from '@app/screens/home';
@@ -26,6 +26,18 @@ const screenOptions = {
   contentStyle: { backgroundColor: '#fff' },
   headerStyle: { backgroundColor: '#fff' },
   headerShadowVisible: false,
+};
+
+const RootStack = createNativeStackNavigator<RootStackParamList>();
+
+const RootStackNavigator = () => {
+  return (
+    <RootStack.Navigator>
+      <RootStack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
+      <RootStack.Screen name="AddBookmarkScreen" component={AddBookmarkScreen} options={screenOptions} />
+      <RootStack.Screen name="ManualBookmarkScreen" component={ManualBookmarkScreen} options={screenOptions} />
+    </RootStack.Navigator>
+  );
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -70,81 +82,61 @@ const AccountStackScreen = () => {
 };
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
+const TabNavigator = () => {
+  const { colours } = useTheme();
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tab.Screen
+        name="HomeTab"
+        component={HomeStackScreen}
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <OcticonsIcon name="home" color={focused ? colours.purple100 : colours.grey300} size={25} />
+          ),
+        })}
+      />
+      <Tab.Screen
+        name="CollectionsTab"
+        component={CollectionsStackScreen}
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <FeatherIcon name="folder" color={focused ? colours.purple100 : colours.grey300} size={25} />
+          ),
+        })}
+      />
+      <Tab.Screen
+        name="AccountTab"
+        component={AccountStackScreen}
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <FeatherIcon name="user" color={focused ? colours.purple100 : colours.grey300} size={25} />
+          ),
+        })}
+      />
+      <Tab.Screen
+        name="SettingsTab"
+        component={SettingsStackScreen}
+        options={() => ({
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <IonIcon name="settings-outline" color={focused ? colours.purple100 : colours.grey300} size={25} />
+          ),
+        })}
+      />
+    </Tab.Navigator>
+  );
+};
 
 export default function App() {
-  const { colours } = useTheme();
-
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Tab.Screen
-          name="HomeTab"
-          component={HomeStackScreen}
-          options={() => ({
-            tabBarLabel: ({ focused }) =>
-              // <Text
-              //   color={focused ? colours.purple100 : colours.grey300}
-              //   fontSize="xs">
-              //   Home
-              // </Text>
-              null,
-            tabBarIcon: ({ focused }) => (
-              <OcticonsIcon name="home" color={focused ? colours.purple100 : colours.grey300} size={25} />
-            ),
-          })}
-        />
-        <Tab.Screen
-          name="CollectionsTab"
-          component={CollectionsStackScreen}
-          options={() => ({
-            tabBarLabel: ({ focused }) =>
-              // <Text
-              //   color={focused ? colours.purple100 : colours.grey300}
-              //   fontSize="xs">
-              //   Home
-              // </Text>
-              null,
-            tabBarIcon: ({ focused }) => (
-              <FeatherIcon name="folder" color={focused ? colours.purple100 : colours.grey300} size={25} />
-            ),
-          })}
-        />
-        <Tab.Screen
-          name="AccountTab"
-          component={AccountStackScreen}
-          options={() => ({
-            tabBarLabel: ({ focused }) =>
-              // <Text
-              //   color={focused ? colours.purple100 : colours.grey300}
-              //   fontSize="xs">
-              //   Home
-              // </Text>
-              null,
-            tabBarIcon: ({ focused }) => (
-              <FeatherIcon name="user" color={focused ? colours.purple100 : colours.grey300} size={25} />
-            ),
-          })}
-        />
-        <Tab.Screen
-          name="SettingsTab"
-          component={SettingsStackScreen}
-          options={() => ({
-            tabBarLabel: ({ focused }) =>
-              // <Text
-              //   color={focused ? colours.purple100 : colours.grey300}
-              //   fontSize="xs">
-              //   Home
-              // </Text>
-              null,
-            tabBarIcon: ({ focused }) => (
-              <IonIcon name="settings-outline" color={focused ? colours.purple100 : colours.grey300} size={25} />
-            ),
-          })}
-        />
-      </Tab.Navigator>
+      <RootStackNavigator />
     </NavigationContainer>
   );
 }
