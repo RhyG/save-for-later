@@ -7,6 +7,7 @@ interface IBookmarksAPI {
   fetchBookmarksByCollection: (collectionId: string) => Promise<IBookmark[]>;
   deleteBookmark: (id: string) => Promise<void>;
   addBookmark: (bookmark: Omit<IBookmark, 'id'>) => Promise<IBookmark>;
+  fetchTotalNumberOfBookmarks: () => Promise<number>;
 }
 
 export const BookmarksAPI: IBookmarksAPI = {
@@ -74,5 +75,10 @@ export const BookmarksAPI: IBookmarksAPI = {
     }
 
     return newBookmark;
+  },
+  fetchTotalNumberOfBookmarks: async () => {
+    const bookmarks = await BookmarksAPI.fetchAllBookmarks();
+
+    return bookmarks.length;
   },
 };

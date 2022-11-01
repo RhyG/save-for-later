@@ -10,6 +10,7 @@ interface ICollectionAPI {
   removeBookmarkFromCollection: (collectionId: string, bookmarkId: string) => Promise<void>;
   addBookmarkToCollection: (collectionId: string, bookmarkId: string) => Promise<void>;
   deleteCollection: (collectionId: string) => Promise<void>;
+  fetchTotalNumberOfCollections: () => Promise<number>;
 }
 
 export const CollectionAPI: ICollectionAPI = {
@@ -134,5 +135,10 @@ export const CollectionAPI: ICollectionAPI = {
     if (error) {
       throw new Error(`Error deleting collection - ${error.message}`);
     }
+  },
+  fetchTotalNumberOfCollections: async () => {
+    const collections = await CollectionAPI.fetchCollections();
+
+    return collections.length;
   },
 };
