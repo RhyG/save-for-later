@@ -2,21 +2,17 @@ import React, { useReducer, useRef, useState } from 'react';
 import { TextInput as RNTextInput } from 'react-native';
 import styled from 'styled-components/native';
 
-import { BookmarksAPI } from '@app/api/bookmarks';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { SortListButton } from '@app/components/lists/SortListButton';
 import { SelectionProvider } from '@app/components/providers/SelectionProvider';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
-import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useBookmarks } from '@app/hooks/useBookmarks';
 import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
-import { useShareIntent } from '@app/hooks/useShareIntent';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { useUser5ettings } from '@app/store/userSettings';
 import { IBookmark } from '@app/types';
 
-import { NewBookmarkSheet } from './components/NewBookmarkSheet';
 import { SearchInput } from './components/SearchInput';
 
 // type Props = NativeStackScreenProps<HomeStackParamList, 'Home'> & {};
@@ -38,9 +34,7 @@ export const HomeScreen = () => {
 
   const searchInputRef = useRef<RNTextInput>();
 
-  const manualBookmarkSheet = useSheetRef();
   const editBookmarkSheet = useSheetRef();
-  const newBookmarkSheet = useSheetRef();
 
   const { isLoading, data: bookmarks, deleteBookmark, refetch } = useBookmarks();
 
@@ -48,19 +42,6 @@ export const HomeScreen = () => {
     setBookmarkBeingEdited(item);
     editBookmarkSheet.present();
   };
-
-  const addNewBookmark = async (bookmark: Omit<IBookmark, 'id'>) => {
-    try {
-      await BookmarksAPI.addBookmark(bookmark);
-      refetch();
-      manualBookmarkSheet.dismiss();
-    } catch (error) {
-      // TODO update with more graceful errors when implemented
-      console.error(error);
-    }
-  };
-
-  const { newBookmarkDetails, loadingNewBookmarkDetails } = useShareIntent(addNewBookmark);
 
   return (
     <>
@@ -84,8 +65,6 @@ export const HomeScreen = () => {
           />
         </ScreenContainer>
 
-        <ManualBookmarkSheet ref={manualBookmarkSheet.sheetRef} addNewBookmark={addNewBookmark} />
-
         {bookmarkBeingEdited ? (
           <EditBookmarkSheet
             ref={editBookmarkSheet.sheetRef}
@@ -94,12 +73,6 @@ export const HomeScreen = () => {
             onSelectButtonPressed={() => {}}
           />
         ) : null}
-
-        <NewBookmarkSheet
-          ref={newBookmarkSheet.sheetRef}
-          linkDetails={newBookmarkDetails}
-          loadingLinkDetails={loadingNewBookmarkDetails}
-        />
       </SelectionProvider>
     </>
   );
