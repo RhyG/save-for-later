@@ -21,6 +21,7 @@ export const colours = {
   offWhite: '#f5f5f5',
   darkBlue: '#2D3E4E',
   red: '#dc3545',
+  redDark: '#8c0a0c',
   ...grey,
   ...purple,
 };
@@ -59,6 +60,9 @@ export const StyledComponentsFonts = {
       default: 700,
       android: 700,
     }),
+  },
+  colour: {
+    primary: '#fff',
   },
 };
 

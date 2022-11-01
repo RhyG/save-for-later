@@ -27,7 +27,7 @@ export const CollectionsScreen = () => {
   const { data: collections, isLoading, refetch } = useCollections();
   const { selections, selectionsActive, updateSelections, resetSelections } = useSelections();
 
-  useHeaderAddButton(() => addCollectionSheetRef?.present());
+  useHeaderAddButton();
 
   const deleteSelectedCollections = useCallback(async () => {
     const pluralisedCollection = selections.length > 1 ? 'collections' : 'collection';

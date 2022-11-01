@@ -10,6 +10,7 @@ declare module 'styled-components' {
     font: {
       size: { [key in FontSize]: string };
       weight: { [key in 'regular' | 'bold' | 'extraBold']: number };
+      colour: { primary: string };
     };
     utils: {
       numbersToPixels: (...units: any[]) => string;

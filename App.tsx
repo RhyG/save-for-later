@@ -5,6 +5,8 @@ import 'react-native-url-polyfill/auto';
 
 import { QueryClientProvider } from '@app/components/providers/QueryClientProvider';
 import { ThemeProvider } from '@app/components/providers/ThemeProvider';
+import { ToastProvider } from '@app/components/providers/ToastProvider';
+import { ErrorToast } from '@app/components/toasts/ErrorToast';
 import { supabase } from '@app/lib/supabase';
 import AsyncStorage from '@app/modules/AsyncStorage';
 import Navigator from '@app/navigation/index';
@@ -33,14 +35,17 @@ export default function App() {
   }, [setSession]);
 
   return (
-    <QueryClientProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider>
-          <BottomSheetModalProvider>
-            <Navigator />
-          </BottomSheetModalProvider>
-        </ThemeProvider>
-      </GestureHandlerRootView>
-    </QueryClientProvider>
+    <ToastProvider>
+      <QueryClientProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ThemeProvider>
+            <BottomSheetModalProvider>
+              <Navigator />
+              <ErrorToast />
+            </BottomSheetModalProvider>
+          </ThemeProvider>
+        </GestureHandlerRootView>
+      </QueryClientProvider>
+    </ToastProvider>
   );
 }

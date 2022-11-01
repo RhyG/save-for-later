@@ -2,11 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import { Alert } from 'react-native';
 
 import { BookmarksAPI } from '@app/api/bookmarks';
+import { useToastContext } from '@app/components/providers/ToastProvider';
 import { IBookmark } from '@app/types';
 
 export const useBookmarks = () => {
+  const { showErrorToast } = useToastContext();
+
   const result = useQuery<IBookmark[], string>(['bookmarks'], BookmarksAPI.fetchAllBookmarks, {
-    onError: error => console.error(error),
+    onError: showErrorToast,
   });
 
   const deleteBookmark = async (id: string) => {
