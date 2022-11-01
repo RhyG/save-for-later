@@ -22,8 +22,8 @@ type CommonProps = {
 };
 
 type ConditionalProps = {
-  bookmarkInCollection: boolean;
-  removeBookmarkFromCollection: (id: string) => Promise<void>;
+  bookmarkInCollection?: boolean;
+  removeBookmarkFromCollection?: (id: string) => Promise<void>;
 };
 
 type Props = CommonProps & ConditionalProps;
@@ -41,12 +41,14 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
 
     const onDeleteButtonPress = () => {
       deleteBookmark(bookmarkId);
-      ref?.current?.dismiss();
+      // @ts-ignore needs fixing
+      ref?.current?.dismiss(); // TODO Fix this type WHY ARE REFS LIKE THIS
     };
 
     const onSelectButtonPress = () => {
       updateSelections(bookmarkId);
-      ref?.current?.dismiss();
+      // @ts-ignore needs fixing
+      ref?.current?.dismiss(); // TODO Fix this type WHY ARE REFS LIKE THIS
     };
 
     const isSVG = preview_image?.slice(-5).includes('.svg') || preview_image?.includes('image/svg');
@@ -79,7 +81,7 @@ export const EditBookmarkSheet = React.forwardRef<BottomSheetModal, Props>(
               <BottomRowGroup>
                 <TouchableOpacity
                   onPress={() => {
-                    if (bookmarkInCollection) {
+                    if (removeBookmarkFromCollection) {
                       removeBookmarkFromCollection(bookmarkId);
                     } else {
                       chooseCollectionRef?.present();
