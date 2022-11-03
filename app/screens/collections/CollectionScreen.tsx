@@ -101,7 +101,7 @@ export const CollectionScreen = ({ route }: Props) => {
 
   return (
     <>
-      <BaseScreen noPadding>
+      <BaseScreen noPadding noScroll>
         <Header>
           <Text fontSize="xxl">{collectionInformation?.icon ?? ''}</Text>
           <BookmarkCountPill>
@@ -121,6 +121,7 @@ export const CollectionScreen = ({ route }: Props) => {
             data={bookmarks}
             loadingBookmarks={loadingBookmarks}
             onItemLongPress={presentEditBookmarkSheet}
+            refreshList={fetchBookmarks}
           />
 
           {bookmarkBeingEdited ? (
@@ -130,6 +131,7 @@ export const CollectionScreen = ({ route }: Props) => {
               bookmarkInCollection={true}
               deleteBookmark={deleteBookmark}
               removeBookmarkFromCollection={onRemoveFromCollectionPress}
+              onSelectButtonPressed={() => {}}
             />
           ) : null}
         </SelectionProvider>

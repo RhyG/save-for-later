@@ -82,7 +82,7 @@ export const CollectionsScreen = () => {
   );
 
   return (
-    <BaseScreen noPadding>
+    <BaseScreen noPadding noScroll>
       <FlatList
         data={collections}
         renderItem={renderCollection}
