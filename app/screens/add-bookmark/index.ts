@@ -1,2 +1,3 @@
 export * from './AddBookmarkScreen';
-export * from './ManualBookmarkScreen';
+export * from './AddManualBookmarkScreen';
+export * from './EnterManualBookmarkScreen';

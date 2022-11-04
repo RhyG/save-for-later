@@ -8,7 +8,7 @@ import OcticonsIcon from 'react-native-vector-icons/Octicons';
 import { useTheme } from 'styled-components/native';
 
 import { AccountScreen } from '@app/screens/account';
-import { AddBookmarkScreen, ManualBookmarkScreen } from '@app/screens/add-bookmark';
+import { AddBookmarkScreen, AddManualBookmarkScreen, EnterManualBookmarkScreen } from '@app/screens/add-bookmark';
 import { CollectionsScreen } from '@app/screens/collections';
 import { CollectionScreen } from '@app/screens/collections';
 import { HomeScreen } from '@app/screens/home';
@@ -35,7 +35,7 @@ const RootStackNavigator = () => {
     <RootStack.Navigator>
       <RootStack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
       <RootStack.Screen name="AddBookmarkScreen" component={AddBookmarkScreen} options={screenOptions} />
-      <RootStack.Screen name="ManualBookmarkScreen" component={ManualBookmarkScreen} options={screenOptions} />
+      <RootStack.Screen name="ManualBookmarkScreen" component={ManualBookmarkStackScreen} options={screenOptions} />
     </RootStack.Navigator>
   );
 };
@@ -130,6 +130,19 @@ const TabNavigator = () => {
         })}
       />
     </Tab.Navigator>
+  );
+};
+
+const ManualBookmarkStack = createNativeStackNavigator();
+const ManualBookmarkStackScreen = () => {
+  return (
+    <ManualBookmarkStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <ManualBookmarkStack.Screen name="EnterManualBookmarkScreen" component={EnterManualBookmarkScreen} />
+      <ManualBookmarkStack.Screen name="AddManualBookmarkScreen" component={AddManualBookmarkScreen} />
+    </ManualBookmarkStack.Navigator>
   );
 };
 
