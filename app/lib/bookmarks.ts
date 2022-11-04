@@ -8,10 +8,10 @@ export const generateBookmarkWithPreviewDetails = (
     return;
   }
 
-  const { title, description, url, images } = details;
+  const { title, description, url, images, siteName } = details;
 
   const bookmark = {
-    title,
+    title: title ?? siteName,
     description,
     url,
     preview_image: images[0] ?? '',
