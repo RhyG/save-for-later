@@ -3,6 +3,8 @@ import { CompositeNavigationProp, CompositeScreenProps, NavigatorScreenParams } 
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 
+import { IBookmark } from '@app/types';
+
 export type RootStackParamList = {
   TabNavigator: undefined;
   HomeTab: NavigatorScreenParams<HomeStackParamList>;
@@ -10,8 +12,11 @@ export type RootStackParamList = {
   AccountTab: NavigatorScreenParams<AccountStackParamList>;
   CollectionsTab: NavigatorScreenParams<CollectionsStackParamList>;
 
-  AddBookmarkScreen: undefined;
-  ManualBookmarkScreen: undefined;
+  ManualBookmark: undefined;
+  EnterManualBookmarkScreen: undefined;
+  AddManualBookmarkScreen: { bookmark: Omit<IBookmark, 'id' | 'user_id'> };
+
+  AddBookmark: undefined;
 };
 
 export type RootStackScreenProps<Name extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, Name>;
@@ -76,6 +81,8 @@ export type CollectionScreenNavigationProp = CompositeNavigationProp<
 export type AddBookmarkScreenNavigationProp = CompositeNavigationProp<StackNavigationProp<RootStackParamList>>;
 
 export type ManualBookmarkScreenNavigationProp = CompositeNavigationProp<StackNavigationProp<RootStackParamList>>;
+
+export type EnterManualBookmarkScreenProp = CompositeNavigationProp<StackNavigationProp<RootStackParamList>>;
 
 interface RootStackScreen<Name extends keyof RootStackParamList, Props = {}>
   extends React.FC<RootStackScreenProps<Name> & Props> {}

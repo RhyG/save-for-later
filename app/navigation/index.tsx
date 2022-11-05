@@ -34,8 +34,8 @@ const RootStackNavigator = () => {
   return (
     <RootStack.Navigator>
       <RootStack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
-      <RootStack.Screen name="AddBookmarkScreen" component={AddBookmarkScreen} options={screenOptions} />
-      <RootStack.Screen name="ManualBookmarkScreen" component={ManualBookmarkStackScreen} options={screenOptions} />
+      <RootStack.Screen name="ManualBookmark" component={ManualBookmarkStackScreen} options={screenOptions} />
+      <RootStack.Screen name="AddBookmark" component={ManualBookmarkStackScreen} options={screenOptions} />
     </RootStack.Navigator>
   );
 };

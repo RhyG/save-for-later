@@ -10,7 +10,7 @@ export const HeaderAddButton = () => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('ManualBookmarkScreen')}>
+    <TouchableOpacity onPress={() => navigation.navigate('ManualBookmark')}>
       <AddIcon color={colours.grey400} />
     </TouchableOpacity>
   );
