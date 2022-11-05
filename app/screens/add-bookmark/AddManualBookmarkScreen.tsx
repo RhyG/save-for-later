@@ -37,7 +37,7 @@ export const AddManualBookmarkScreen = ({ navigation, route }: Props) => {
     try {
       await BookmarksAPI.addBookmark(bookmark);
       refetch();
-      navigation.goBack();
+      navigation.navigate('HomeTab');
     } catch (error) {
       // TODO update with more graceful errors when implemented
       console.error(error);
