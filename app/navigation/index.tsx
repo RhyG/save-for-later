@@ -140,8 +140,16 @@ const ManualBookmarkStackScreen = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <ManualBookmarkStack.Screen name="EnterManualBookmarkScreen" component={EnterManualBookmarkScreen} />
-      <ManualBookmarkStack.Screen name="AddManualBookmarkScreen" component={AddManualBookmarkScreen} />
+      <ManualBookmarkStack.Screen
+        name="EnterManualBookmarkScreen"
+        component={EnterManualBookmarkScreen}
+        options={screenOptions}
+      />
+      <ManualBookmarkStack.Screen
+        name="AddManualBookmarkScreen"
+        component={AddManualBookmarkScreen}
+        options={screenOptions}
+      />
     </ManualBookmarkStack.Navigator>
   );
 };
