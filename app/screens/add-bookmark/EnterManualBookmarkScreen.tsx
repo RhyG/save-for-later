@@ -7,6 +7,7 @@ import { BaseScreen } from '@app/components/BaseScreen';
 import { Text } from '@app/components/Text';
 import { TextInput } from '@app/components/TextInput';
 import { Button } from '@app/components/buttons/Button';
+import { useToastContext } from '@app/components/providers/ToastProvider';
 import { useHeaderTitle } from '@app/hooks/useHeaderTitle';
 import { generateBookmarkWithPreviewDetails } from '@app/lib/bookmarks';
 import { validateURL } from '@app/lib/validation';
@@ -18,6 +19,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'EnterManualBookmarkScre
 export const EnterManualBookmarkScreen = ({ navigation }: Props) => {
   useHeaderTitle('Save a bookmark');
 
+  const { showErrorToast } = useToastContext();
+
   const [inputValue, setInputValue] = useState('');
 
   const onSearchBookmarkPress = async () => {
@@ -25,21 +28,26 @@ export const EnterManualBookmarkScreen = ({ navigation }: Props) => {
       return;
     }
 
-    const preview = (await getLinkPreview(inputValue)) as unknown as IBookmark;
+    try {
+      const preview = (await getLinkPreview(inputValue)) as unknown as IBookmark;
 
-    if (!preview) {
-      // TODO Inform user no preview found - maybe ask if they want to save anyway?
-      return;
+      if (!preview) {
+        // TODO Inform user no preview found - maybe ask if they want to save anyway?
+        throw new Error('No preview found');
+      }
+
+      const newBookmark = generateBookmarkWithPreviewDetails(preview);
+
+      if (!newBookmark) {
+        // TODO Inform user error occurred
+        throw new Error('Unable to create bookmarj');
+      }
+
+      navigation.navigate('AddManualBookmarkScreen', { bookmark: newBookmark });
+    } catch (error) {
+      console.error(error);
+      showErrorToast();
     }
-
-    const newBookmark = generateBookmarkWithPreviewDetails(preview);
-
-    if (!newBookmark) {
-      // TODO Inform user error occurred
-      return;
-    }
-
-    navigation.navigate('AddManualBookmarkScreen', { bookmark: newBookmark });
   };
 
   return (
