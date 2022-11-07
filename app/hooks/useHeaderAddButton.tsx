@@ -10,7 +10,7 @@ export const useHeaderAddButton = (options?: Record<string, unknown>) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderAddButton />,
+      headerRight: () => <HeaderAddButton onPress={() => navigation.navigate('ManualBookmark')} />,
       ...options,
     });
   }, [navigation, options]);

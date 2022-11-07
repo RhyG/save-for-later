@@ -8,7 +8,6 @@ import { Text } from '@app/components/Text';
 import { DeleteIcon } from '@app/components/icons';
 import { useToastContext } from '@app/components/providers/ToastProvider';
 import { useCollections } from '@app/hooks/useCollections';
-import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
 import { useSelections } from '@app/hooks/useSelections';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { showDeleteAlert } from '@app/lib/alerts';
@@ -17,6 +16,7 @@ import { ICollection } from '@app/types';
 
 import { AddCollectionSheet } from './components/AddCollectionSheet';
 import { Collection } from './components/Collection';
+import { useHeaderAddCollectionButton } from './hooks/useHeaderAddCollectionButton';
 
 // type Props = NativeStackScreenProps<CollectionsStackParamList, 'Collections'>;
 
@@ -30,7 +30,7 @@ export const CollectionsScreen = () => {
   const { data: collections, isLoading, refetch } = useCollections();
   const { selections, selectionsActive, updateSelections, clearSelections } = useSelections();
 
-  useHeaderAddButton();
+  useHeaderAddCollectionButton(() => addCollectionSheetRef.present());
 
   const deleteSelectedCollections = useCallback(async () => {
     const pluralisedCollection = selections.length > 1 ? 'collections' : 'collection';
@@ -49,7 +49,7 @@ export const CollectionsScreen = () => {
     } catch (error) {
       showErrorToast();
     }
-  }, [refetch, selections, clearSelections]);
+  }, [refetch, selections, clearSelections, showErrorToast]);
 
   const onAddCollection = async (name: string, icon: string) => {
     try {
