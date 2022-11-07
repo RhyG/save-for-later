@@ -11,7 +11,6 @@ import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { SelectionProvider } from '@app/components/providers/SelectionProvider';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
-import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
 import { useHeaderAddBookmarkButton } from '@app/hooks/useHeaderAddBookmarkButton';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { CollectionsStackParamList } from '@app/navigation/types';
@@ -25,11 +24,9 @@ type Props = NativeStackScreenProps<CollectionsStackParamList, 'Collection'> & {
 
 export const CollectionScreen = ({ route }: Props) => {
   const collectionId = route.params.id;
-  const collectionName = route.params.name;
 
   const editCollectionSheet = useSheetRef();
   const editBookmarkSheet = useSheetRef();
-  const manualBookmarkSheet = useSheetRef();
 
   const [bookmarkBeingEdited, setBookmarkBeingEdited] = useState<IBookmark | undefined>();
 
@@ -47,7 +44,7 @@ export const CollectionScreen = ({ route }: Props) => {
     'grid',
   );
 
-  useHeaderAddBookmarkButton({ headerTitle: collectionInformation?.name ?? collectionName ?? '' });
+  useHeaderAddBookmarkButton(collectionId);
 
   const presentEditBookmarkSheet = (item: IBookmark) => {
     setBookmarkBeingEdited(item);
@@ -79,21 +76,6 @@ export const CollectionScreen = ({ route }: Props) => {
 
       fetchBookmarks();
       editBookmarkSheet.dismiss();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const addBookmark = async (bookmark: Omit<IBookmark, 'id'>) => {
-    try {
-      // Save the bookmark
-      const savedBookmark = await BookmarksAPI.addBookmark(bookmark);
-
-      // Add the bookmark to the collection
-      await CollectionAPI.addBookmarkToCollection(collectionId, savedBookmark.id);
-
-      fetchCollection();
-      manualBookmarkSheet.dismiss();
     } catch (error) {
       console.error(error);
     }
@@ -142,8 +124,6 @@ export const CollectionScreen = ({ route }: Props) => {
         collectionName={collectionInformation?.name ?? ''}
         collectionIcon={collectionInformation?.icon ?? ''}
       />
-
-      <ManualBookmarkSheet ref={manualBookmarkSheet.sheetRef} addBookmarkToList={addBookmark} />
     </>
   );
 };

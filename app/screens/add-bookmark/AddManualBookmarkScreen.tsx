@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 import { BookmarksAPI } from '@app/api/bookmarks';
+import { CollectionAPI } from '@app/api/collections';
 import { BaseScreen } from '@app/components/BaseScreen';
 import { Text } from '@app/components/Text';
 import { Button } from '@app/components/buttons/Button';
@@ -16,6 +17,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddManualBookmarkScreen
 
 export const AddManualBookmarkScreen = ({ navigation, route }: Props) => {
   const newBookmark = route.params.bookmark;
+  const collectionId = route.params.collectionId;
 
   useHeaderTitle('Add A Bookmark');
 
@@ -35,7 +37,13 @@ export const AddManualBookmarkScreen = ({ navigation, route }: Props) => {
 
   const addNewBookmark = async (bookmark: Omit<IBookmark, 'id'>) => {
     try {
-      await BookmarksAPI.addBookmark(bookmark);
+      const savedBookmark = await BookmarksAPI.addBookmark(bookmark);
+
+      // Add the bookmark to the collection if there is a collection ID to save to
+      if (collectionId) {
+        await CollectionAPI.addBookmarkToCollection(collectionId, savedBookmark.id);
+      }
+
       refetch();
       navigation.navigate('HomeTab');
     } catch (error) {

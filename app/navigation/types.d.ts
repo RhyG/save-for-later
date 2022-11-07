@@ -7,14 +7,14 @@ import { IBookmark } from '@app/types';
 
 export type RootStackParamList = {
   TabNavigator: undefined;
-  HomeTab: NavigatorScreenParams<HomeStackParamList>;
+  HomeTab: undefined;
   SettingsTab: NavigatorScreenParams<SettingsStackParamList>;
   AccountTab: NavigatorScreenParams<AccountStackParamList>;
   CollectionsTab: NavigatorScreenParams<CollectionsStackParamList>;
 
-  ManualBookmark: undefined;
-  EnterManualBookmarkScreen: undefined;
-  AddManualBookmarkScreen: { bookmark: Omit<IBookmark, 'id' | 'user_id'> };
+  ManualBookmark: { screen: string; params: { collectionId: string | undefined } };
+  EnterManualBookmarkScreen: { collectionId?: string };
+  AddManualBookmarkScreen: { collectionId?: string; bookmark: Omit<IBookmark, 'id' | 'user_id'> };
 
   AddBookmark: undefined;
 };

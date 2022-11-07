@@ -15,7 +15,7 @@ import { IBookmark } from '@app/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EnterManualBookmarkScreen'>;
 
-export const EnterManualBookmarkScreen = ({ navigation }: Props) => {
+export const EnterManualBookmarkScreen = ({ navigation, route }: Props) => {
   useHeaderTitle('Save a bookmark');
 
   const { showErrorToast } = useToastContext();
@@ -42,7 +42,10 @@ export const EnterManualBookmarkScreen = ({ navigation }: Props) => {
         throw new Error('Unable to create bookmarj');
       }
 
-      navigation.navigate('AddManualBookmarkScreen', { bookmark: newBookmark });
+      navigation.navigate('AddManualBookmarkScreen', {
+        bookmark: newBookmark,
+        collectionId: route.params.collectionId,
+      });
     } catch (error) {
       console.error(error);
       showErrorToast();
