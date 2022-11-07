@@ -12,7 +12,7 @@ import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { SelectionProvider } from '@app/components/providers/SelectionProvider';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { ManualBookmarkSheet } from '@app/components/sheets/ManualBookmarkSheet';
-import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
+import { useHeaderAddBookmarkButton } from '@app/hooks/useHeaderAddBookmarkButton';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { CollectionsStackParamList } from '@app/navigation/types';
 import { IBookmark } from '@app/types';
@@ -47,7 +47,7 @@ export const CollectionScreen = ({ route }: Props) => {
     'grid',
   );
 
-  useHeaderAddButton({ headerTitle: collectionInformation?.name ?? collectionName ?? '' });
+  useHeaderAddBookmarkButton({ headerTitle: collectionInformation?.name ?? collectionName ?? '' });
 
   const presentEditBookmarkSheet = (item: IBookmark) => {
     setBookmarkBeingEdited(item);

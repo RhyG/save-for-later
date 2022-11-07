@@ -5,7 +5,7 @@ import { useLayoutEffect } from 'react';
 import { HeaderAddButton } from '@app/components/HeaderAddButton';
 
 // Adds a + icon to the header which navigates to the ManualBookmarkScreen on press.
-export const useHeaderAddButton = (options?: Record<string, unknown>) => {
+export const useHeaderAddBookmarkButton = (options?: Record<string, unknown>) => {
   const navigation = useNavigation();
 
   useLayoutEffect(() => {

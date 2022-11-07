@@ -8,7 +8,7 @@ import { SortListButton } from '@app/components/lists/SortListButton';
 import { SelectionProvider } from '@app/components/providers/SelectionProvider';
 import { EditBookmarkSheet } from '@app/components/sheets/EditBookmarkSheet';
 import { useBookmarks } from '@app/hooks/useBookmarks';
-import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
+import { useHeaderAddBookmarkButton } from '@app/hooks/useHeaderAddBookmarkButton';
 import { useSheetRef } from '@app/hooks/useSheetRef';
 import { useUser5ettings } from '@app/store/userSettings';
 import { IBookmark } from '@app/types';
@@ -25,7 +25,7 @@ export const HomeScreen = () => {
 
   const defaultHomeToRow = useUser5ettings(state => state.settings.defaultHomeToRow);
 
-  useHeaderAddButton();
+  useHeaderAddBookmarkButton();
 
   const [currentListDisplayType, toggleListDisplayType] = useReducer(
     (_: DisplayType, action: DisplayType) => action,
