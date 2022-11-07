@@ -6,6 +6,7 @@ import { BaseScreen } from '@app/components/BaseScreen';
 import { SelectionActions } from '@app/components/SelectionActions';
 import { Text } from '@app/components/Text';
 import { DeleteIcon } from '@app/components/icons';
+import { useToastContext } from '@app/components/providers/ToastProvider';
 import { useCollections } from '@app/hooks/useCollections';
 import { useHeaderAddButton } from '@app/hooks/useHeaderAddButton';
 import { useSelections } from '@app/hooks/useSelections';
@@ -22,10 +23,12 @@ import { Collection } from './components/Collection';
 export const CollectionsScreen = () => {
   const session = useAuth(state => state.session);
 
+  const { showErrorToast } = useToastContext();
+
   const addCollectionSheetRef = useSheetRef();
 
   const { data: collections, isLoading, refetch } = useCollections();
-  const { selections, selectionsActive, updateSelections, resetSelections } = useSelections();
+  const { selections, selectionsActive, updateSelections, clearSelections } = useSelections();
 
   useHeaderAddButton();
 
@@ -39,14 +42,14 @@ export const CollectionsScreen = () => {
         async () => {
           await Promise.all(selections.map(collectionId => CollectionAPI.deleteCollection(collectionId)));
 
-          resetSelections();
+          clearSelections();
           refetch();
         },
       );
     } catch (error) {
-      console.error(error);
+      showErrorToast();
     }
-  }, [refetch, selections, resetSelections]);
+  }, [refetch, selections, clearSelections]);
 
   const onAddCollection = async (name: string, icon: string) => {
     try {
@@ -97,7 +100,7 @@ export const CollectionsScreen = () => {
         <SelectionActions.Item onPress={deleteSelectedCollections}>
           <DeleteIcon />
         </SelectionActions.Item>
-        <SelectionActions.Item onPress={resetSelections}>
+        <SelectionActions.Item onPress={clearSelections}>
           <Text fontSize="sm" bold color="#fff">
             CANCEL
           </Text>
