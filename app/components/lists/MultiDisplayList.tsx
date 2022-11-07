@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { FlatList, FlatListProps, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
+import { BookmarksAPI } from '@app/api/bookmarks';
 import { SelectionActions } from '@app/components/SelectionActions';
 import { Text } from '@app/components/Text';
 import { AddToCollectionIcon, DeleteIcon } from '@app/components/icons';
@@ -23,7 +24,7 @@ type Props = {
   currentListDisplayType: DisplayType;
 } & ListProps;
 
-export const MultiDisplayList = ({ currentListDisplayType, data, ...listProps }: Props) => {
+export const MultiDisplayList = ({ currentListDisplayType, data, refreshList, ...listProps }: Props) => {
   const [showScrollToTopFAB, setShowScrollToTopFAB] = useState(true);
   const [lastScrollYOffset, setLastScrollYOffset] = useState(0);
 
@@ -62,6 +63,12 @@ export const MultiDisplayList = ({ currentListDisplayType, data, ...listProps }:
     listRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   }, []);
 
+  const deleteSelections = async () => {
+    await Promise.all(selections.map(selection => BookmarksAPI.deleteBookmark(selection)));
+    refreshList();
+    clearSelections();
+  };
+
   const sharedProps = {
     ref: listRef,
     data,
@@ -69,6 +76,7 @@ export const MultiDisplayList = ({ currentListDisplayType, data, ...listProps }:
     onScrollEndDrag,
     selections,
     updateSelections,
+    refreshList,
   };
 
   return (
@@ -83,7 +91,7 @@ export const MultiDisplayList = ({ currentListDisplayType, data, ...listProps }:
         <SelectionActions.Item onPress={() => console.log('ADDING TO COLLECTION')}>
           <AddToCollectionIcon />
         </SelectionActions.Item>
-        <SelectionActions.Item onPress={() => console.log('DELETING')}>
+        <SelectionActions.Item onPress={deleteSelections}>
           <DeleteIcon />
         </SelectionActions.Item>
         <SelectionActions.Item onPress={clearSelections}>
