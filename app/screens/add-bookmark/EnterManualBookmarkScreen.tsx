@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { getLinkPreview } from 'link-preview-js';
-import React, { useRef, useState } from 'react';
-import { TextInput as RNTextInput } from 'react-native';
+import React, { useState } from 'react';
 
 import { BaseScreen } from '@app/components/BaseScreen';
 import { Text } from '@app/components/Text';
@@ -59,6 +58,7 @@ export const EnterManualBookmarkScreen = ({ navigation }: Props) => {
         autoCapitalize="none"
         autoCorrect={false}
         autoFocus={true}
+        onSubmitEditing={onSearchBookmarkPress}
       />
       <Button title="Search" onPress={onSearchBookmarkPress} containerStyle={{ marginTop: 'auto' }} />
     </BaseScreen>
