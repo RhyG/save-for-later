@@ -13,15 +13,18 @@ import { RootStackParamList } from '@app/navigation/types';
 import { useAuth } from '@app/store/auth';
 import { IBookmark } from '@app/types';
 
+import { useCollection } from '../collections/hooks/useCollection';
+
 type Props = NativeStackScreenProps<RootStackParamList, 'AddManualBookmarkScreen'>;
 
 export const AddManualBookmarkScreen = ({ navigation, route }: Props) => {
   const newBookmark = route.params.bookmark;
-  const collectionId = route.params.collectionId;
+  const collectionId = route.params.collectionId ?? '';
 
   useHeaderTitle('Add A Bookmark');
 
   const { refetch } = useBookmarks();
+  const { fetchCollection } = useCollection(collectionId);
 
   const session = useAuth(state => state.session);
 
@@ -42,6 +45,7 @@ export const AddManualBookmarkScreen = ({ navigation, route }: Props) => {
       // Add the bookmark to the collection if there is a collection ID to save to
       if (collectionId) {
         await CollectionAPI.addBookmarkToCollection(collectionId, savedBookmark.id);
+        fetchCollection();
       }
 
       refetch();
