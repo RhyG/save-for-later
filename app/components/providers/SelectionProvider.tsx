@@ -4,15 +4,14 @@ import { useSelections } from '@app/hooks/useSelections';
 
 type Props = React.PropsWithChildren<{}>;
 
-const SelectionContext = createContext<
-  | {
-      selections: string[];
-      selectionsActive: boolean;
-      updateSelections: (id: string) => void;
-      clearSelections: () => void;
-    }
-  | undefined
->(undefined);
+type DefaultContextValueType = {
+  selections: string[];
+  selectionsActive: boolean;
+  updateSelections: (id: string) => void;
+  clearSelections: () => void;
+};
+
+const SelectionContext = createContext<DefaultContextValueType | undefined>(undefined);
 
 export const SelectionProvider = ({ children }: Props) => {
   const { selections, selectionsActive, updateSelections, clearSelections } = useSelections();
