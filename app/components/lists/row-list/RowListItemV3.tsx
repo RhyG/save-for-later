@@ -2,22 +2,35 @@ import React from 'react';
 import { Linking } from 'react-native';
 import styled from 'styled-components/native';
 
+import { SelectionIndicator } from '@app/components/SelectionIndicator';
 import { Text } from '@app/components/Text';
+import { useSelectionsContext } from '@app/components/providers/SelectionProvider';
 import { IBookmark } from '@app/types';
 
-type Props = { item: IBookmark; onItemLongPress: (item: IBookmark) => void };
+type Props = {
+  item: IBookmark;
+  onItemLongPress: (item: IBookmark) => void;
+};
 
 export const RowListItemV3 = ({ item, onItemLongPress }: Props) => {
-  const { title, description, url, preview_image } = item;
+  const { title, description, url, preview_image, id } = item;
+
+  const { selections, selectionsActive, updateSelections } = useSelectionsContext();
+  const itemIsSelected = selections.includes(id);
 
   const isSVG = preview_image?.slice(-5).includes('.svg') || preview_image?.includes('image/svg');
 
-  const openLink = () => {
+  const onPreviewPress = () => {
+    if (selectionsActive) {
+      updateSelections(id);
+      return;
+    }
+
     Linking.openURL(url);
   };
 
   return (
-    <RowContainer onLongPress={() => onItemLongPress(item)} onPress={openLink}>
+    <RowContainer onLongPress={() => onItemLongPress(item)} onPress={onPreviewPress}>
       {preview_image ? (
         <ImageContainer>
           {isSVG ? (
@@ -41,6 +54,7 @@ export const RowListItemV3 = ({ item, onItemLongPress }: Props) => {
           {description}
         </Text>
       </TextContainer>
+      {itemIsSelected ? <SelectionIndicator /> : null}
     </RowContainer>
   );
 };

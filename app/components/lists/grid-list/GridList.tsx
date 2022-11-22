@@ -22,17 +22,10 @@ const getItemLayout = (_: IBookmark[] | null | undefined, index: number) => ({
 const keyExtractor = (item: IBookmark) => item.id;
 
 export const GridList = React.forwardRef<FlatList, Props>(
-  ({ data, loadingBookmarks, onItemLongPress, refreshList, selections, updateSelections, ...rest }, ref) => {
+  ({ data, loadingBookmarks, onItemLongPress, refreshList, ...rest }, ref) => {
     const renderItem = useCallback<ListRenderItem<IBookmark>>(
-      ({ item }) => (
-        <GridListTile
-          item={item}
-          onLongPress={onItemLongPress}
-          selected={selections.includes(item.id)}
-          addItemToSelections={updateSelections}
-        />
-      ),
-      [onItemLongPress, selections, updateSelections],
+      ({ item }) => <GridListTile item={item} onLongPress={onItemLongPress} />,
+      [onItemLongPress],
     );
 
     const EmptyComponent = useMemo(() => {

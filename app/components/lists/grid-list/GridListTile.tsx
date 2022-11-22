@@ -14,8 +14,6 @@ export const GRID_ITEM_WIDTH = width / 2 - 15;
 type Props = {
   item: IBookmark;
   onLongPress: (item: IBookmark) => void;
-  selected: boolean;
-  addItemToSelections: (id: string) => void;
 };
 
 export const GridListTile = ({ item, onLongPress }: Props): React.ReactElement => {
