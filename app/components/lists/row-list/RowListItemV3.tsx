@@ -50,8 +50,6 @@ const RowContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 100px;
-  /* border: 1px solid red; */
   border-color: ${({ theme }) => theme.colours.grey100};
   border-width: 1.5px;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -74,7 +72,7 @@ const TempImage = styled.View`
 `;
 
 const PreviewImage = styled.Image`
-  height: 100px;
+  height: 100%;
   width: 100%;
   align-self: center;
   border-top-left-radius: ${({ theme }) => theme.borderRadius};
