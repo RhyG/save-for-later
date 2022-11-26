@@ -2,6 +2,7 @@ import React, { useReducer, useRef, useState } from 'react';
 import { TextInput as RNTextInput } from 'react-native';
 import styled from 'styled-components/native';
 
+import { Text } from '@app/components/Text';
 import { DisplayType, ListDisplayToggleButton } from '@app/components/lists';
 import { MultiDisplayList } from '@app/components/lists/MultiDisplayList';
 import { SortListButton } from '@app/components/lists/SortListButton';
@@ -42,6 +43,14 @@ export const HomeScreen = () => {
     setBookmarkBeingEdited(item);
     editBookmarkSheet.present();
   };
+
+  if (!isLoading && bookmarks?.length === 0) {
+    return (
+      <ScreenContainer>
+        <Text>No bookmarks in list.</Text>
+      </ScreenContainer>
+    );
+  }
 
   return (
     <>
