@@ -1,4 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MMKVLoader } from 'react-native-mmkv-storage';
+
+const MMKV = new MMKVLoader().initialize();
 
 interface IStorageModule {
   /**
@@ -26,7 +28,6 @@ interface IStorageModule {
    * @param {string} key - key of the item to be removed.
    */
   removeItem: (key: string) => Promise<void>;
-  multGet: () => Promise<any>;
 }
 
 const StorageModule: IStorageModule = {
@@ -39,7 +40,7 @@ const StorageModule: IStorageModule = {
     }
 
     try {
-      result = await AsyncStorage.getItem(key);
+      result = await MMKV.getStringAsync(key);
 
       if (result && result.startsWith('json:')) {
         result = JSON.parse(result.split('json:')[1]);
@@ -55,9 +56,9 @@ const StorageModule: IStorageModule = {
   setItem: async (key, value) => {
     try {
       if (typeof value === 'object') {
-        await AsyncStorage.setItem(key, `json:${JSON.stringify(value)}`);
+        await MMKV.setStringAsync(key, `json:${JSON.stringify(value)}`);
       } else {
-        await AsyncStorage.setItem(key, value);
+        await MMKV.setStringAsync(key, value);
       }
 
       StorageModule.cache[key] = value;
@@ -65,19 +66,9 @@ const StorageModule: IStorageModule = {
   },
   removeItem: async key => {
     try {
-      await AsyncStorage.removeItem(key);
+      MMKV.removeItem(key);
       delete StorageModule.cache[key];
     } catch (error) {}
-  },
-  multiGet: async keys => await AsyncStorage.multiGet(keys),
-  getAllKeys: AsyncStorage.getAllKeys,
-  removeAllItems: async () => {
-    const keys = await AsyncStorage.getAllKeys();
-
-    for await (const key of keys) {
-      console.log('Deleting', key);
-      await AsyncStorage.removeItem(key);
-    }
   },
 };
 
