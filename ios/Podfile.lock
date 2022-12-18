@@ -287,9 +287,9 @@ PODS:
   - React-jsinspector (0.69.2)
   - React-logger (0.69.2):
     - glog
-  - react-native-config (1.4.6):
-    - react-native-config/App (= 1.4.6)
-  - react-native-config/App (1.4.6):
+  - react-native-config (1.4.11):
+    - react-native-config/App (= 1.4.11)
+  - react-native-config/App (1.4.11):
     - React-Core
   - react-native-mmkv-storage (0.8.0):
     - MMKV (= 1.2.13)
@@ -614,7 +614,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 7c23e92591431ac925f430b3118de934cb816ac0
   React-jsinspector: 31e53f048cc8f32605de36981903a7bbf9456892
   React-logger: 9a6c684d5cd56c4129e0c2842dba75c4bfb1e981
-  react-native-config: 7cd105e71d903104e8919261480858940a6b9c0e
+  react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
   react-native-safe-area-context: f98b0b16d1546d208fc293b4661e3f81a895afd9
   React-perflogger: 281c34e42f13245c7a4d6932364d9182f8655e1a

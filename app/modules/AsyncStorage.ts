@@ -72,4 +72,4 @@ const StorageModule: IStorageModule = {
   },
 };
 
-export default StorageModule;
+export { StorageModule };
