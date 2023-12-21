@@ -8,7 +8,7 @@ import OcticonsIcon from 'react-native-vector-icons/Octicons';
 import { useTheme } from 'styled-components/native';
 
 import { AccountScreen } from '@app/screens/account';
-import { AddBookmarkScreen, AddManualBookmarkScreen, EnterManualBookmarkScreen } from '@app/screens/add-bookmark';
+import { AddManualBookmarkScreen, EnterManualBookmarkScreen } from '@app/screens/add-bookmark';
 import { CollectionsScreen } from '@app/screens/collections';
 import { CollectionScreen } from '@app/screens/collections';
 import { HomeScreen } from '@app/screens/home';

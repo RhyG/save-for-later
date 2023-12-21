@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['@react-native-community'],
+  extends: ['@react-native'],
   plugins: ['detox', 'jasmine', '@typescript-eslint', 'import'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
