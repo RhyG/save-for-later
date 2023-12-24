@@ -18,6 +18,7 @@ prepare_react_native_project!
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
 # ```
 flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -56,35 +57,49 @@ target 'SaveForLater' do
   # use_frameworks! :linkage => :static
   # use_flipper!()
 
+  # post_install do |installer|
+  #    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+  #    react_native_post_install(
+  #     installer,
+  #     config[:reactNativePath],
+  #     :mac_catalyst_enabled => false
+  #   )
+  #   # __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  #   # installer.pods_project.targets.each do |target|
+  #   #   target.build_configurations.each do |config|
+  #   #     config.build_settings['OTHER_SWIFT_FLAGS'] = '-no-verify-emitted-module-interface'
+  #   #   end
+  #   # end
+  #   installer.pods_project.build_configurations.each do |config|
+  #     config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+  #   end
+  #   # installer.pods_project.targets.each do |target|
+  #   #   if (target.name&.eql?('FBReactNativeSpec'))
+  #   #     target.build_phases.each do |build_phase|
+  #   #       if (build_phase.respond_to?(:name) && build_phase.name.eql?('[CP-User] Generate Specs'))
+  #   #         target.build_phases.move(build_phase, 0)
+  #   #       end
+  #   #     end
+  #   #   end
+  #   # end
+  # #   installer.pods_project.targets.each do |target|
+  # #     target.build_configurations.each do |config|
+  # #       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+  # #     end
+  # #   end
+  # end
+
   post_install do |installer|
-     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
-     react_native_post_install(
+    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    react_native_post_install(
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
-    # __apply_Xcode_12_5_M1_post_install_workaround(installer)
-    # installer.pods_project.targets.each do |target|
-    #   target.build_configurations.each do |config|
-    #     config.build_settings['OTHER_SWIFT_FLAGS'] = '-no-verify-emitted-module-interface'
-    #   end
-    # end
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
     installer.pods_project.build_configurations.each do |config|
       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
     end
-    installer.pods_project.targets.each do |target|
-      if (target.name&.eql?('FBReactNativeSpec'))
-        target.build_phases.each do |build_phase|
-          if (build_phase.respond_to?(:name) && build_phase.name.eql?('[CP-User] Generate Specs'))
-            target.build_phases.move(build_phase, 0)
-          end
-        end
-      end
-    end
-  #   installer.pods_project.targets.each do |target|
-  #     target.build_configurations.each do |config|
-  #       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
-  #     end
-  #   end
   end
 end

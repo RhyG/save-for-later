@@ -11,9 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		22EB8D58958BDC8BC90CB6EA /* libPods-SaveForLater.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFF07E167308B2A0BDEB3F6 /* libPods-SaveForLater.a */; };
-		7B62A2BDD405D151B0BA9645 /* libPods-SaveForLater-SaveForLaterTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16094122FE4446F460EB1941 /* libPods-SaveForLater-SaveForLaterTests.a */; };
+		4DDDB747C9E1539C079446B9 /* libPods-SaveForLater.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69554C56FEC2B4E3E631CE5B /* libPods-SaveForLater.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8F8B40487A187BDD9DAB4C3F /* libPods-SaveForLater-SaveForLaterTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C597CD140F52830E8EA484 /* libPods-SaveForLater-SaveForLaterTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,11 +49,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SaveForLater/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SaveForLater/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SaveForLater/main.m; sourceTree = "<group>"; };
-		16094122FE4446F460EB1941 /* libPods-SaveForLater-SaveForLaterTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveForLater-SaveForLaterTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3480641E72E1BD15F43B8BAB /* libPods-Save For Later.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Save For Later.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-SaveForLater.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater.debug.xcconfig"; path = "Target Support Files/Pods-SaveForLater/Pods-SaveForLater.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-SaveForLater.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater.release.xcconfig"; path = "Target Support Files/Pods-SaveForLater/Pods-SaveForLater.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-SaveForLater-SaveForLaterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater-SaveForLaterTests.debug.xcconfig"; path = "Target Support Files/Pods-SaveForLater-SaveForLaterTests/Pods-SaveForLater-SaveForLaterTests.debug.xcconfig"; sourceTree = "<group>"; };
+		69554C56FEC2B4E3E631CE5B /* libPods-SaveForLater.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveForLater.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A7BF38C1B4B5A0723F8C59B /* Pods-Save For Later.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save For Later.debug.xcconfig"; path = "Target Support Files/Pods-Save For Later/Pods-Save For Later.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SaveForLater/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SaveForLater-SaveForLaterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveForLater-SaveForLaterTests.release.xcconfig"; path = "Target Support Files/Pods-SaveForLater-SaveForLaterTests/Pods-SaveForLater-SaveForLaterTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -61,9 +61,9 @@
 		98856A50288E09B5000FD09E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98856A5B288E0AC5000FD09E /* SaveForLater.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SaveForLater.entitlements; path = SaveForLater/SaveForLater.entitlements; sourceTree = "<group>"; };
 		98856A5C288E0C81000FD09E /* Save For Later.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Save For Later.entitlements"; sourceTree = "<group>"; };
+		A6C597CD140F52830E8EA484 /* libPods-SaveForLater-SaveForLaterTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveForLater-SaveForLaterTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBFDC3B794B75FDB3924DC10 /* Pods-Save For Later.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save For Later.release.xcconfig"; path = "Target Support Files/Pods-Save For Later/Pods-Save For Later.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EDFF07E167308B2A0BDEB3F6 /* libPods-SaveForLater.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveForLater.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B62A2BDD405D151B0BA9645 /* libPods-SaveForLater-SaveForLaterTests.a in Frameworks */,
+				8F8B40487A187BDD9DAB4C3F /* libPods-SaveForLater-SaveForLaterTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22EB8D58958BDC8BC90CB6EA /* libPods-SaveForLater.a in Frameworks */,
+				4DDDB747C9E1539C079446B9 /* libPods-SaveForLater.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,8 +122,8 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				3480641E72E1BD15F43B8BAB /* libPods-Save For Later.a */,
-				EDFF07E167308B2A0BDEB3F6 /* libPods-SaveForLater.a */,
-				16094122FE4446F460EB1941 /* libPods-SaveForLater-SaveForLaterTests.a */,
+				69554C56FEC2B4E3E631CE5B /* libPods-SaveForLater.a */,
+				A6C597CD140F52830E8EA484 /* libPods-SaveForLater-SaveForLaterTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -665,6 +665,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
@@ -735,6 +737,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
+					"-Wl",
+					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
 					"-Wl",
